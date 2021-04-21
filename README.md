@@ -1,9 +1,6 @@
 Current version: 2.0
 
-## Status : Not ready for use.
-
-
-### For new installations, remember to retrieve the SQL queries from patch 1.1
+## Status : Ready for use from upgrade or new installation
 
 Supporting the Creator: https://www.paypal.me/thomaaasfds
 
