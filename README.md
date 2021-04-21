@@ -1,7 +1,7 @@
 Current version: 2.0
 
-Installation Guide :
-https://github.com/Thomasfds/intersect-cms/wiki/Installation-(FR)
+## Status : Not ready for use.
+
 
 ### For new installations, remember to retrieve the SQL queries from patch 1.1
 
