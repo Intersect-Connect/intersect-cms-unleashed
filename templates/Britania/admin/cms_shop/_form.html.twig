@@ -3,7 +3,7 @@
     <label for="cms_shop_idItem">
         {{"ID de l'item"|trans}}
     </label>
-    {% if cms_shop.idItem is defined %}
+    {% if cms_shop.idItem is not null %}
     {{ form_widget(form.idItem, { 'attr': {'readonly':true} }) }}
     {% else %}
     {{ form_widget(form.idItem) }}

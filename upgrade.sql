@@ -7,6 +7,7 @@ INSERT INTO cms_settings (setting, default_value, description) VALUES ('instagra
 INSERT INTO cms_settings (setting, default_value, description) VALUES ('discord_link', '#', 'Lien Discord');
 
 -- Suppression de la colonne value
+ALTER TABLE cms_settings ADD id INT NOT NULL AUTO_INCREMENT;
 ALTER TABLE cms_settings DROP COLUMN value;
 
 -- CMS_SHOP
