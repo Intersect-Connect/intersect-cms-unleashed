@@ -317,15 +317,15 @@
       </trans-unit>
       <trans-unit id="7OZsK72" resname="all_rights_reserved">
         <source>all_rights_reserved</source>
-        <target>all_rights_reserved</target>
+        <target>Tout droit réservé</target>
       </trans-unit>
       <trans-unit id="CfIGE7B" resname="graphic_concept_by">
         <source>graphic_concept_by</source>
-        <target>graphic_concept_by</target>
+        <target>Conception graphique par</target>
       </trans-unit>
       <trans-unit id="RTAk7Dj" resname="developped_by">
         <source>developped_by</source>
-        <target>developped_by</target>
+        <target>Développer par XFallSeane</target>
       </trans-unit>
       <trans-unit id="vE_FEw8" resname="Classement par niveau">
         <source>Classement par niveau</source>
