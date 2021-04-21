@@ -805,6 +805,22 @@
         <source>tu as fait une nouvelle demande de mot de passe, voici le lien qui va te permettre de changer ton mot de passe.</source>
         <target>tu as fait une nouvelle demande de mot de passe, voici le lien qui va te permettre de changer ton mot de passe.</target>
       </trans-unit>
+      <trans-unit id="yvbsUe4" resname="Une erreur s'est produit">
+        <source>Une erreur s'est produit</source>
+        <target>Une erreur s'est produit</target>
+      </trans-unit>
+      <trans-unit id="658vh9O" resname="Une erreur s'est produit, contactez un administrateur.">
+        <source>Une erreur s'est produit, contactez un administrateur.</source>
+        <target>Une erreur s'est produit, contactez un administrateur.</target>
+      </trans-unit>
+      <trans-unit id="kVcG7p7" resname="Page non trouvée">
+        <source>Page non trouvée</source>
+        <target>Page non trouvée</target>
+      </trans-unit>
+      <trans-unit id="QTMgW_U" resname="La page que vous cherchez n'a pas été trouvée">
+        <source>La page que vous cherchez n'a pas été trouvée</source>
+        <target>La page que vous cherchez n'a pas été trouvée</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
