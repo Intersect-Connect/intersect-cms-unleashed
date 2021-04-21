@@ -11,8 +11,14 @@ ALTER TABLE cms_settings DROP COLUMN value;
 
 -- CMS_SHOP
 -- Ajout de la colonne "Name"
-ALTER TABLE cms_shop ADD name VARCHAR(255)
+ALTER TABLE cms_shop ADD name VARCHAR(255);
 
 -- CMS_USER
 -- Ajout de la colonne "roles"
-ALTER TABLE cms_user ADD roles JSON
+ALTER TABLE cms_users ADD roles JSON;
+
+-- CMS News
+ALTER TABLE cms_news ADD slug VARCHAR(255);
+
+-- CMS Pages
+ALTER TABLE cms_pages ADD is_ivislbe INTEGER;

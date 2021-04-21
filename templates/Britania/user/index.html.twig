@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UserController!{% endblock %}
+{% block title %}{{'Mon compte'|trans }}{% endblock %}
 
 {% block body %}
 
@@ -71,7 +71,7 @@
                     </li>
                 </ul>
                 <div class="card-body p-0">
-                    <a href="#" class="btn btn-info rounded-0">{{"Historique des achats"|trans}}</a>
+                    <a href="{{path('account.history')}}" class="btn btn-info rounded-0">{{"Historique des achats"|trans}}</a>
                 </div>
             </div>
             <div class="card mt-5">
