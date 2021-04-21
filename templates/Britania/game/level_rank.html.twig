@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GameController!{% endblock %}
+
+{% block body %}
+<h1>{{ 'Classement par niveau'|trans }}</h1>
+<ul id="breadcrump">
+    <li>
+        <a href="{{ path('home') }}">{{ 'Accueil'|trans }}</a>
+    </li>
+    <li>{{ 'Classement par niveau'|trans }}</li>
+</ul>
+
+<div id="middle" class="p-0">
+    {% if joueurs is defined and joueurs|length > 1%}
+    <div class="table-responsive">
+        <table class="table table-hover text-center">
+            <thead class="text-center bg-table">
+                <tr class="text-center">
+                    <th width="50px" class="text-center">#</th>
+                    <th class="text-center">{{ 'Nom'|trans }}</th>
+                    <th class="text-center">{{ 'Niveau'|trans }}</th>
+                    <th class="text-center">{{ 'Exp'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for player in joueurs %}
+                <tr>
+                    <td class="text-center">
+                        <span class="rang">{{ loop.index }}</span>
+                    </td>
+                    <td>{{ player.name }}</td>
+                    <td class="c">{{ player.level }}</td>
+                    <td class="r">
+                        {% if player.level == 100 %}
+                        <strong>Niveau max atteint !</strong>
+                        {% else %}
+                        <b>{{ player.exp }}/{{player.expNext }}</b>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+    <div class="p-3">
+        <div class="alert alert-info text-dark shadow">
+           {{"Aucun joueur connecté."|trans}}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if cacheDate is defined %}
+    <p class="p-3">
+       {{"Dernière mise à jour du classement le"|trans}} :
+        {{cacheDate|date('d/m/Y à H:i:s')}}
+    </p>
+    {% endif %}
+
+</div>
+{% endblock %}

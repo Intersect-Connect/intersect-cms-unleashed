@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ShopController!{% endblock %}
+
+{% block body %}
+<h1>{{'Boutique VIP'|trans}}</h1>
+
+<ul id="breadcrump">
+    <li><a href="/">{{"Accueil"|trans}}</a></li>
+    <li>{{'Boutique VIP'|trans}}</li>
+</ul>
+
+<div id="shop" class="bg-white p-3 shadow">
+    {% for item in shop %}
+    <article class="mt-3 shop">
+        <div class="header" style="height: 60px;">
+            <img src="{{asset('assets/general/gamedata/items' ~ item.itemData.Icon )}}"
+                style="width: 50px;height: 50px;margin: 5px 10px 0px 5px;float: left;" loading="lazy"
+                alt="{{item.itemData.Name}} | Hôtel des ventes - {{settings.get('game_title')}} | {{settings.get('seo_description')}}">
+
+            <span class="title-card">
+                {{item.itemData.Name}} {% if item.quantity > 1 %} (x{{item.quantity}}) {% endif %} 
+                {% if (item.promotion > 0) %} <span class="text-danger">-{{ item.promotion }}%</span>{% endif %}
+            </span>
+
+        </div>
+        <p class="h-100">
+            {{item.description|striptags|raw}}
+        </p>
+        <div class="footer">
+            <strong>{{item.price}} {{"credits"|trans}}</strong>
+            <a href="{{path('shop.detail', {'id':item.id})}}">
+                <img src="{{asset('assets/themes/Britania/img/i_basket.png')}}" width="25px">
+            </a>
+        </div>
+    </article>
+    {% else %}
+        <div class="alert alert-info text-dark">
+            {{"Aucun enregistrement trouvé"|trans}}
+        </div>
+    {% endfor %}
+
+    <div class="clear"></div>
+
+</div>
+{% endblock %}

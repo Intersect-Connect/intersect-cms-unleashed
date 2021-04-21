@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{"Paramètres du site"|trans}}{% endblock %}
+
+{% block body %}
+
+
+<section id="news">
+    <div class="card border-0">
+        <div class="card-header p-0 border-0">
+            <h1>{{"Paramètres du site"|trans}}</h1>
+            
+            <ul id="breadcrump">
+                <li><a href="/admin">Administration</a></li>
+                <li>{{"Paramètres du site"|trans}}</li>
+            </ul>
+        </div>
+        <div class="card-body border-0">
+            <form action="" method="post">
+                {% for param in params %}
+
+                {% if param.setting == "use_nav_community" or param.setting == "use_right_community_button" or
+                param.setting == "use_wiki"%}
+                <div class="mt-3 mb-3">
+                    <label for="{{param.setting}}">{{param.description}}</label>
+                    <select name="{{param.setting}}" id="{{param.setting}}">
+                        <option value="true" {% if param.defaultValue=="true" %}selected{% endif %}>{{"Oui"|trans}}
+                        </option>
+                        <option value="false" {% if param.defaultValue=="false" %}selected{% endif %}>{{"Non"|trans}}
+                        </option>
+                    </select>
+                </div>
+                {% else %}
+                <div class="mt-3 mb-3">
+                    <label for="{{param.setting}}">{{param.description}}</label>
+                    <input type="text" name="{{param.setting}}" id="{{param.setting}}" value="{{param.defaultValue}}"
+                        class="w-100">
+                </div>
+                {% endif %}
+                {% endfor %}
+
+                <button type="submit" class="btn btn-success">
+                    {{"Sauvegarder"|trans}}
+                </button>
+            </form>
+        </div>
+    </div>
+
+</section>
+{% endblock %}

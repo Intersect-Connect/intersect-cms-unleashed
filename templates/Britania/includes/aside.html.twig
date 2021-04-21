@@ -1,0 +1,77 @@
+{% if serveur_online %}
+<a href="{{path('game.players.liste.online')}}" class="butt serverOnline">
+    <span class="illu"></span>
+    {{'Etat du serveur'|trans}}
+    <small>
+        {{'En ligne'|trans}} ({{players_count}} {{'joueurs'|trans}})
+    </small>
+</a>
+{% else %}
+<a href="{{path('game.players.liste.online')}}" class="butt serverOffline">
+    <span class="illu"></span>
+    {{'Etat du serveur'|trans}}
+    <small>
+        {{'Hors ligne'|trans}}
+    </small>
+</a>
+{% endif %}
+
+{% if app.user %}
+{% if is_granted('ROLE_ADMIN') %}
+<a href="/admin" class="butt ladder">
+    <span class="illu"></span>
+    {{"Administration"|trans}}
+    <small>{{"Gérer le CMS"|trans}}</small>
+</a>
+{% endif %}
+
+<a href="{{path('account')}}" class="butt joins">
+    <span class="illu"></span>
+    {{app.user.username}}
+    <small>{{app.user.points}} {{'credits'|trans}}</small>
+</a>
+{% endif %}
+
+
+{% if settings.get('use_right_community_button') != "false" %}
+
+{% if settings.get('discord_link') != "#" %}
+<a href="{{settings.get('discord_link')}}" class="butt discord">
+    <span class="illu"></span>
+    Discord
+    <small>{{'Discuter avec les joueurs'|trans}}</small>
+</a>
+{% endif %}
+
+{% if settings.get('facebook_link') != "#" %}
+<a href="{{settings.get('facebook_link')}}" class="butt facebook">
+    <span class="illu"></span>
+    Facebook
+    <small>{{'Suivez-nous sur Facebook'|trans}}</small>
+</a>
+{% endif %}
+
+{% if settings.get('twitter_link') != "#" %}
+<a href="{{settings.get('twitter_link')}}" class="butt twitter">
+    <span class="illu"></span>
+    Twitter
+    <small>{{'Suivez-nous sur Twitter'|trans}}</small>
+</a>
+{% endif %}
+
+{% if settings.get('youtube_link') != "#" %}
+<a href="{{settings.get('youtube_link')}}" class="butt youtube">
+    <span class="illu"></span>
+    Youtube
+    <small>{{'Suivez-nous sur Youtube'|trans}}</small>
+</a>
+{% endif %}
+
+{% if settings.get('instagram_link') != "#" %}
+<a href="{{settings.get('instagram_link')}}" class="butt instagram">
+    <span class="illu"></span>
+    Instagram
+    <small>{{'Suivez-nous sur Instagram'|trans}}</small>
+</a>
+{% endif %}
+{% endif %}

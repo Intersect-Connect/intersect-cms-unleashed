@@ -1,2 +1,5 @@
 twig:
-    default_path: '%kernel.project_dir%/templates'
+    default_path: '%kernel.project_dir%/templates/Britania'
+    globals:
+        theme: 'Britania'
+        settings: '@App\Settings\CmsSettings'

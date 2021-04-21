@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+dd
+{% endblock %}
+
+{% block body %}
+
+<h1>
+    {{news.name}}
+</h1>
+<ul id="breadcrump">
+    <li>
+        <a href="{{path('home')}}">{{ 'Accueil'|trans }}</a>
+    </li>
+    <li> {{news.name}}</li>
+</ul>
+
+<div id="news" class="read">
+    <article>
+        <p>
+
+            {{news.content|raw }}
+        </p>
+
+    </article>
+    <div class="clear"></div>
+</div>
+
+
+
+{% endblock %}

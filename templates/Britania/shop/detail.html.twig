@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{item.name}} - {{'Boutique'|trans}}{% endblock %}
+
+{% block body %}
+<h1>{{'Boutique'|trans}}</h1>
+
+<ul id="breadcrump">
+    <li><a href="/">{{"Accueil"|trans}}</a></li>
+    <li><a href="/">{{"'Boutique"|trans}}</a></li>
+    <li>{{item.name}}</li>
+</ul>
+<div id="news" class="read">
+    {% for message in app.flashes('success') %}
+    <div class="alert alert-success shadow text-dark alert-dismissible fade show">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+    <div class="alert alert-danger shadow text-dark alert-dismissible fade show">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    <article>
+
+        <div class="header" style="background-image:url({{asset(" assets/general/gamedata/items/" ~ item.icon
+            )}});width: 50px;height: 50px;margin: 5px 5px 0px 0px;float:right;">
+        </div>
+        <p>
+            <b
+                style="text-transform: uppercase;color: #213961;text-shadow: 0 1px 3px rgba(0,0,0,.15);font-size: 20px;font-family: 'Montserrat', 'proxima-nova_bold', Helvetica, Arial, sans-serif;font-weight: 800;">
+                {{item.name}}
+            </b>
+
+            ({{item.price}} {{"points"|trans}})
+
+        </p>
+        <p>
+            {{item.description|raw}}
+        </p>
+
+        <p>
+        </p>
+
+        <div id="middle">
+            <h2>{{"Sélectionner le personnage receveur"|trans}}</h2>
+            <p>
+                {{'Solde après achat'|trans}} : {{app.user.points - item.price }} ({{app.user.points}}-{{item.price}})
+                {{"points"|trans}}
+            </p>
+            <p>{{"Le personnage doit être connecté pour recevoir l'objet."|trans}}</p>
+            <center>
+                <form method="post">
+                    <div class="form-group-mt-3 mb-3">
+                        <select id="playerShop" name="playerShop" class="form-control w-100">
+                            <option value="choose">
+                                {{'Sélectionnez un personnage'|trans}}
+                            </option>
+                            {% for personnage in personnages %}
+
+                            <option value="{{personnage.Id}}" data-inventory="{{personnage.inventoryFull}}" {% if
+                                personnage.inventoryFull %} disabled {% endif %}>
+                                {{personnage.Name}} ({{"Niv"|trans}}.{{personnage.Level}})
+                                {% if personnage.inventoryFull %}
+                                ({{'Inventaire du personnage pleins'|trans}})
+                                {% endif %}
+                            </option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="form-group-mt-3 mb-3" id="choose_quantity">
+                        <label for="choose_character mb-3">
+                            {{'Entrer une quantité'|trans}}
+                        </label>
+                        <input type="number" name="quantity" id="quantity" class="form-control bg-light mt-2">
+                    </div>
+
+                    <div id="notification" class="alert alert-warning text-dark d-none">
+                        {{"L'inventaire pour ce personnage est pleins"|trans}}
+                    </div>
+
+                    <button style="padding: 15px 90px!important;" id="submitBuy" class="btn btn-lg customBTN rounded-0"
+                        type="sumbit">
+                        {{"ACHETER"|trans}}
+                    </button>
+                </form>
+            </center>
+        </div>
+    </article>
+    <div class="clear"></div>
+</div>
+{% endblock %}

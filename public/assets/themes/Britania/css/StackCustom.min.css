@@ -1,0 +1,136 @@
+/* Custom Modal by Shift */
+
+.modal {
+    display: none;
+    vertical-align: middle;
+    position: relative;
+    z-index: 2;
+    max-width: 500px;
+    box-sizing: border-box;
+    width: 90%;
+    background: #efefef;
+    padding: 0px 0px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -o-border-radius: 8px;
+    -ms-border-radius: 8px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0 0 10px #000;
+    -moz-box-shadow: 0 0 10px #000;
+    -o-box-shadow: 0 0 10px #000;
+    -ms-box-shadow: 0 0 10px #000;
+    box-shadow: 0 0 10px #000;
+    text-align: left;
+}
+
+
+.modal a.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    display: block;
+    width: 30px;
+    height: 30px;
+    text-indent: -9999px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image:;
+}
+
+
+.modal form label {
+    display: block;
+    color: #585951;
+    line-height: 14px;
+    font-family: 'Montserrat', 'proxima-nova_bold', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+
+.modal .btn, .modal form button {
+    text-shadow: 0 1px 3px rgba(0,0,0,.15);
+    background: #3b6394;
+    display: block;
+    text-transform: uppercase;
+    color: #f4f8d7;
+    font-family: 'Montserrat', 'proxima-nova_bold', Helvetica, Arial, sans-serif;
+    padding: 15px 20px;
+    font-weight: 800;
+}
+
+
+.modal .btn:hover, .modal form button:hover {
+    background: #588fd4;
+}
+
+
+.modal form textarea, .modal form input[type=text], .modal form input[type=password] {
+    background: #fdfdfd;
+    border: 2px solid #c7cab3;
+    font-size: 14px;
+    width: 450px;
+    height: 45px;
+    margin-bottom: 15px;
+    padding: 0 12px;
+    font-family: 'proxima-nova_regular', Helvetica, Arial, sans-serif;
+}
+
+.modal form label small {
+
+    display: block;
+    font-size: 12px;
+    text-transform: initial;
+    font-weight: normal;
+    font-family: 'proxima-nova_regular', Helvetica, Arial, sans-serif;
+}
+
+.modal #breadcrump li:last-child {
+    font-family: 'proxima-nova_regular', Helvetica, Arial, sans-serif;
+}
+
+.modal #breadcrump li {
+    display: inline;
+    font-size: 12px;
+    line-height: 15px;
+}
+
+.modal h1 {
+    text-transform: uppercase;
+    color: #f4f8d7;
+    line-height: 22px;
+    padding: 13px 15px;
+    text-shadow: 0 1px 3px rgba(0,0,0,.15);
+    background: #3b6394;
+    font-size: 20px;
+    font-family: 'Montserrat', 'proxima-nova_bold', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+}
+
+.modal #breadcrump {
+    line-height: 14px;
+    margin-bottom: 10px;
+    background: #1D3B6D;
+    padding: 9px 15px 10px;
+    color: #f4f8d7;
+    font-family: 'proxima-nova_bold', Helvetica, Arial, sans-serif;
+}
+
+
+.modal #middle {
+    overflow: hidden;
+    background: #f4f8d7;
+    color: #41423d;
+}
+
+.modal form {
+    width: 100%;
+    background: #efefef;
+    padding: 22px;
+}
+
+.modal form label span {
+    color: #e66045;
+}

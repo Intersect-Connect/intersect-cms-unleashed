@@ -1,0 +1,214 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+{% block body %}
+<h1>Actualités</h1>
+<ul id="breadcrump">
+    <li><a href="/">Accueil</a></li>
+    <li>Administration</li>
+</ul>
+
+<section id="news">
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- Nombre total de compte -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    {{"Joueurs"|trans}}
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    {{total_users}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nombre total de joueurs -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    {{"Personnages"|trans}}
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    {{total_players}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nombre total d'items dans la boutique -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    {{"Boutique"|trans}}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{total_shop}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nombres total d'article -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    {{"Article"|trans}}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{total_news}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6 mt-3">
+                <div class="card">
+                    <img src="{{asset('assets/themes/Britania/img/admin/news.jpg')}}" height="200">
+                    <div class="card-header bg-transparent">
+                        <h2>
+                            <img src="{{asset('assets/themes/Britania/img/i_news.png')}}">
+                            {{"Gérer les news"|trans}}
+                        </h2>
+                    </div>
+                    <div class="card-footer bg-footer">
+                        <a class="text-end" href="{{path('cms_news_index')}}">
+                            <img src="{{asset('assets/themes/Britania/img/i_bulle.png')}}">
+                            {{"Accéder"|trans}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mt-3">
+                <div class="card">
+                    <img src="{{asset('assets/themes/Britania/img/admin/shop.jpg')}}" height="200">
+                    <div class="card-header bg-transparent">
+                        <h2><img src="{{asset('assets/themes/Britania/img/i_news.png')}}"> 
+                        {{"Gérer la boutique"|trans}}
+                        </h2>
+                    </div>
+                    <div class="card-footer bg-footer">
+                        <a class="text-end" href="/admin/shop/">
+                            <img src="{{asset('assets/themes/Britania/img/i_bulle.png')}}">
+                            {{"Accéder"|trans}}
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-6 mt-3">
+                <div class="card">
+                    <img src="{{asset('assets/themes/Britania/img/admin/pages.jpg')}}" height="200">
+                    <div class="card-header bg-transparent">
+                        <h2><img src="{{asset('assets/themes/Britania/img/i_news.png')}}"> 
+                            {{"Gérer les pages"|trans}}
+                         </h2>
+                    </div>
+                    <div class="card-footer bg-footer">
+                        <a class="text-end" href="/admin/pages/">
+                            <img src="{{asset('assets/themes/Britania/img/i_bulle.png')}}">
+                            {{"Accéder"|trans}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mt-3">
+                <div class="card">
+                    <img src="{{asset('assets/themes/Britania/img/admin/settings.jpg')}}" height="200">
+                    <div class="card-header bg-transparent">
+                        <h2><img src="{{asset('assets/themes/Britania/img/i_news.png')}}"> 
+                        {{"Gérer les paramètres"|trans}}
+                        </h2>
+                    </div>
+                    <div class="card-footer bg-footer">
+                        <a class="text-end" href="/admin/settings">
+                            <img src="{{asset('assets/themes/Britania/img/i_bulle.png')}}">
+                            {{"Accéder"|trans}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mt-3">
+                <div class="card">
+                    <img src="{{asset('assets/themes/Britania/img/admin/settings.jpg')}}" height="200">
+                    <div class="card-header bg-transparent">
+                        <h2><img src="{{asset('assets/themes/Britania/img/i_news.png')}}">
+                            {{"Gérer les comptes utilisateurs"|trans}}
+                        </h2>
+                    </div>
+                    <div class="card-footer bg-footer">
+                        <a class="text-end" href="/admin/accounts/0">
+                            <img src="{{asset('assets/themes/Britania/img/i_bulle.png')}}">
+                            {{"Accéder"|trans}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mt-3">
+                <div class="card">
+                    <img src="{{asset('assets/themes/Britania/img/admin/settings.jpg')}}" height="200">
+                    <div class="card-header bg-transparent">
+                        <h2><img src="{{asset('assets/themes/Britania/img/i_news.png')}}">
+                            {{"Voir la liste des items"|trans}}
+                        </h2>
+                    </div>
+                    <div class="card-footer bg-footer">
+                        <a class="text-end" href="/admin/items/0">
+                            <img src="{{asset('assets/themes/Britania/img/i_bulle.png')}}">
+                            {{"Accéder"|trans}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-6 mt-3 d-none">
+                <div class="card">
+                    <img src="{{asset('assets/themes/Britania/img/admin/settings.jpg')}}" height="200">
+                    <div class="card-header bg-transparent">
+                        <h2><img src="{{asset('assets/themes/Britania/img/i_news.png')}}"> Liste des
+                            transactions</h2>
+                    </div>
+                    <div class="card-footer bg-footer">
+                        <a class="text-end" href="/admin/transaction">
+                            <img src="{{asset('assets/themes/Britania/img/i_bulle.png')}}">
+                            {{"Accéder"|trans}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</section>
+{% endblock %}

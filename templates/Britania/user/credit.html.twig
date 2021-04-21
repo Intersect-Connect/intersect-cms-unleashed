@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+
+<h1>
+    {{'Mon compte'|trans }}
+</h1>
+<ul id="breadcrump">
+    <li>
+        <a href="{{path('home')}}">{{ 'Accueil'|trans }}</a>
+    </li>
+    <li>{{ 'Recharger'|trans }}</li>
+</ul>
+
+<div id="middle">
+    <h2>{{'Recharger'|trans}}</h2>
+    <div data-dedipass="{{ dedipass }}" data-dedipass-custom=""></div>
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="//api.dedipass.com/v1/pay.js"></script>
+{% endblock %}
