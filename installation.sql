@@ -170,12 +170,6 @@ CREATE TABLE `cms_users` (
 --
 
 --
--- Index pour la table `cms_lang`
---
-ALTER TABLE `cms_lang`
-  ADD PRIMARY KEY (`string_id`);
-
---
 -- Index pour la table `cms_news`
 --
 ALTER TABLE `cms_news`
@@ -221,12 +215,6 @@ ALTER TABLE `cms_users`
 --
 -- AUTO_INCREMENT pour les tables déchargées
 --
-
---
--- AUTO_INCREMENT pour la table `cms_lang`
---
-ALTER TABLE `cms_lang`
-  MODIFY `string_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=347;
 
 --
 -- AUTO_INCREMENT pour la table `cms_news`

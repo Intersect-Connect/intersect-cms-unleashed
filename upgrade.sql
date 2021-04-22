@@ -16,7 +16,7 @@ ALTER TABLE cms_shop ADD name VARCHAR(255);
 
 -- CMS_USER
 -- Ajout de la colonne "roles"
-ALTER TABLE cms_users ADD roles JSON;
+ALTER TABLE cms_users ADD roles JSON NOT NULL DEFAULT '[]';
 
 -- CMS News
 ALTER TABLE cms_news ADD slug VARCHAR(255);
