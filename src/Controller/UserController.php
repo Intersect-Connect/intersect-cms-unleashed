@@ -7,15 +7,15 @@ use App\Repository\CmsPointsHistoryRepository;
 use App\Repository\CmsShopHistoryRepository;
 use App\Repository\CmsShopRepository;
 use App\Repository\UserRepository;
+use App\Security\LoginAuthenticator;
 use App\Settings\Api;
 use App\Settings\CmsSettings;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserController extends AbstractController
@@ -111,9 +111,9 @@ class UserController extends AbstractController
     /**
      * @Route("/account/credits", name="account.credit.reload")
      */
-    public function credit(Api $api, Request $request, CmsSettings $settings, UserRepository $userRepo, TranslatorInterface $translator): Response
+    public function credit(Api $api, Request $request, CmsSettings $settings, UserRepository $userRepo, TranslatorInterface $translator, LoginAuthenticator $login, GuardAuthenticatorHandler $guard): Response
     {
-        if ($request->isMethod('post')) {
+        if ($request->isMethod('POST')) {
             $code = $request->request->get('code');
 
             if (!empty($code)) {
@@ -122,7 +122,7 @@ class UserController extends AbstractController
 
                 if ($dedipass->status == 'success') {
                     $virtual_currency = $dedipass->virtual_currency;
-                    $user = $userRepo->find($this->getUser());
+                    $user = $userRepo->find($request->request->get('custom'));
 
                     if ($user) {
                         $user->setPoints($user->getPoints() + $virtual_currency);
@@ -132,20 +132,26 @@ class UserController extends AbstractController
 
                         $pointHistorique = new CmsPointsHistory();
                         $pointHistorique->setDate(new DateTime());
-                        $pointHistorique->setUserId($this->getUser()->getId());
+                        $pointHistorique->setUserId($user->getId());
                         $pointHistorique->setCode($code);
                         $pointHistorique->setPointsAmount($virtual_currency);
                         $entityManager = $this->getDoctrine()->getManager();
                         $entityManager->persist($pointHistorique);
                         $entityManager->flush();
 
+                        $res = new Response();
+                        $res->headers->clearCookie('user');
+                        $res->send();
+
                         $this->addFlash('success', $translator->trans('Votre compte a été rechargé en points boutique'));
+
+                        // Pas la meilleure façon mais pas le choix.
+                        $guard->authenticateUserAndHandleSuccess($user, $request, $login, 'main');
                         return $this->redirectToRoute('account');
                     }
                 }
             }
         }
-
         return $this->render('user/credit.html.twig', [
             'dedipass' => $api->getDedipassPublic()
         ]);
