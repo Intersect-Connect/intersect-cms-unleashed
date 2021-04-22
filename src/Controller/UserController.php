@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserController extends AbstractController
@@ -170,13 +171,15 @@ class UserController extends AbstractController
 
         foreach ($shop_history as $shop_history) {
             $shop_item = $cmsShopRepo->find($shop_history->getShopId());
-            $history[] = [
-                'name' => $shop_item->getName(),
-                'date' => $shop_history->getDate()->format('d/m/Y à h:i:s'),
-                'type' => 'item_shop',
-                'price' => $shop_item->getPrice(),
-                'quantity' => $shop_item->getQuantity()
-            ];
+            if ($shop_item) {
+                $history[] = [
+                    'name' => $shop_item->getName(),
+                    'date' => $shop_history->getDate()->format('d/m/Y à h:i:s'),
+                    'type' => 'item_shop',
+                    'price' => $shop_item->getPrice(),
+                    'quantity' => $shop_item->getQuantity()
+                ];
+            }
         }
 
         foreach ($point_history as $point_history) {
