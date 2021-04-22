@@ -162,7 +162,7 @@ CREATE TABLE `cms_users` (
   `points` int(11) NOT NULL DEFAULT '0',
   `admin` int(1) NOT NULL DEFAULT '0',
   `password_token` varchar(255) DEFAULT NULL,
-  `roles` json NOT NULL
+  `roles` json NOT NULL DEFAULT '[]'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
