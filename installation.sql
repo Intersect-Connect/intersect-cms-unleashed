@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : mer. 21 avr. 2021 à 15:25
+-- Généré le : jeu. 22 avr. 2021 à 23:28
 -- Version du serveur :  5.7.24
 -- Version de PHP : 7.4.8
 
@@ -38,6 +38,13 @@ CREATE TABLE `cms_news` (
   `slug` varchar(255) NOT NULL,
   `is_visible` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `cms_news`
+--
+
+INSERT INTO `cms_news` (`id`, `title`, `content`, `date`, `author`, `img_url`, `slug`, `is_visible`) VALUES
+(1, 'Welcome on IntersectCMS', '<p><strong>Lorem ipsum dolor sit amet</strong>, consectetur adipiscing elit. Mauris non nulla vitae erat finibus molestie. Vestibulum sit amet turpis quam. Praesent scelerisque sem ipsum, at hendrerit nisl dapibus a. Quisque vulputate sem eu turpis fringilla pharetra. Aenean consectetur sodales leo, at mattis metus dictum quis. Morbi consequat nunc ultricies purus tincidunt, quis ultrices mi tincidunt. Nullam maximus semper arcu, eu mattis enim aliquet eget.</p>\r\n<p>Integer sem tortor, ornare sit amet dui quis, volutpat tristique velit. Nam blandit feugiat nulla a iaculis. Fusce sagittis vel orci eget tempor. Vestibulum ut nunc mattis, ullamcorper velit at, convallis neque. Maecenas sagittis, sem at hendrerit imperdiet, odio urna egestas leo, placerat fermentum sem erat scelerisque purus. Phasellus ultricies est sit amet enim imperdiet, sed tristique nibh porttitor. Nulla molestie libero ac felis accumsan, ac mattis ex venenatis. Nam at lectus tempus, lobortis urna eget, viverra leo. Ut semper et eros eu semper. Sed mattis, magna id vehicula aliquet, dui quam eleifend orci, at molestie justo metus vel enim. Sed vitae urna leo. Nullam dapibus nisl dapibus venenatis tristique. Praesent vel turpis iaculis, laoreet erat non, fringilla augue. In tincidunt ipsum nec ligula lobortis, vitae tempus tortor porta. Aenean gravida eget nibh eget hendrerit. Vivamus eu metus porttitor, mattis erat eu, lobortis magna.</p>\r\n<p>Nunc porttitor varius tellus, a vestibulum massa tristique a. Mauris sit amet est tellus. Curabitur lobortis laoreet faucibus. Cras sem enim, laoreet tempus leo id, sodales convallis tortor. Maecenas quis sapien porttitor, scelerisque tortor in, auctor urna. Ut pretium nisl laoreet ex feugiat sollicitudin. Curabitur aliquam quam lorem, quis consectetur neque hendrerit vitae. Sed pulvinar quam massa, in congue quam interdum at. Aliquam euismod consequat lorem, a malesuada enim dapibus et.</p>\r\n<p>Maecenas et tempus tellus. Mauris porta nisl eu ipsum luctus, et malesuada diam suscipit. Nunc condimentum metus ut varius scelerisque. Morbi eu sapien egestas, dignissim nunc eu, rutrum dui. Nullam convallis vehicula libero sed blandit. Praesent auctor dolor sapien, at venenatis nisi accumsan sed. Vestibulum porttitor a libero non sollicitudin. Aenean vitae neque nibh. Fusce sit amet vestibulum magna. Quisque vel lacinia felis. Nunc non fermentum tellus.</p>\r\n<p>Morbi eget dui a lorem tempor maximus. Donec mollis ligula sed tortor congue, in auctor magna pellentesque. Donec a arcu et eros placerat eleifend. Donec pretium, sem a vehicula pharetra, metus diam fermentum ligula, non convallis nisl leo non orci. Aliquam vestibulum placerat nibh, ac malesuada mi bibendum rutrum. Sed facilisis suscipit sapien in faucibus. Vivamus viverra, ipsum sed condimentum dignissim, elit felis pharetra orci, posuere hendrerit ipsum ligula sit amet sapien. Aliquam sollicitudin, velit nec porttitor porta, neque ex pharetra mauris, in fringilla elit ex dapibus sem. Curabitur nisi felis, sagittis sed ipsum fermentum, imperdiet euismod augue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam vel leo eget est molestie ultrices ac in lacus. Curabitur eu interdum nunc, vitae egestas mauris. Donec consectetur sodales luctus. Maecenas arcu est, placerat vel facilisis a, bibendum eu enim. Integer ornare lorem sit amet ligula euismod fringilla.</p>', '2020-05-20', 'ram', '08afd87bb8256468f673e4e34e26e232.png', 'welcime', 1);
 
 -- --------------------------------------------------------
 
@@ -96,12 +103,11 @@ CREATE TABLE `cms_settings` (
 INSERT INTO `cms_settings` (`id`, `setting`, `default_value`, `description`) VALUES
 (1, 'api_password', 'f2d81a260dea8a100dd517984e53c56a7523d96942a834b9cdc249bd4e8c7aa9', 'API Password'),
 (2, 'api_server', 'http://localhost:5400', 'API Server'),
-(3, 'api_token', 'TrB_i2pF3N-HJo6H9-oq9XTMbeYbPQ-XgP440NxAvxCNI-WjU0YaocM0jrh9D09-mKsdcd91CWreMHlYZxGckgqzEmT35PWT8s8VtQpMkBFb2mptsRPusd6fj0KW-eGOwoDZ8TLWlcD-PEw_ABHFKXu2Banfl5w90H8Z1zJpW1Bf_fE05Rm_wuh7PK2FtI6oAIx2trCfz5ebFXJfBvmbea3tKVuH-AKl1x22rCeNXrf-mBfI11hl83G1eo0-FJ0zlYd4h_JNegi6mr6HlVXfa-7EaluyohnNeLUDkGiHt9VeReeJoR4LwurEt_iMtCJM9jPBHPo5ljn9ADn15YU4fqho9QoY-qJmGjDE3w-BjHDbpsOuepjwdWuoSeuh0tZyLBD4qGkGWta9erpKg2CbR43Rh_0iIjrxbQky2kEa-CQx5BZizP21AnMTo0K1deWMh-cel8GxeommM30dbIue5JdSem3IpyMDG3mpKnnu869z0m4UusiXf0JesT9iJdWiaYgcKeGEpVUstJy7bqDu4h9oEkJtDGX7ndhH4X3WKAAPNPRGLGIxSguGhcLbVVL2cAjhfELBKnvuyjvh9mb13w', 'Token API'),
+(3, 'api_token', '0VamjUdyhkKfWhOSQD943OBT8OpFuSUTj484wWM49qWSDKK8_8eVkN4gYqj6ZAdHL9eabc12WCuAEwlfDf5TS4xRNDKK4DzzBhlDPaZBr-p-x2i2eBY9dVBmPHXZoHQVkSQZHVzK0zIDgg-S6pTw34PhI5_PgIxgtzLxBITJW1AyvXwyOa6CDBrTTIixHVQfDEDzKm0juMQ1SoUy8ojfcT4-lhb8ItKboDtMr79int-HeO3qiWChKI4GHXeO71GysAOB_A5czWhh2EY4yBIu4HGkaFLGYfO2-XmAtXHV3JcLnVedcIFytdzur8-NNdghZzchwwhYRXalEnMU4rt5_mpnnu8AIRDZLGdUeRhRydI9mDWniyjLSTWcakUgwUZrIw5RIsReEsx0YcC3y7P1D2O1EtZQ9s65RHWC1gGxVhCf30UsOeeVdGoEnQH6dEeRj76xRy0jOfr--0pK00yLoRvcg82Am76hXAquO8XIQZoRdexa0p8Pkez5RH8WBvPuFCF3eias7n7dBETeGhTToDXPPp7fHeXpc4vLlYM7WlKTKiptTmtrLHzuqqsBUs4igcCFFtotZAOp9x4RRIPOrw', 'Token API'),
 (4, 'api_username', 'apiAccount', 'API User'),
 (5, 'base_url', 'http://intersectcms-rework.teste/', 'CMS Base URL'),
-(6, 'credit_dedipass_html_data', '<div data-dedipass=\"[this]\" data-dedipass-custom=\"\">', 'Dedipass HTML data-dedipass value'),
-(7, 'credit_dedipass_private_key', '$dedipass = file_get_contents(\'http://api.dedipass.com/v1/pay/?public_key=[not this]&private_key=[this]&code=\' . $code);', 'Dedipass private key'),
-(8, 'credit_dedipass_public_key', '$dedipass = file_get_contents(\'http://api.dedipass.com/v1/pay/?public_key=[this]&private_key=[not this]&code=\' . $code);', 'Dedipass public key'),
+(7, 'credit_dedipass_private_key', 'ff5d27e41f27baa414bb62633474066fd072047a', 'Dedipass private key'),
+(8, 'credit_dedipass_public_key', '7992623d79b6598878f1166d10a71856', 'Dedipass public key'),
 (9, 'current_lang', 'en', 'Lang Used'),
 (10, 'game_title', 'My Game', 'Game Name'),
 (11, 'seo_description', 'yourdescription', 'Description SEO'),
@@ -110,7 +116,7 @@ INSERT INTO `cms_settings` (`id`, `setting`, `default_value`, `description`) VAL
 (14, 'use_nav_community', 'true', 'Use community nav tab'),
 (15, 'use_right_community_button', 'true', 'Display right menu community buttons'),
 (16, 'use_wiki', 'true', 'Use custom wiki'),
-(33, 'facebook_link', 'sqdqsdqsds', 'Lien Facebook'),
+(33, 'facebook_link', 'https://facebook.com/', 'Lien Facebook'),
 (34, 'twitter_link', '#', 'Lien Twitter'),
 (35, 'youtube_link', '#', 'Lien Youtube'),
 (36, 'instagram_link', '#', 'Lien Instagram'),
@@ -162,7 +168,7 @@ CREATE TABLE `cms_users` (
   `points` int(11) NOT NULL DEFAULT '0',
   `admin` int(1) NOT NULL DEFAULT '0',
   `password_token` varchar(255) DEFAULT NULL,
-  `roles` json NOT NULL DEFAULT '[]'
+  `roles` json NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -220,7 +226,7 @@ ALTER TABLE `cms_users`
 -- AUTO_INCREMENT pour la table `cms_news`
 --
 ALTER TABLE `cms_news`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `cms_pages`
