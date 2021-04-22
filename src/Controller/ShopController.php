@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\CmsShopHistory;
 use App\Repository\CmsShopRepository;
+use App\Repository\UserRepository;
 use App\Settings\Api;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,7 +55,7 @@ class ShopController extends AbstractController
     /**
      * @Route("/shop/detail/{id}", name="shop.detail")
      */
-    public function detail(CmsShopRepository $shopRepo, Request $request, Api $api, $id, TranslatorInterface $translator): Response
+    public function detail(CmsShopRepository $shopRepo, Request $request, Api $api, $id, TranslatorInterface $translator, UserRepository $userRepo): Response
     {
         $shopItem = $shopRepo->find($id);
         $itemData = $api->getObjectDetail($shopItem->getIdItem());
@@ -85,6 +88,21 @@ class ShopController extends AbstractController
                 if ($this->getUser()->getPoints() >= $shopItem->getPrice()) {
                     //  alors on peut acheter
                     if ($api->giveItem($data, $character)) {
+                        $user = $userRepo->find($this->getUser());
+                        $user->setPoints($user->getPoints() - $shopItem->getPrice());
+                        $entityManager = $this->getDoctrine()->getManager();
+                        $entityManager->persist($user);
+                        $entityManager->flush();
+
+                        $boutiqueHistorique = new CmsShopHistory();
+                        $boutiqueHistorique->setDate(new DateTime());
+                        $boutiqueHistorique->setShopId($id);
+                        $boutiqueHistorique->setUserId($this->getUser()->getId());
+                        $boutiqueHistorique->setCreditsNow($user->getPoints() - $shopItem->getPrice());
+                        $entityManager = $this->getDoctrine()->getManager();
+                        $entityManager->persist($boutiqueHistorique);
+                        $entityManager->flush();
+
                         $this->addFlash('success', $translator->trans('Votre achat à bien été effectuer, vous devriez avoir reçu votre objet en jeu.'));
                         return $this->redirectToRoute('shop.detail', ['id' => $id]);
                     } else {

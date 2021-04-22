@@ -9,6 +9,7 @@ use App\Repository\CmsShopRepository;
 use App\Repository\UserRepository;
 use App\Settings\Api;
 use App\Settings\CmsSettings;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -128,6 +129,16 @@ class UserController extends AbstractController
                         $entityManager = $this->getDoctrine()->getManager();
                         $entityManager->persist($user);
                         $entityManager->flush();
+
+                        $pointHistorique = new CmsPointsHistory();
+                        $pointHistorique->setDate(new DateTime());
+                        $pointHistorique->setUserId($this->getUser()->getId());
+                        $pointHistorique->setCode($code);
+                        $pointHistorique->setPointsAmount($virtual_currency);
+                        $entityManager = $this->getDoctrine()->getManager();
+                        $entityManager->persist($pointHistorique);
+                        $entityManager->flush();
+
                         $this->addFlash('success', $translator->trans('Votre compte a été rechargé en points boutique'));
                         return $this->redirectToRoute('account');
                     }
