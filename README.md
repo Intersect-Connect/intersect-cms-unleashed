@@ -54,7 +54,8 @@ IntersectCMS uses a number of open source projects to work properly:
 IntersectCMS requirements :
 
 - Web server with URL rewriting
-- PHP 7.2 or newer
+- PHP 7.4 or newer
+- Mysql 5.7
 
 Installation step by step :
 
