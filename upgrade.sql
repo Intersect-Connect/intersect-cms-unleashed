@@ -8,6 +8,7 @@ INSERT INTO cms_settings (setting, default_value, description) VALUES ('discord_
 
 -- Suppression de la colonne value
 ALTER TABLE cms_settings ADD id INT NOT NULL AUTO_INCREMENT;
+ALTER TABLE cms_settings ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `setting` (`setting`);
 ALTER TABLE cms_settings DROP COLUMN value;
 
 -- CMS_SHOP
@@ -22,4 +23,4 @@ ALTER TABLE cms_users ADD roles JSON NOT NULL DEFAULT '[]';
 ALTER TABLE cms_news ADD slug VARCHAR(255);
 
 -- CMS Pages
-ALTER TABLE cms_pages ADD is_ivislbe INTEGER;
+ALTER TABLE cms_pages ADD is_visible INTEGER;

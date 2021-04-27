@@ -2,11 +2,6 @@
 
 {% block title %}{{"Liste des items"|trans}}{% endblock %}
 
-{% block stylesheets %}
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css">
-{% endblock %}
-
 {% block body %}
 
 
@@ -43,23 +38,18 @@
           {% endfor %}
         </tbody>
       </table>
+
+      <nav aria-label="Pagination de la liste des joueurs">
+        <ul class="pagination p-3 overflow-auto">
+          {% for i in 0..total_page %}
+          <li class="page-item  {% if page_actuel == i %}active{% endif %}">
+            <a class="page-link" data-page="{{i}}" href="{{path('admin.account', {" page":i})}}">{{ i + 1}}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </nav>
     </div>
   </div>
 
 </section>
-{% endblock %}
-
-{% block javascripts %}
-<script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('.table').DataTable({
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-            },
-            "lengthChange":false
-        });
-    });
-</script>
 {% endblock %}

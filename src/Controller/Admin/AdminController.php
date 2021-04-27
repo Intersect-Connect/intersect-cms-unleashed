@@ -179,21 +179,21 @@ class AdminController extends AbstractController
      */
     public function items(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, $page = 0): Response
     {
-        $total = $api->getAllItems($page - 1)['total'];
-        $total_page = ceil($total / 25);
+        $total = $api->getAllItems($page)['total'];
+        $total_page = ceil($total / 30);
 
 
         return $this->render('admin/items_list/index.html.twig', [
             'total_page' => $total_page,
-            'items' => $api->getAllItems($page - 1)['entries'],
-            'page_actuel' => $page - 1
+            'items' => $api->getAllItems($page)['entries'],
+            'page_actuel' => $page
         ]);
     }
 
     /**
      * @Route("admin/accounts/{page}", name="admin.account")
      */
-    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $page): Response
+    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $page = 0): Response
     {
 
         if ($request->isMethod('POST')) {
@@ -244,15 +244,15 @@ class AdminController extends AbstractController
                 }
             }
         }
-
-        $total = $api->getAllUsers($page - 1)['Total'];
-        $total_page = ceil($total / 25);
+        
+        $total = $api->getAllUsers($page)['total'];
+        $total_page = ceil($total / 30);
 
 
         return $this->render('admin/account/index.html.twig', [
             'total_page' => $total_page,
-            'items' => $api->getAllUsers($page - 1)['Values'],
-            'page_actuel' => $page - 1
+            'items' => $api->getAllUsers($page)['Values'],
+            'page_actuel' => $page
         ]);
     }
 

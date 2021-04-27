@@ -93,7 +93,6 @@ class GameController extends AbstractController
                 foreach ($liste_joueur as $joueur) {
                         $liste_joueur[] = $joueur;
                 }
-                // dd($liste_joueur);
 
                 $par_page = 30;
                 $total_page = count((array)$liste_joueur);
