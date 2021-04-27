@@ -22,4 +22,4 @@ ALTER TABLE cms_users ADD roles JSON NOT NULL DEFAULT '[]';
 ALTER TABLE cms_news ADD slug VARCHAR(255);
 
 -- CMS Pages
-ALTER TABLE cms_pages ADD is_ivislbe INTEGER;
+ALTER TABLE cms_pages ADD is_visible INTEGER;
