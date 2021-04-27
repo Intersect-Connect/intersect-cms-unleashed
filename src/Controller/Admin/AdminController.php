@@ -247,7 +247,7 @@ class AdminController extends AbstractController
 
         $users = $api->getAllUsers($page);
         $total = $users['Total'];
-        $total_page = ceil($total / 30);
+        $total_page = floor($total / 30);
 
 
         return $this->render('admin/account/index.html.twig', [
