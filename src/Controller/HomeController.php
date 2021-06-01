@@ -6,7 +6,9 @@ use App\Entity\CmsSettings;
 use App\Repository\CmsNewsRepository;
 use App\Repository\CmsPagesRepository;
 use App\Repository\CmsSettingsRepository;
+use App\Repository\CmsShopRepository;
 use App\Settings\Api;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,20 +17,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
 
-    public function aside(Api $api, CmsSettingsRepository $settings): Response
+    public function aside(Api $api, CmsSettingsRepository $settings, CmsNewsRepository $newRepo): Response
     {
         $serveur_statut = $api->ServeurStatut();
 
         if ($serveur_statut['success']) {
             $serveur_online = true;
+
             return $this->render('includes/aside.html.twig', [
                 'serveur_online' => $serveur_online,
-                'players_count' => $serveur_statut['online']
+                'players_count' => $serveur_statut['online'],
+                'news' => $newRepo->findBy([], ['id' => 'DESC'], 5)
             ]);
         } else {
             $serveur_online = false;
             return $this->render('includes/aside.html.twig', [
-                'serveur_online' => $serveur_online
+                'serveur_online' => $serveur_online,
+                'news' => $newRepo->findBy([], ['id' => 'DESC'], 5)
             ]);
         }
     }
@@ -36,32 +41,84 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function index(CmsNewsRepository $newsRepo): Response
+    public function home(Request $request): Response
     {
+        return $this->redirectToRoute('home.index', ['_locale' => $request->getLocale()]);
+    }
+
+    /**
+     * @Route("/{_locale}/", name="home.index",  requirements={"_locale": "en|fr"})
+     */
+    public function index(CmsNewsRepository $newsRepo, CmsShopRepository $shopRepo, Api $api): Response
+    {
+        $shopItems = $shopRepo->findBy(['visible' => true], ['id' => 'DESC'], 2);
+
+        $shop = array();
+
+        foreach ($shopItems as $itemShop) {
+
+            $itemData = $api->getObjectDetail($itemShop->getIdItem());
+
+
+            $shop[$itemShop->getId()]['itemData'] = $itemData;
+            if ($itemShop->getForcedDescription() != "") {
+                $shop[$itemShop->getId()]['description'] = $itemShop->getForcedDescription();
+            } else {
+                $shop[$itemShop->getId()]['description'] = $itemData['Description'];
+            }
+            if ($itemShop->getPromotion() > 0) {
+                $shop[$itemShop->getId()]['price'] = $itemShop->getPrice() * (1 - ($itemShop->getPromotion() / 100));
+            } else {
+                $shop[$itemShop->getId()]['price'] =  $itemShop->getPrice();
+            }
+            $shop[$itemShop->getId()]['quantity'] = $itemShop->getQuantity();
+            $shop[$itemShop->getId()]['promotion'] = $itemShop->getPromotion();
+            $shop[$itemShop->getId()]['id'] = $itemShop->getId();
+            $shop[$itemShop->getId()]['name'] = $itemShop->getName();
+
+            if ($itemShop->getImage() != null) {
+                $shop[$itemShop->getId()]['image'] = $itemShop->getImage();
+            } else {
+                $shop[$itemShop->getId()]['image'] = null;
+            }
+        }
+
+
         return $this->render('home/index.html.twig', [
-            'news' => $newsRepo->findAll(),
+            'news' => $newsRepo->findBy([], ['id' => 'DESC'], 2),
+            'shop' => $shop,
+        ]);
+    }
+
+    /**
+     *  @Route("/{_locale}/news", name="home.news",  requirements={"_locale": "en|fr"})
+     */
+    public function newsLists(CmsNewsRepository $newsRepo, PaginatorInterface $paginator, Request $request): Response
+    {
+        $news = $paginator->paginate(
+            $newsRepo->findBy([], ['id' => 'DESC']), // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
+
+        return $this->render('home/news.html.twig', [
+            'news' => $news,
         ]);
     }
 
 
     /**
-     * @Route("/news/{id}-{slug}", name="news.read")
+     *  @Route("/{_locale}/news/{id}-{slug}", name="news.read",  requirements={"_locale": "en|fr"})
      */
     public function newsRead(CmsNewsRepository $newsRepo, $id): Response
     {
-        $default_language = "fr";
-        $time = time() + 6 * 30 * 24 * 3600;
-        setcookie('language', 'fr', $time, '/', "", false, true);
-
-
-
         return $this->render('home/read_news.html.twig', [
             'news' => $newsRepo->find($id),
         ]);
     }
 
     /**
-     * @Route("/download", name="game.download")
+     * @Route("/{_locale}/download", name="game.download",  requirements={"_locale": "en|fr"})
      */
     public function downloadRead(CmsPagesRepository $pageRepo): Response
     {
@@ -72,7 +129,7 @@ class HomeController extends AbstractController
 
 
     /**
-     * @Route("/page/{slug}", name="game.pages")
+     * @Route("/{_locale}/page/{slug}", name="game.pages",  requirements={"_locale": "en|fr"})
      */
     public function pageRead(CmsPagesRepository $pageRepo, $slug): Response
     {
@@ -87,10 +144,17 @@ class HomeController extends AbstractController
 
     public function changeLocale($locale, Request $request)
     {
-        // On stocke la langue dans la session
+        $previous = $request->headers->get('referer');
+
+        if (!str_contains($previous, '/account/credits')) {
+            $previous = str_replace('/' . $request->getSession()->get('_locale') . '/', '/' . $locale . '/', $previous);
+        }
+
         $request->getSession()->set('_locale', $locale);
 
+        // dd($previous);
+
         // On revient sur la page précédente
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirect($previous);
     }
 }

@@ -22,7 +22,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/account", name="account")
+     * @Route("/{_locale}/account", name="account")
      */
     public function index(Api $api, Request $request, UserRepository $userRepo, TranslatorInterface $translator): Response
     {
@@ -98,12 +98,23 @@ class UserController extends AbstractController
             }
         }
 
-        $classes = $api->getGameClass($data);
-        $players = $api->getCharacters($this->getUser()->getId());
+        $classes_array = $api->getGameClass($data);
+        $classes = [];
+
+        if (isset($classes_array['entries'])) {
+            $classes = $classes_array['entries'];
+        }
+
+        $players_array = $api->getCharacters($this->getUser()->getId());
+        $players = [];
+
+        if (!isset($players_array['error'])) {
+            $players = $players_array;
+        }
 
 
         return $this->render('user/index.html.twig', [
-            'classes' => $classes['entries'],
+            'classes' => $classes,
             'players' => $players
         ]);
     }
@@ -159,7 +170,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/account/history", name="account.history")
+     * @Route("/{_locale}/account/history", name="account.history",  requirements={"_locale": "en|fr"})
      */
     public function history(Api $api, Request $request, UserRepository $userRepo, CmsShopHistoryRepository $shopHistory, TranslatorInterface $translator, CmsShopRepository $cmsShopRepo, CmsPointsHistoryRepository $pointsRepo): Response
     {

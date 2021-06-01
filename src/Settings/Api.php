@@ -3,6 +3,7 @@
 namespace App\Settings;
 
 use App\Entity\CmsSettings;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -52,7 +53,7 @@ class Api
                 CURLOPT_POST => true,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_CONNECTTIMEOUT => 0,
-                CURLOPT_TIMEOUT_MS => 0,
+                CURLOPT_TIMEOUT_MS => 1000,
                 CURLOPT_HTTPHEADER => array(
                     'authorization:Bearer ' . $access_token, // "authorization:Bearer", et non pas "authorization: Bearer"
                     'Content-Type:application/json' // "Content-Type:application/json", et non pas "Content-Type: application/json"
@@ -63,8 +64,10 @@ class Api
         $response = curl_exec($ch);
 
         if ($response === false) {
+            dd(curl_error($ch));
             return (curl_error($ch));
         }
+
         $responseData = json_decode($response, true);
         curl_close($ch);
 
@@ -80,7 +83,7 @@ class Api
             CURLOPT_HTTPGET => true,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CONNECTTIMEOUT => 0,
-            CURLOPT_TIMEOUT_MS => 0,
+            CURLOPT_TIMEOUT_MS => 1000,
             CURLOPT_HTTPHEADER => array(
                 'authorization:Bearer ' . $access_token, // "authorization:Bearer", et non pas "authorization: Bearer"
                 'Content-Type:application/json' // "Content-Type:application/json", et non pas "Content-Type: application/json"
@@ -97,6 +100,8 @@ class Api
         }
 
         if ($response === false) {
+                        dd(curl_error($ch));
+
             return (curl_error($ch));
         }
         $responseData = json_decode($response, true);
@@ -229,8 +234,15 @@ class Api
         return $classes;
     }
 
-    public function getCharacter()
+    public function getCharacter($id)
     {
+        $players = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id);
+
+        if (isset($players['Message']) && $players['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $players = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id);
+        }
+        return $players;
     }
 
     public function getCharacters($id)
@@ -418,19 +430,100 @@ class Api
         }
     }
 
+    // Discord API
+
+    public function sendNewsDiscord($name, $image, $url, $date)
+    {
+        // $date = $date->getTimestamp();
+        // $date = $date->format('d-m-Y');
+        //2021 current working model
+        $url_hooks = "https://discord.com/api/webhooks/839140611546153052/N5cWdcXNV2fn3yufghXldjejSiXULVnPTuJtfHwmIZqQCaQbj-mtvFqc2xR7GJtWvWO4";
+        // security issue with this being false not tested ?? curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        $hookObject = json_encode([
+            /*
+     * The general "message" shown above your embeds
+     */
+            "content" => "Un nouvel article est disponible !",
+            /*
+     * The username shown in the message
+     */
+            "username" => "IntersectCms Bot",
+            /*
+     * The image location for the senders image
+     */
+            "avatar_url" => "https://pbs.twimg.com/profile_images/972154872261853184/RnOg6UyU_400x400.jpg",
+            /*
+     * Whether or not to read the message in Text-to-speech
+     */
+            "tts" => false,
+            /*
+     * File contents to send to upload a file
+     */
+            // "file" => "",
+            /*
+     * An array of Embeds
+     */
+            "embeds" => [
+                /*
+         * Our first embed
+         */
+                [
+                    // Set the title for your embed
+                    "title" => $name,
+
+                    // The type of your embed, will ALWAYS be "rich"
+                    "type" => "rich",
+
+                    // A description for your embed
+                    "description" => "",
+
+                    // The URL of where your title will be a link to
+                    "url" => $url,
+
+                    // The integer color to be used on the left side of the embed
+                    "color" => hexdec("FFFFFF"),
+
+                    // Image object
+                    "image" => [
+                        "url" => 'https://thewalking2d.allsh.fr/media/cache/general/assets/general/news/b6e90d2b8af7481a8065e3b65f389465.png'
+                    ],
+
+                    // Author object
+                    "author" => [
+                        "name" => "",
+                        "url" => ""
+                    ],
+                ]
+            ]
+
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        $headers = ['Content-Type: application/json; charset=utf-8'];
+        $POST = ['username' => 'Testing BOT', 'content' => 'Testing message'];
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url_hooks);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $hookObject);
+        $response   = curl_exec($ch);
+    }
+
 
     // Configuration Serveur
 
     public function getServerConfig()
     {
+        $server = $this->APIcall_GET($this->getServer(),  $this->getToken(), '/api/v1/info/config');
+        if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
             $server = $this->APIcall_GET($this->getServer(),  $this->getToken(), '/api/v1/info/config');
-            if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
-                $this->setToken();
-                $server = $this->APIcall_GET($this->getServer(),  $this->getToken(), '/api/v1/info/config');
-            }
-            
-            return $server;
-        
+        }
+
+        return $server;
     }
 
 

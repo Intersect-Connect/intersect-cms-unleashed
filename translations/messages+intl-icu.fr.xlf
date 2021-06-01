@@ -325,7 +325,7 @@
       </trans-unit>
       <trans-unit id="RTAk7Dj" resname="developped_by">
         <source>developped_by</source>
-        <target>Développer par XFallSeane</target>
+        <target>Développer par</target>
       </trans-unit>
       <trans-unit id="vE_FEw8" resname="Classement par niveau">
         <source>Classement par niveau</source>
@@ -491,7 +491,7 @@
       </trans-unit>
       <trans-unit id="QtdMvsP" resname="register_offline">
         <source>register_offline</source>
-        <target>register_offline</target>
+        <target>Le serveur est hors ligne, les inscriptions sont désactivées.</target>
       </trans-unit>
       <trans-unit id="eaEIyVd" resname="Se connecter au site">
         <source>Se connecter au site</source>
@@ -820,6 +820,14 @@
       <trans-unit id="QTMgW_U" resname="La page que vous cherchez n'a pas été trouvée">
         <source>La page que vous cherchez n'a pas été trouvée</source>
         <target>La page que vous cherchez n'a pas été trouvée</target>
+      </trans-unit>
+      <trans-unit id="GqTLC8y" resname="Image">
+        <source>Image</source>
+        <target>Image</target>
+      </trans-unit>
+      <trans-unit id=".4qZxcb" resname="Tout afficher">
+        <source>Tout afficher</source>
+        <target>Tout afficher</target>
       </trans-unit>
     </body>
   </file>

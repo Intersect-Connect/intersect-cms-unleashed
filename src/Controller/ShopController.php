@@ -7,6 +7,7 @@ use App\Repository\CmsShopRepository;
 use App\Repository\UserRepository;
 use App\Settings\Api;
 use DateTime;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +17,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ShopController extends AbstractController
 {
     /**
-     * @Route("/shop", name="shop.index")
+     * @Route("/{_locale}/shop", name="shop.index",  requirements={"_locale": "en|fr"})
      */
-    // if ($request->isMethod('post')) {
-    public function index(CmsShopRepository $shopRepo, Api $api): Response
+    public function index(CmsShopRepository $shopRepo, Api $api, PaginatorInterface $paginator, Request $request): Response
     {
 
         $shopItems = $shopRepo->findBy(['visible' => true]);
@@ -31,6 +31,7 @@ class ShopController extends AbstractController
 
 
             $shop[$itemShop->getId()]['itemData'] = $itemData;
+
             if ($itemShop->getForcedDescription() != "") {
                 $shop[$itemShop->getId()]['description'] = $itemShop->getForcedDescription();
             } else {
@@ -44,23 +45,42 @@ class ShopController extends AbstractController
             $shop[$itemShop->getId()]['quantity'] = $itemShop->getQuantity();
             $shop[$itemShop->getId()]['promotion'] = $itemShop->getPromotion();
             $shop[$itemShop->getId()]['id'] = $itemShop->getId();
+
+            
+
             $shop[$itemShop->getId()]['name'] = $itemShop->getName();
+
+            if ($itemShop->getImage() != null) {
+                $shop[$itemShop->getId()]['image'] = $itemShop->getImage();
+            } else {
+                $shop[$itemShop->getId()]['image'] = null;
+            }
         }
 
+        $items = $paginator->paginate(
+            $shop, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
+
         return $this->render('shop/index.html.twig', [
-            'shop' => $shop,
+            'shop' => $items,
         ]);
     }
 
     /**
-     * @Route("/shop/detail/{id}", name="shop.detail")
+     * @Route("/{_locale}/shop/detail/{id}", name="shop.detail",  requirements={"_locale": "en|fr"})
      */
     public function detail(CmsShopRepository $shopRepo, Request $request, Api $api, $id, TranslatorInterface $translator, UserRepository $userRepo): Response
     {
         $shopItem = $shopRepo->find($id);
         $itemData = $api->getObjectDetail($shopItem->getIdItem());
 
-        $item = ['id' => $id, 'name' => $itemData['Name'], 'description' => $shopItem->getForcedDescription(), 'price' => $shopItem->getPrice(), 'quantity' => $shopItem->getQuantity(), 'icon' => $itemData['Icon']];
+        if ($shopItem->getPromotion()) {
+            $item = ['id' => $id, 'name' => $itemData['Name'], 'description' => $shopItem->getForcedDescription(), 'price' => $shopItem->getPrice() * (1 - ($shopItem->getPromotion() / 100)), 'quantity' => $shopItem->getQuantity(), 'icon' => $itemData['Icon'], 'image' => $shopItem->getImage()];
+        } else {
+            $item = ['id' => $id, 'name' => $itemData['Name'], 'description' => $shopItem->getForcedDescription(), 'price' => $shopItem->getPrice(), 'quantity' => $shopItem->getQuantity(), 'icon' => $itemData['Icon'], 'image' => $shopItem->getImage()];
+        }
 
         $personnages = $api->getCharacters($this->getUser()->getId());
 
@@ -85,11 +105,11 @@ class ShopController extends AbstractController
                 ];
 
                 // Si le nombre de point est supérieur au prix de l'objet
-                if ($this->getUser()->getPoints() >= $shopItem->getPrice()) {
+                if ($this->getUser()->getPoints() >= $shopItem->getPrice() * $quantity) {
                     //  alors on peut acheter
                     if ($api->giveItem($data, $character)) {
                         $user = $userRepo->find($this->getUser());
-                        $user->setPoints($user->getPoints() - $shopItem->getPrice());
+                        $user->setPoints($user->getPoints() - $shopItem->getPrice() * ($quantity - ($shopItem->getPromotion() / 100)));
                         $entityManager = $this->getDoctrine()->getManager();
                         $entityManager->persist($user);
                         $entityManager->flush();
@@ -98,7 +118,7 @@ class ShopController extends AbstractController
                         $boutiqueHistorique->setDate(new DateTime());
                         $boutiqueHistorique->setShopId($id);
                         $boutiqueHistorique->setUserId($this->getUser()->getId());
-                        $boutiqueHistorique->setCreditsNow($user->getPoints() - $shopItem->getPrice());
+                        $boutiqueHistorique->setCreditsNow($user->getPoints() - $shopItem->getPrice() * ($quantity - ($shopItem->getPromotion() / 100)));
                         $entityManager = $this->getDoctrine()->getManager();
                         $entityManager->persist($boutiqueHistorique);
                         $entityManager->flush();

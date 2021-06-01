@@ -179,13 +179,14 @@ class AdminController extends AbstractController
      */
     public function items(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, $page = 0): Response
     {
-        $total = $api->getAllItems($page)['total'];
-        $total_page = ceil($total / 30);
+        $items = $api->getAllItems($page);
+        $total = $items['total'];
+        $total_page = floor($total / 30);
 
 
         return $this->render('admin/items_list/index.html.twig', [
             'total_page' => $total_page,
-            'items' => $api->getAllItems($page)['entries'],
+            'items' => $items['entries'],
             'page_actuel' => $page
         ]);
     }

@@ -12,9 +12,10 @@
 </ul>
 
 <div id="middle" class="p-0">
-    {% if joueurs is defined and joueurs|length > 1%}
+    {% if joueurs is defined and joueurs|length >= 1 %}
     <div class="table-responsive">
-        <table class="table table-hover text-center">
+        <table class="table table-hover text-center" data-toggle="table" data-search="true" data-pagination="true"
+            data-page-size="100" data-smart-display="false" data-mobile-responsive="true">
             <thead class="text-center bg-table">
                 <tr class="text-center">
                     <th width="50px" class="text-center">#</th>
@@ -47,7 +48,7 @@
     {% else %}
     <div class="p-3">
         <div class="alert alert-info text-dark shadow">
-           {{"Aucun joueur connecté."|trans}}
+           {{"Le serveur est hors ligne, le classement est temporairement désactivé."|trans}}
         </div>
     </div>
     {% endif %}
@@ -60,4 +61,14 @@
     {% endif %}
 
 </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js" defer></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/mobile/bootstrap-table-mobile.min.js"
+    defer></script>
+<script defer>
+    const local = "{{ app.request.getLocale() }}";
+</script>
+<script src="{{asset('assets/themes/' ~ theme ~ '/js/table.min.js')}}" defer></script>
 {% endblock %}

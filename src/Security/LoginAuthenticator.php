@@ -77,7 +77,9 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
 
         if (!$user) {
+
             if ($this->api->passwordVerify($userData, $credentials['username'])) {
+
                 $user_infos = $this->api->APIcall_GET($this->api->getServer(), $this->api->getToken(), '/api/v1/users/' . $credentials['username']);
 
                 $newUser = new User();

@@ -4,11 +4,14 @@ namespace App\Controller\Admin;
 
 use App\Entity\CmsNews;
 use App\Form\CmsNewsType;
+use App\Settings\Api;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 
 /**
  * @Route("admin/news")
@@ -32,7 +35,7 @@ class CmsNewsController extends AbstractController
     /**
      * @Route("/new", name="cms_news_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Api $api, Packages $assetPackage): Response
     {
         $cmsNews = new CmsNews();
         $form = $this->createForm(CmsNewsType::class, $cmsNews);
@@ -59,6 +62,9 @@ class CmsNewsController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($cmsNews);
             $entityManager->flush();
+
+
+            $api->sendNewsDiscord($cmsNews->getTitle(), $request->getSchemeAndHttpHost().$request->getBasePath() .$assetPackage->getUrl('/assets/general/news/'.$cmsNews->getImgUrl(), null, true), $this->generateUrl('news.read', array('id' => $cmsNews->getId(), 'slug' => $cmsNews->getSlug()), UrlGenerator::ABSOLUTE_URL), $cmsNews->getDate());
 
             return $this->redirectToRoute('cms_news_index');
         }
@@ -114,7 +120,8 @@ class CmsNewsController extends AbstractController
     public function delete(Request $request, CmsNews $cmsNews): Response
     {
         if ($this->isCsrfTokenValid('delete' . $cmsNews->getId(), $request->request->get('_token'))) {
-            
+            $nom = $cmsNews->getImgUrl();
+            unlink($this->getParameter('images_articles') . '/' . $nom);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($cmsNews);
             $entityManager->flush();

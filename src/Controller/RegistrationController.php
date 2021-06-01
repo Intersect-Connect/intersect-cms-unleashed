@@ -7,16 +7,18 @@ use App\Form\RegistrationFormType;
 use App\Security\LoginAuthenticator;
 use App\Settings\Api;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Validator\Constraints\Json;
 
 class RegistrationController extends AbstractController
 {
     /**
-     * @Route("/register", name="app_register")
+     * @Route("/{_locale}/register", name="app_register",  requirements={"_locale": "en|fr"})
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, Api $api, LoginAuthenticator $login, GuardAuthenticatorHandler $guard): Response
     {
@@ -31,11 +33,13 @@ class RegistrationController extends AbstractController
                 $user_infos = $api->getUser($form->get('username')->getData());
 
                 if (isset($user_infos['Message']) && $user_infos['Message'] == "No user with name '" . $form->get('username')->getData() . "'.") {
+                    
                     $userData = array(
                         'username' => $form->get('username')->getData(),
                         'password' => hash('sha256', $form->get('plainPassword')->getData()),
                         'email' => $form->get('email')->getData()
                     );
+
                     $register = $api->registerUser($userData);
 
                     if (isset($register['Username']) && $register['Username'] == $form->get('username')->getData()) {
@@ -54,6 +58,7 @@ class RegistrationController extends AbstractController
                         $entityManager = $this->getDoctrine()->getManager();
                         $entityManager->persist($user);
                         $entityManager->flush();
+
                         return $guard->authenticateUserAndHandleSuccess($user, $request, $login, 'main');
                     }
                 }

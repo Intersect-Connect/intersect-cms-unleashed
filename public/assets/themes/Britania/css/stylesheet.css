@@ -256,7 +256,8 @@ body {
 }
 
 html {
-    background: url(../img/background.jpg) no-repeat center top #0B1821;
+    background: url(../img/background.jpg) no-repeat center center fixed;
+    background-size: cover!important;
 }
 
 body {
@@ -1338,6 +1339,7 @@ main article .header h2 {
     padding: 15px;
     background: linear-gradient(to top, #202c24 15%, rgba(0, 0, 0, 0));
 }
+
 
 main article .header h2 img {
     vertical-align: -40%;

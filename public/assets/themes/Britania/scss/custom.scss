@@ -163,3 +163,47 @@ article {
         width: 100%;
     }
 }
+
+// Custom article
+
+main {
+    article {
+        &.card {
+            width: 100% !important;
+
+            .card-header {
+                h2 {
+                    z-index: 9;
+                    font-family: 'proxima-nova_bold', Helvetica, Arial, sans-serif;
+                    width: 100%;
+                    position: absolute;
+                    bottom: 0;
+                    font-weight: 400;
+                    letter-spacing: 0.5px;
+                    text-shadow: 0 0 5px #000000, 0 0 3px #000000, 0 0 1px #000000;
+                    font-size: 20px;
+                    line-height: 22px;
+                    padding: 15px;
+                    background: linear-gradient(to top, #202c24 15%, rgba(0, 0, 0, 0));
+                    color: white;
+                    left: 0;
+                }
+            }
+            .card-footer{
+                background: #d4d4d4!important;
+            }
+        }
+    }
+}
+
+
+// Boostrap Table
+
+.search{
+    box-shadow: none!important;
+    padding: 0.5rem !important;
+}
+
+.pagination-detail{
+    display: none!important;
+}

@@ -39,9 +39,23 @@ class CmsShopController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('image')->getData();
+            $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+            $image->move(
+                $this->getParameter('images_items'),
+                $fichier
+            );
+            $cmsShop->setImage($fichier);
+
             $item_id = $form->get('idItem')->getData();
             $objet_detail = $api->getObjectDetail($item_id);
             $cmsShop->setName($objet_detail['Name']);
+
+            // Si la description n'est pas remplis / if description is empty use game description
+             if (empty($form->get('forceddescription')->getData())) {
+                $cmsShop->setForceddescription($objet_detail['Description']);
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($cmsShop);
             $entityManager->flush();
@@ -63,8 +77,24 @@ class CmsShopController extends AbstractController
     {
         $form = $this->createForm(CmsShopType::class, $cmsShop);
         $form->handleRequest($request);
+        $image = $cmsShop->getImage();
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $newImage =  $form->get('image')->getData();
+            if ($newImage) {
+                $fichier = md5(uniqid()) . '.' . $newImage->guessExtension();
+                $newImage->move(
+                    $this->getParameter('images_items'),
+                    $fichier
+                );
+                $cmsShop->setImage($fichier);
+            } else {
+                if ($image) {
+                    $cmsShop->setImage($image);
+                } else {
+                    $cmsShop->setImage(null);
+                }
+            }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('cms_shop_index');
@@ -81,7 +111,10 @@ class CmsShopController extends AbstractController
      */
     public function delete(Request $request, CmsShop $cmsShop): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$cmsShop->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $cmsShop->getId(), $request->request->get('_token'))) {
+            $nom = $cmsShop->getImage();
+            unlink($this->getParameter('images_items') . '/' . $nom);
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($cmsShop);
             $entityManager->flush();

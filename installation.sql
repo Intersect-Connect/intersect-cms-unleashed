@@ -136,7 +136,8 @@ CREATE TABLE `cms_shop` (
   `quantity` int(11) NOT NULL DEFAULT '1',
   `promotion` int(11) NOT NULL DEFAULT '0',
   `visible` int(1) NOT NULL DEFAULT '1',
-  `name` varchar(255) DEFAULT NULL
+  `name` varchar(255) DEFAULT NULL,
+  'image' varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

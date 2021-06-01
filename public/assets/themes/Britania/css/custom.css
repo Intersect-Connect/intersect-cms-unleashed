@@ -147,4 +147,40 @@ article div.footer {
   bottom: 0;
   width: 100%;
 }
+
+main article.card {
+  width: 100% !important;
+}
+
+main article.card .card-header h2 {
+  z-index: 9;
+  font-family: 'proxima-nova_bold', Helvetica, Arial, sans-serif;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 5px #000000, 0 0 3px #000000, 0 0 1px #000000;
+  font-size: 20px;
+  line-height: 22px;
+  padding: 15px;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(15%, #202c24), to(rgba(0, 0, 0, 0)));
+  background: linear-gradient(to top, #202c24 15%, rgba(0, 0, 0, 0));
+  color: white;
+  left: 0;
+}
+
+main article.card .card-footer {
+  background: #d4d4d4 !important;
+}
+
+.search {
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+  padding: 0.5rem !important;
+}
+
+.pagination-detail {
+  display: none !important;
+}
 /*# sourceMappingURL=custom.css.map */

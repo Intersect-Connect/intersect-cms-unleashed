@@ -40,6 +40,13 @@
 
 <div class="form-group mt-3 mb-3">
     <label for="cms_shop_idItem">
+        {{"Image"|trans}}
+    </label>
+    {{ form_widget(form.image) }}
+</div>
+
+<div class="form-group mt-3 mb-3">
+    <label for="cms_shop_idItem">
         {{"Visible ?"|trans}}
     </label>
     {{ form_widget(form.visible) }}

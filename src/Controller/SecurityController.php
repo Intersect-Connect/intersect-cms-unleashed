@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\UserRepository;
+use App\Security\LoginAuthenticator;
 use App\Settings\Api;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,19 +12,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/{_locale}/login", name="app_login",  requirements={"_locale": "en|fr"})
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('home.index');
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -130,6 +132,7 @@ class SecurityController extends AbstractController
                 }
             }
         }
+
         $users = $userRepo->findBy(['passwordToken' => $token]);
         if ($users) {
             return $this->render('security/password-reset-new.html.twig', [
@@ -139,6 +142,22 @@ class SecurityController extends AbstractController
             return $this->render('security/password-reset-new.html.twig', [
                 'confirm' => false
             ]);
+        }
+    }
+
+    /**
+     * @Route("/login/game/{token}", name="login.game")
+     */
+    public function gameLoginTest(Request $request, UserRepository $userRepo, TranslatorInterface $translator, MailerInterface $mailer, $token, Api $api, LoginAuthenticator $login, GuardAuthenticatorHandler $guard)
+    {
+        $character =  $api->getCharacter($token);
+
+        if ($character) {
+            $user = $userRepo->findOneBy(['id' => $character['UserId']]);
+            if ($user) {
+                $guard->authenticateUserAndHandleSuccess($user, $request, $login, 'main');
+                return $this->redirectToRoute('home');
+            }
         }
     }
 }

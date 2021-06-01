@@ -13,11 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 class CmsShop
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
     private $id;
 
@@ -70,13 +68,20 @@ class CmsShop
      */
     private $name;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     */
+    private $image;
+
 
 
     /**
      * Get the value of id
      *
      * @return  int
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -88,7 +93,7 @@ class CmsShop
      * @param  int  $id
      *
      * @return  self
-     */ 
+     */
     public function setId(int $id)
     {
         $this->id = $id;
@@ -100,7 +105,7 @@ class CmsShop
      * Get the value of idItem
      *
      * @return  string
-     */ 
+     */
     public function getIdItem()
     {
         return $this->idItem;
@@ -112,7 +117,7 @@ class CmsShop
      * @param  string  $idItem
      *
      * @return  self
-     */ 
+     */
     public function setIdItem(string $idItem)
     {
         $this->idItem = $idItem;
@@ -124,7 +129,7 @@ class CmsShop
      * Get the value of price
      *
      * @return  int
-     */ 
+     */
     public function getPrice()
     {
         return $this->price;
@@ -136,7 +141,7 @@ class CmsShop
      * @param  int  $price
      *
      * @return  self
-     */ 
+     */
     public function setPrice(int $price)
     {
         $this->price = $price;
@@ -148,7 +153,7 @@ class CmsShop
      * Get the value of forceddescription
      *
      * @return  string
-     */ 
+     */
     public function getForceddescription()
     {
         return $this->forceddescription;
@@ -160,7 +165,7 @@ class CmsShop
      * @param  string  $forceddescription
      *
      * @return  self
-     */ 
+     */
     public function setForceddescription(string $forceddescription)
     {
         $this->forceddescription = $forceddescription;
@@ -172,7 +177,7 @@ class CmsShop
      * Get the value of quantity
      *
      * @return  int
-     */ 
+     */
     public function getQuantity()
     {
         return $this->quantity;
@@ -184,7 +189,7 @@ class CmsShop
      * @param  int  $quantity
      *
      * @return  self
-     */ 
+     */
     public function setQuantity(int $quantity)
     {
         $this->quantity = $quantity;
@@ -196,7 +201,7 @@ class CmsShop
      * Get the value of promotion
      *
      * @return  int
-     */ 
+     */
     public function getPromotion()
     {
         return $this->promotion;
@@ -208,7 +213,7 @@ class CmsShop
      * @param  int  $promotion
      *
      * @return  self
-     */ 
+     */
     public function setPromotion(int $promotion)
     {
         $this->promotion = $promotion;
@@ -220,8 +225,8 @@ class CmsShop
      * Get the value of visible
      *
      * @return  bool
-     */ 
-    public function getVisible():?bool
+     */
+    public function getVisible(): ?bool
     {
         return $this->visible;
     }
@@ -232,7 +237,7 @@ class CmsShop
      * @param  bool  $visible
      *
      * @return  self
-     */ 
+     */
     public function setVisible(bool $visible)
     {
         $this->visible = $visible;
@@ -244,7 +249,7 @@ class CmsShop
      * Get the value of name
      *
      * @return  string
-     */ 
+     */
     public function getName()
     {
         return $this->name;
@@ -256,10 +261,34 @@ class CmsShop
      * @param  string  $name
      *
      * @return  self
-     */ 
+     */
     public function setName(string $name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of image
+     *
+     * @return  string
+     */ 
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set the value of image
+     *
+     * @param  string  $image
+     *
+     * @return  self
+     */ 
+    public function setImage(?string $image)
+    {
+        $this->image = $image;
 
         return $this;
     }

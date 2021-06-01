@@ -1,0 +1,10 @@
+liip_imagine:
+    # valid drivers options include "gd" or "gmagick" or "imagick"
+    driver: "gd"
+    filter_sets: # Contient la liste des filtres
+        general: # Nom du filtre
+            quality: 75 # Qualité de l'image
+            filters: # Liste des filtres à appliquer
+                thumbnail: # Filtre "Thumbnail"
+                    size: [500, 281] # Taille de l'image de sortie
+                    mode: outbound # Découpage de l'image
