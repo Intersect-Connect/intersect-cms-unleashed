@@ -64,7 +64,6 @@ class Api
         $response = curl_exec($ch);
 
         if ($response === false) {
-            dd(curl_error($ch));
             return (curl_error($ch));
         }
 
@@ -100,10 +99,9 @@ class Api
         }
 
         if ($response === false) {
-                        dd(curl_error($ch));
-
             return (curl_error($ch));
         }
+        
         $responseData = json_decode($response, true);
         curl_close($ch);
         return $responseData;

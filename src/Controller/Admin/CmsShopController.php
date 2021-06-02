@@ -40,19 +40,26 @@ class CmsShopController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $image = $form->get('image')->getData();
-            $fichier = md5(uniqid()) . '.' . $image->guessExtension();
-            $image->move(
-                $this->getParameter('images_items'),
-                $fichier
-            );
-            $cmsShop->setImage($fichier);
+
+            if ($image != null) {
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('images_items'),
+                    $fichier
+                );
+                $cmsShop->setImage($fichier);
+            } else {
+                $cmsShop->setImage(null);
+            }
+
+
 
             $item_id = $form->get('idItem')->getData();
             $objet_detail = $api->getObjectDetail($item_id);
             $cmsShop->setName($objet_detail['Name']);
 
             // Si la description n'est pas remplis / if description is empty use game description
-             if (empty($form->get('forceddescription')->getData())) {
+            if (empty($form->get('forceddescription')->getData())) {
                 $cmsShop->setForceddescription($objet_detail['Description']);
             }
 
