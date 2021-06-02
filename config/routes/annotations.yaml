@@ -3,7 +3,7 @@ controllers:
     type: annotation
     prefix: '{_locale}'
     requirements:
-        _locale: en|fr
+        _locale: en|fr|es
 
 kernel:
     resource: ../../src/Kernel.php

@@ -39,18 +39,17 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/", name="home")
-     */
-    // public function home(Request $request): Response
-    // {
-    //     // return $this->redirectToRoute('home.index', ['_locale' => $request->getLocale()]);
-    // }
-
-    /**
      * @Route("/", name="home",  requirements={"_locale": "en|fr"})
      */
-    public function index(CmsNewsRepository $newsRepo, CmsShopRepository $shopRepo, Api $api): Response
+    public function index(CmsNewsRepository $newsRepo, CmsShopRepository $shopRepo, Api $api, Request $request): Response
     {
+
+        $routeParameters = $request->attributes->get('_route_params');
+
+        if (!isset($routeParameters['_locale'])) {
+            return $this->redirectToRoute('home', ['_locale' => $request->getLocale()]);
+        }
+
         $shopItems = $shopRepo->findBy(['visible' => true], ['id' => 'DESC'], 2);
 
         $shop = array();
@@ -145,13 +144,9 @@ class HomeController extends AbstractController
     public function changeLocale($locale, Request $request)
     {
         $previous = $request->headers->get('referer');
+        $local = $request->getLocale();
 
-        if ($locale == "fr") {
-            $previous = str_replace('/en/', '/fr/', $previous);
-        } else {
-            $previous = str_replace('/fr/', '/en/', $previous);
-        }
-
+        $previous = str_replace('/' . $local . '/', '/' . $locale . '/', $previous);
 
         $request->getSession()->set('_locale', $locale);
 
