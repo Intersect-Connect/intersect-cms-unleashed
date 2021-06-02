@@ -46,10 +46,9 @@
                 {{news.title}}
             </h2>
         </div>
-        <p>
-
+        <div class="mb-5">
             {{news.content|raw }}
-        </p>
+        </div>
         <div class="footer">
             {{ 'Publié le'|trans }} <strong>{{ news.date|date('d/m/Y') }}</strong> {{ 'par'|trans }}
             <strong>

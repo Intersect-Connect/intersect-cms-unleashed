@@ -201,8 +201,8 @@
 					id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
 					<i class="ico_globe"></i></button>
 				<ul class="dropdown-menu w-100 rounded-0" aria-labelledby="dropdownMenuButton1" style="margin: 0px;">
-					<li><a class="dropdown-item" href="/change_locale/fr/">FR</a></li>
-					<li><a class="dropdown-item" href="/change_locale/en/">EN</a></li>
+					<li><a class="dropdown-item" href="/{{ app.request.getLocale() }}/change_locale/fr/">FR</a></li>
+					<li><a class="dropdown-item" href="/{{ app.request.getLocale() }}/change_locale/en/">EN</a></li>
 				</ul>
 			</div>
 		</div>
@@ -210,7 +210,7 @@
 
 	</header>
 
-	<div class="ct">
+	<div class="ct pb-5">
 		<a id="logo" href="{{ path('home') }}" title=" {{ 'home'|trans }}">
 			<img src="{{asset('assets/themes/Britania/img/logotype.png')}}" alt="{{settings.get('game_title')}} logo">
 		</a>
@@ -221,24 +221,25 @@
 			</div>
 			<aside>
 				{{ render(controller('App\\Controller\\HomeController::aside')) }}
+
 			</aside>
 
 		</main>
-		<footer>
-			<p>
-				<strong>
-					{{settings.get('game_title')}} © {{''|date('Y')}}
-				</strong>.
-				{{ 'all_rights_reserved'|trans }}
-				<br />
-				{{ 'graphic_concept_by'|trans }} Nicow - wb x dsg.
-				<br />
-				{{ 'developped_by'|trans }} <a
-					href="https://github.com/Thomasfds/intersect-cms-unleashed">XFallSeane</a>
-			</p>
-		</footer>
 	</div>
 
+	<footer class="footer mt-5">
+		<div class="container">
+			<p class="text-center text-white p-3">
+				<strong>
+					{{settings.get('game_title')}} © {{''|date('Y')}} {{ 'all_rights_reserved'|trans }}. {{
+					'graphic_concept_by'|trans }} Nicow - wb x dsg. {{ 'developped_by'|trans }} <a
+						href="https://github.com/Thomasfds/intersect-cms-unleashed">XFallSeane</a>
+				</strong>. <br>
+				<a href="/{{ app.request.getLocale() }}/page/legal-notice">{{"Mentions légales"|trans}}</a> | <a
+					href="/{{ app.request.getLocale() }}/page/terms-and-conditions">{{"Conditions Générales de Ventes"|trans}}</a> |
+				<a href="/{{ app.request.getLocale() }}/page/confidentiality">{{"Confidentialités"|trans}}</a>
+		</div>
+	</footer>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="{{asset('assets/themes/Britania/js/interface.min.js')}}"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"

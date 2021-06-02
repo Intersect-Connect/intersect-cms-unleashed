@@ -18,7 +18,7 @@
 
 {% if app.user %}
 {% if is_granted('ROLE_ADMIN') %}
-<a href="/admin" class="butt ladder">
+<a href="{{path("admin")}}" class="butt ladder">
     <span class="illu"></span>
     {{"Administration"|trans}}
     <small>{{"Gérer le CMS"|trans}}</small>

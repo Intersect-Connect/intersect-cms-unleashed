@@ -22,7 +22,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/{_locale}/account", name="account")
+     * @Route("/account", name="account")
      */
     public function index(Api $api, Request $request, UserRepository $userRepo, TranslatorInterface $translator): Response
     {
@@ -170,7 +170,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/account/history", name="account.history",  requirements={"_locale": "en|fr"})
+     * @Route("/account/history", name="account.history",  requirements={"_locale": "en|fr"})
      */
     public function history(Api $api, Request $request, UserRepository $userRepo, CmsShopHistoryRepository $shopHistory, TranslatorInterface $translator, CmsShopRepository $cmsShopRepo, CmsPointsHistoryRepository $pointsRepo): Response
     {

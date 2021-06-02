@@ -829,6 +829,28 @@
         <source>Tout afficher</source>
         <target>Tout afficher</target>
       </trans-unit>
+      <trans-unit id="zOnAobl" resname="Mentions légales">
+        <source>Mentions légales</source>
+        <target>Mentions légales</target>
+      </trans-unit>
+      <trans-unit id="kwgjsCr" resname="Conditions Générales de Ventes">
+        <source>Conditions Générales de Ventes</source>
+        <target>Conditions Générales de Ventes</target>
+      </trans-unit>
+      <trans-unit id="coX9BS8" resname="Confidentialités">
+        <source>Confidentialités</source>
+        <target>Confidentialités</target>
+      </trans-unit>
+      <trans-unit id="TNe42Nc" resname="Le serveur est hors ligne, le classement est temporairement désactivé.">
+        <source>Le serveur est hors ligne, le classement est temporairement désactivé.</source>
+        <target>Le serveur est hors ligne, le classement est temporairement désactivé.</target>
+      </trans-unit>
+      <trans-unit id="nOKiG6e" resname="Votre&#10;                            adresse e-mail actuel">
+        <source>Votre
+                            adresse e-mail actuel</source>
+        <target>Votre
+                            adresse e-mail actuel</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

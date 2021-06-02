@@ -19,7 +19,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/{_locale}/login", name="app_login",  requirements={"_locale": "en|fr"})
+     * @Route("/login", name="app_login",  requirements={"_locale": "en|fr"})
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {

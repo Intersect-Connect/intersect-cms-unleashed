@@ -811,6 +811,28 @@
         <source>Tout afficher</source>
         <target>Show all</target>
       </trans-unit>
+      <trans-unit id="zOnAobl" resname="Mentions légales">
+        <source>Mentions légales</source>
+        <target>Legal Notice</target>
+      </trans-unit>
+      <trans-unit id="kwgjsCr" resname="Conditions Générales de Ventes">
+        <source>Conditions Générales de Ventes</source>
+        <target>Terms and conditions</target>
+      </trans-unit>
+      <trans-unit id="coX9BS8" resname="Confidentialités">
+        <source>Confidentialités</source>
+        <target>Privacy</target>
+      </trans-unit>
+      <trans-unit id="TNe42Nc" resname="Le serveur est hors ligne, le classement est temporairement désactivé.">
+        <source>Le serveur est hors ligne, le classement est temporairement désactivé.</source>
+        <target>The server is offline, ranking is temporarily disabled.</target>
+      </trans-unit>
+      <trans-unit id="nOKiG6e" resname="Votre&#10;                            adresse e-mail actuel">
+        <source>Votre
+                            adresse e-mail actuel</source>
+        <target>Your
+                             current email address</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

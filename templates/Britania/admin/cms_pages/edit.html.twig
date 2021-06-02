@@ -9,7 +9,7 @@
   <div class="card-header bg-transparent p-0">
     <h1>{{'Modifier une page'|trans}}</h1>
     <ul id="breadcrump">
-      <li><a href="/admin">{{"Administration"|trans}}</a></li>
+            <li><a href="{{path('admin')}}">{{"Administration"|trans}}</a></li>
       <li><a href="{{path('cms_pages_index')}}">{{"Gérer les pages"|trans}}</a></li>
       <li>{{'Modifier une page'|trans}}</li>
     </ul>
@@ -35,7 +35,7 @@
       'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
       'table emoticons template paste help autoresize autosave'
     ],
-    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
+    toolbar: 'undo redo | formatselect  | bold italic | alignleft aligncenter alignright alignjustify | ' +
       'bullist numlist outdent indent | link image | print preview media fullpage | ' +
       'forecolor backcolor emoticons | restoredraft help',
     menu: {

@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints\Json;
 class RegistrationController extends AbstractController
 {
     /**
-     * @Route("/{_locale}/register", name="app_register",  requirements={"_locale": "en|fr"})
+     * @Route("/register", name="app_register",  requirements={"_locale": "en|fr"})
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, Api $api, LoginAuthenticator $login, GuardAuthenticatorHandler $guard): Response
     {

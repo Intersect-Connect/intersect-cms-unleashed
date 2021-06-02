@@ -19,9 +19,22 @@ class AdminController extends AbstractController
      */
     public function index(Api $api, CmsShopRepository $shop, CmsNewsRepository $news): Response
     {
+        $total_users = null;
+        $total_players = null;
+
+        if(isset($api->getAllUsers(0)['Total'])){
+            $total_users = $api->getAllUsers(0)['Total'];
+        }
+
+           if(isset($api->getAllPlayers(0)['Total'])){
+            $total_players = $api->getAllPlayers(0)['Total'];
+        }
+
+
+
         return $this->render('admin/index.html.twig', [
-            'total_users' => $api->getAllUsers(0)['Total'],
-            'total_players' => $api->getAllPlayers(0)['Total'],
+            'total_users' => $total_users,
+            'total_players' => $total_players,
             'total_shop' => count($shop->findAll()),
             'total_news' => count($news->findAll())
         ]);

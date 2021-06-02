@@ -189,8 +189,9 @@ main {
                     left: 0;
                 }
             }
-            .card-footer{
-                background: #d4d4d4!important;
+
+            .card-footer {
+                background: #d4d4d4 !important;
             }
         }
     }
@@ -199,11 +200,55 @@ main {
 
 // Boostrap Table
 
-.search{
-    box-shadow: none!important;
+.search {
+    box-shadow: none !important;
     padding: 0.5rem !important;
 }
 
-.pagination-detail{
-    display: none!important;
+.pagination-detail {
+    display: none !important;
+}
+
+/********** FOOTER **********/
+
+/* footer {
+    color: #efefef;
+    font-size: 11px;
+    opacity: .4;
+    text-align: right;
+    padding: 20px 5px;
+} */
+
+
+
+
+footer {
+    width: 100%;
+    height: 85px;
+    background-color: #335580;
+    opacity: 1 !important;
+    color: white;
+
+    @media (max-width: 575.98px) { 
+
+        height: 160px;
+    }
+
+}
+
+footer a {
+    font-family: 'proxima-nova_bold', Helvetica, Arial, sans-serif;
+}
+
+#news.read {
+
+    .h2,
+    h2 {
+        font-size: calc(1.325rem + .9vw) !important;
+    }
+
+    .h3,
+    h3 {
+        font-size: calc(1.3rem + .6vw) !important;
+    }
 }

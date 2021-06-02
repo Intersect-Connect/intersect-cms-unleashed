@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 class GameController extends AbstractController
 {
     /**
-     * @Route("/{_locale}/players", name="game.players.liste",  requirements={"_locale": "en|fr"})
+     * @Route("/players", name="game.players.liste",  requirements={"_locale": "en|fr"})
      */
     public function listeJoueurs(Api $api, $page = 0, PaginatorInterface $paginator, Request $request): Response
     {
@@ -86,7 +86,7 @@ class GameController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/online-players", name="game.players.liste.online",  requirements={"_locale": "en|fr"})
+     * @Route("/online-players", name="game.players.liste.online",  requirements={"_locale": "en|fr"})
      */
     public function listeJoueursEnLigne(Api $api, $page = 0): Response
     {
@@ -121,7 +121,7 @@ class GameController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/rank/level", name="game.rank.level",  requirements={"_locale": "en|fr"})
+     * @Route("/rank/level", name="game.rank.level",  requirements={"_locale": "en|fr"})
      */
     public function rankNiveau(Api $api): Response
     {

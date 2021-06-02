@@ -896,8 +896,24 @@ main aside .butt.facebook {
     background: #3b5998;
 }
 
+main aside .butt.youtube {
+    background: #FF0000;
+}
+
+main aside .butt.instagram {
+    background: #833AB4;
+}
+
 main aside .butt.facebook .illu {
     background-position: center -2600px;
+}
+
+main aside .butt.youtube .illu {
+    background-position: center -1625px;
+}
+
+main aside .butt.instagram .illu {
+    background-position: center -1205px;
 }
 
 main aside .butt.joins {
@@ -1611,16 +1627,3 @@ main .comment li .right p .time {
     }
 }
 
-/********** FOOTER **********/
-
-footer {
-    color: #efefef;
-    font-size: 11px;
-    opacity: .4;
-    text-align: right;
-    padding: 20px 5px;
-}
-
-footer a {
-    font-family: 'proxima-nova_bold', Helvetica, Arial, sans-serif;
-}

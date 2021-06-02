@@ -41,13 +41,13 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function home(Request $request): Response
-    {
-        return $this->redirectToRoute('home.index', ['_locale' => $request->getLocale()]);
-    }
+    // public function home(Request $request): Response
+    // {
+    //     // return $this->redirectToRoute('home.index', ['_locale' => $request->getLocale()]);
+    // }
 
     /**
-     * @Route("/{_locale}/", name="home.index",  requirements={"_locale": "en|fr"})
+     * @Route("/", name="home",  requirements={"_locale": "en|fr"})
      */
     public function index(CmsNewsRepository $newsRepo, CmsShopRepository $shopRepo, Api $api): Response
     {
@@ -91,7 +91,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     *  @Route("/{_locale}/news", name="home.news",  requirements={"_locale": "en|fr"})
+     *  @Route("/news", name="home.news",  requirements={"_locale": "en|fr"})
      */
     public function newsLists(CmsNewsRepository $newsRepo, PaginatorInterface $paginator, Request $request): Response
     {
@@ -108,7 +108,7 @@ class HomeController extends AbstractController
 
 
     /**
-     *  @Route("/{_locale}/news/{id}-{slug}", name="news.read",  requirements={"_locale": "en|fr"})
+     *  @Route("/news/{id}-{slug}", name="news.read",  requirements={"_locale": "en|fr"})
      */
     public function newsRead(CmsNewsRepository $newsRepo, $id): Response
     {
@@ -118,7 +118,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/download", name="game.download",  requirements={"_locale": "en|fr"})
+     * @Route("/download", name="game.download",  requirements={"_locale": "en|fr"})
      */
     public function downloadRead(CmsPagesRepository $pageRepo): Response
     {
@@ -129,7 +129,7 @@ class HomeController extends AbstractController
 
 
     /**
-     * @Route("/{_locale}/page/{slug}", name="game.pages",  requirements={"_locale": "en|fr"})
+     * @Route("/page/{slug}", name="game.pages",  requirements={"_locale": "en|fr"})
      */
     public function pageRead(CmsPagesRepository $pageRepo, $slug): Response
     {
@@ -146,13 +146,14 @@ class HomeController extends AbstractController
     {
         $previous = $request->headers->get('referer');
 
-        if (!str_contains($previous, '/account/credits')) {
-            $previous = str_replace('/' . $request->getSession()->get('_locale') . '/', '/' . $locale . '/', $previous);
+        if ($locale == "fr") {
+            $previous = str_replace('/en/', '/fr/', $previous);
+        } else {
+            $previous = str_replace('/fr/', '/en/', $previous);
         }
 
-        $request->getSession()->set('_locale', $locale);
 
-        // dd($previous);
+        $request->getSession()->set('_locale', $locale);
 
         // On revient sur la page précédente
         return $this->redirect($previous);

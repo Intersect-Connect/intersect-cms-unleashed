@@ -17,7 +17,7 @@ class CmsPagesType extends AbstractType
     {
         $builder
             ->add('category', ChoiceType::class, [
-                'choices' => ['Game' => 'game', 'Wiki' => "wiki"],
+                'choices' => ['Game' => 'game', 'Wiki' => "wiki", "Legal" => "Legal"],
                 'attr' => ['class' => 'w-100']
             ])
             ->add('name', TextType::class, [
