@@ -1,0 +1,311 @@
+.icons {
+    text-align: center;
+    vertical-align: bottom;
+}
+
+
+.lang-collapse {
+    left: 158px;
+}
+
+.lang-menu-sub {
+    background: #3b6394;
+    width: 80px;
+    height: 0;
+}
+
+.lang-menu-sub>ul.list-group>a.list-group-item {
+    // box-shadow: 0 0 5px rgb(0 0 0 / 10%) inset;
+    font-size: 10px;
+    background: rgba(0, 0, 0, .1);
+    margin-bottom: 0;
+    padding-top: 0;
+    height: 100%;
+    line-height: 35px;
+    color: white;
+}
+
+.lang-menu-sub>ul.list-group>a.list-group-item:hover {
+    background: rgba(0, 0, 0, .2);
+}
+
+
+.asideBottom {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.form-control {
+    background: #efefef !important;
+    height: 45px !important;
+    margin-bottom: 15px !important;
+    padding: 0 12px !important;
+    border: 2px solid #c7cab3 !important;
+}
+
+.bg-table {
+    background: #3b63947d !important;
+}
+
+.bg-footer {
+    background: #d4d4d4 !important;
+}
+
+.btn-primary {
+    background-color: #3b6394 !important;
+}
+
+
+/* DataTable */
+.dataTable-wrapper.no-footer .dataTable-container {
+    border-bottom: 0 !important;
+    height: 100% !important;
+}
+
+.dataTable-input {
+    background: #efefef !important;
+    height: 45px !important;
+    margin-bottom: 15px !important;
+    padding: 0 12px !important;
+    border: 2px solid #c7cab3 !important;
+}
+
+.title-card {
+    text-transform: uppercase;
+    color: #2e3a4e;
+    // text-shadow: 0 1px 3px rgba(0, 0, 0, .15);
+    font-size: 20px;
+    font-family: 'Montserrat', 'proxima-nova_bold', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+}
+
+
+.languageDropdown.logout {
+    position: absolute;
+    right: 13rem;
+    height: 48px !important;
+    width: 5rem;
+    top: 0;
+}
+
+.languageDropdown.login {
+    position: absolute;
+    right: 5rem;
+    height: 48px !important;
+    width: 5rem;
+    top: 0;
+}
+
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .languageDropdown.logout {
+        position: absolute;
+        right: 32rem;
+        height: 48px !important;
+        width: 5rem;
+        top: 0;
+    }
+
+    .languageDropdown.login {
+        position: absolute;
+        right: 39rem;
+        height: 48px !important;
+        width: 5rem;
+        top: 0;
+    }
+}
+
+
+@media (max-width: 575.98px) {
+    .languageDropdown.logout {
+        position: absolute;
+        right: 6.5rem;
+        height: 48px !important;
+        width: 5rem;
+        top: 0;
+    }
+
+    .languageDropdown.login {
+        position: absolute;
+        right: 13.5rem;
+        height: 48px !important;
+        width: 5rem;
+        top: 0;
+    }
+}
+
+
+
+.languageDropdown button {
+    background-color: #0f1e3821 !important;
+    height: 64.5px;
+
+}
+
+.languageDropdown button::after {
+    display: none !important;
+}
+
+.languageDropdown button i {
+    font-size: 23px;
+}
+
+
+article {
+    &.shop {
+        height: 181px;
+    }
+
+    div.footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+}
+
+// Custom article
+
+main {
+    article {
+        &.card {
+            width: 100% !important;
+
+            .card-header {
+                h2 {
+                    z-index: 9;
+                    font-family: 'proxima-nova_bold', Helvetica, Arial, sans-serif;
+                    width: 100%;
+                    position: absolute;
+                    bottom: 0;
+                    font-weight: 400;
+                    letter-spacing: 0.5px;
+                    text-shadow: 0 0 5px #000000, 0 0 3px #000000, 0 0 1px #000000;
+                    font-size: 20px;
+                    line-height: 22px;
+                    padding: 15px;
+                    background: linear-gradient(to top, #202c24 15%, rgba(0, 0, 0, 0));
+                    color: white;
+                    left: 0;
+                }
+            }
+
+            .card-footer {
+                background: #d4d4d4 !important;
+            }
+        }
+    }
+}
+
+
+.dataTables_paginate {
+    padding: 1rem !important;
+}
+
+.dataTables_filter {
+    padding: 1rem !important;
+    padding-bottom: 0 !important;
+}
+
+.paginate_button {
+    font-size: .9rem;
+    background-color: transparent;
+    border: 0;
+    outline: 0;
+    -webkit-transition: all .3s linear;
+    transition: all .3s linear;
+    border-radius: .125rem;
+    padding: .375rem .75rem;
+}
+
+.paginate_button.current {
+    background-color: #0d6efd;
+    color: white;
+}
+
+input[type=search] {
+    background: #efefef;
+    border: 2px solid #c7cab3;
+    font-size: 14px;
+    width: 300px;
+    height: 45px;
+    margin-bottom: 15px;
+    padding: 0 12px;
+    font-family: 'proxima-nova_regular', Helvetica, Arial, sans-serif;
+}
+
+.character {
+    // background: url(https://www.nightmaremmorpg.com/games/Nightmare/resources/entities/1.png) 0 100px;
+    display: block;
+    width: 35px;
+    height: 50px;
+    background-position: -62px 0px !important;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.armure {
+    // background: url(https://www.nightmaremmorpg.com/games/Nightmare/resources/paperdolls/ar_all_1.png) 0 100px;
+    display: block;
+    width: 35px;
+    height: 50px;
+    background-position: -62px 0px !important;
+    position: relative;
+    margin: auto;
+    top: 4.65rem;
+}
+
+.boots {
+    // background: url(https://www.nightmaremmorpg.com/games/Nightmare/resources/paperdolls/boots1.png) 0 100px;
+    display: block;
+    width: 35px;
+    height: 50px;
+    background-position: -62px 0px !important;
+    position: relative;
+    margin: auto;
+    top: 1.4rem;
+}
+
+.casque {
+    // background: url(https://www.nightmaremmorpg.com/games/Nightmare/resources/paperdolls/cs_jester_helm.png) 0 100px;
+    display: block;
+    width: 100px;
+    height: 65px;
+    background-position: -94px 0px !important;
+    position: relative;
+    margin: auto;
+    top: 4.6rem;
+}
+
+.casque-1 {
+    // background: url(https://www.nightmaremmorpg.com/games/Nightmare/resources/paperdolls/cs_jester_helm.png) 0 100px;
+    display: block;
+    width: 35px;
+    height: 30px;
+    background-position: -94px 0px !important;
+    position: absolute;
+    margin: auto;
+    top: 4.3rem;
+    left: 13.9rem;
+}
+
+.slot {
+    padding: 8px;
+    border: 1px solid;
+    background: gray;
+    margin-bottom: 1rem;
+}
+
+// Boostrap Table
+
+.search{
+    box-shadow: none!important;
+    padding: 0.5rem !important;
+}
+
+.pagination-detail{
+    display: none!important;
+}
