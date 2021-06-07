@@ -760,9 +760,9 @@ main {
 
 main aside {
     padding: 10px;
-    background: #0f1d33;
-    position: fixed;
-    top: 70px;
+    background: #211a13a8;
+    position: absolute;
+    top: 0;
     right: 0;
     width: 250px;
     height: 100%;
@@ -994,8 +994,8 @@ main aside .price {
 }
 
 main #content {
-    min-height: 100%;
-    width: 100%;
+    min-height: 500px;
+    width: calc(100% - 250px);
     padding: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .2) inset;
 }
@@ -1167,20 +1167,6 @@ main #content form textarea {
 main #content .principal {
     color: #b9ca39;
 }
-
-@media (max-width: 768px) { 
-     main aside {
-        width: 100%;
-        position: relative;
-        border-left: 0px;
-    }
-
-    main #content {
-        width: 100%;
-        min-height: auto;
-    }
- }
-
 
 @media screen and (max-width:764px) {
     main aside {
