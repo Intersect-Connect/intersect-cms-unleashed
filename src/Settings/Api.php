@@ -101,7 +101,7 @@ class Api
         if ($response === false) {
             return (curl_error($ch));
         }
-        
+
         $responseData = json_decode($response, true);
         curl_close($ch);
         return $responseData;
@@ -275,6 +275,43 @@ class Api
         }
     }
 
+    public function getInventory($id)
+    {
+        $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id . '/items/inventory');
+
+        if (isset($inventory['Message']) && $inventory['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id . '/items/inventory');
+        }
+
+        return $inventory;
+    }
+
+    // /api/v1/players/[lookupKey]/items/bank
+
+    public function getBank($id)
+    {
+        $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id . '/items/bank');
+
+        if (isset($inventory['Message']) && $inventory['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id . '/items/bank');
+        }
+
+        return $inventory;
+    }
+
+    public function getBag($id)
+    {
+        $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/bag/' . $id);
+        if (isset($inventory['Message']) && $inventory['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/bag/' . $id);
+        }
+
+        return $inventory;
+    }
+
     public function onlinePlayers()
     {
         $data = [
@@ -336,6 +373,21 @@ class Api
         if (isset($item['Message']) && $item['Message'] == "Authorization has been denied for this request.") {
             $this->setToken();
             $item = $this->APIcall_POST($this->getServer(), $data,  $this->getToken(), '/api/v1/players/' . $character . '/items/give');
+        }
+
+        if (isset($item['id'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function takeItem($data, $character)
+    {
+        $item = $this->APIcall_POST($this->getServer(), $data,  $this->getToken(), '/api/v1/players/' . $character . '/items/take');
+        if (isset($item['Message']) && $item['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $item = $this->APIcall_POST($this->getServer(), $data,  $this->getToken(), '/api/v1/players/' . $character . '/items/take');
         }
 
         if (isset($item['id'])) {

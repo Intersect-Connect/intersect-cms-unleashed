@@ -170,9 +170,7 @@ CREATE TABLE `cms_users` (
   `points` int(11) NOT NULL,
   `admin` int(11) NOT NULL,
   `password_token` varchar(255) DEFAULT NULL,
-  `roles` json NOT NULL,
-  `discord` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `roles` json NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 

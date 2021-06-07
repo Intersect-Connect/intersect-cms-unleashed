@@ -22,11 +22,11 @@ class AdminController extends AbstractController
         $total_users = null;
         $total_players = null;
 
-        if(isset($api->getAllUsers(0)['Total'])){
+        if (isset($api->getAllUsers(0)['Total'])) {
             $total_users = $api->getAllUsers(0)['Total'];
         }
 
-           if(isset($api->getAllPlayers(0)['Total'])){
+        if (isset($api->getAllPlayers(0)['Total'])) {
             $total_players = $api->getAllPlayers(0)['Total'];
         }
 
@@ -329,6 +329,101 @@ class AdminController extends AbstractController
             'user' => $api->getUser($user),
             'characters' => $api->getCharacters($user),
             'maxCharacters' => $api->getServerConfig()['Player']['MaxCharacters']
+        ]);
+    }
+
+    /**
+     * @Route("admin/character/detail/{character}", name="admin.character.detail")
+     */
+    public function characterDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $character): Response
+    {
+        if ($request->isMethod('POST')) {
+            $id = $request->request->get('item');
+            $quantity = $request->request->get('quantity');
+            $action = $request->request->get('action');
+
+            if ($action == "add") {
+                $data = [
+                    'itemid' => $id,
+                    'quantity' => $quantity
+                ];
+
+                if ($api->giveItem($data, $character)) {
+                    $this->addFlash('success', $translator->trans('L\'opération s\'est bien passé.'));
+                    return $this->redirectToRoute('admin.character.detail', ['character' => $character]);
+                }
+            }
+
+            if ($action == "del") {
+                 $data = [
+                    'itemid' => $id,
+                    'quantity' => $quantity
+                ];
+                
+                 if ($api->takeItem($data, $character)) {
+                    $this->addFlash('success', $translator->trans('L\'opération s\'est bien passé.'));
+                    return $this->redirectToRoute('admin.character.detail', ['character' => $character]);
+                }
+            }
+        }
+
+        $inventory = $api->getInventory($character);
+        $inventory_list = [];
+        // dd($inventory);
+
+        $bank = $api->getBank($character);
+        $bank_list = [];
+        // dd($bank);
+        
+        
+
+        foreach ($inventory as $item) {
+            if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
+                $object = $api->getObjectDetail($item['ItemId']);
+                if($item['BagId'] != null){
+                    $bag_items = $api->getBag($item['BagId']);
+                    $bag_list = [];
+                    foreach($bag_items['Slots'] as $item){
+                        if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
+                      $object = $api->getObjectDetail($item['ItemId']);
+
+                      $bag_list[] = [
+                        'id' => $item['ItemId'],
+                        'name' => $object['Name'],
+                        'icon' => $object['Icon'],
+                        'quantity' => $item['Quantity']
+                        ];
+                        }
+                    }
+                }
+                 $inventory_list[] = [
+                    'id' => $item['ItemId'],
+                    'name' => $object['Name'],
+                    'icon' => $object['Icon'],
+                    'quantity' => $item['Quantity']
+                    ];
+                
+            }
+        }
+        
+        foreach ($bank as $item) {
+            if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
+                $object = $api->getObjectDetail($item['ItemId']);
+
+                $bank_list[] = [
+                    'id' => $item['ItemId'],
+                    'name' => $object['Name'],
+                    'icon' => $object['Icon'],
+                    'quantity' => $item['Quantity']
+                ];
+            }
+        }
+
+        return $this->render('admin/account/character.html.twig', [
+            'player' => $api->getCharacter($character),
+            'inventory' => $inventory_list,
+            'bank' => $bank_list,
+            'bag' => $bag_list
         ]);
     }
 }

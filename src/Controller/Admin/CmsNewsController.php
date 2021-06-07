@@ -63,9 +63,6 @@ class CmsNewsController extends AbstractController
             $entityManager->persist($cmsNews);
             $entityManager->flush();
 
-
-            $api->sendNewsDiscord($cmsNews->getTitle(), $request->getSchemeAndHttpHost().$request->getBasePath() .$assetPackage->getUrl('/assets/general/news/'.$cmsNews->getImgUrl(), null, true), $this->generateUrl('news.read', array('id' => $cmsNews->getId(), 'slug' => $cmsNews->getSlug()), UrlGenerator::ABSOLUTE_URL), $cmsNews->getDate());
-
             return $this->redirectToRoute('cms_news_index');
         }
 
