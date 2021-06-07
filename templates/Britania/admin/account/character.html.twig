@@ -94,7 +94,7 @@
             </ul>
 
             <h1 class="text-center mb-5">
-                Inventaire
+                {{"Inventaire"|trans}}
             </h1>
 
             {% for item in inventory %}
@@ -115,20 +115,20 @@
                         <div class="modal-body">
                             <form method="post">
                                 <div class="mt-3 mb-3">
-                                    <label for="action">Sélectionnez l'action que vous souhaitez faire</label>
+                                    <label for="action">{{"Sélectionnez l'action que vous souhaitez faire"|trans}}</label>
                                     <select class="form-control rounded-0 w-100 mt-3" name="action" id="action">
-                                        <option value="add">Ajouter</option>
-                                        <option value="del">Retirer</option>
+                                        <option value="add">{{"Ajouter"|trans}}</option>
+                                        <option value="del">{{"Retirer"|trans}}</option>
                                     </select>
                                 </div>
 
                                 <div class="mt-3 mb-3">
-                                    <label for="quantity">Saisir une quantité</label>
+                                    <label for="quantity">{{"Saisir une quantité"|trans}}</label>
                                     <input type="number" name="quantity" min="1" max="9999"
                                         class="form-control rounded-0 w-100 mt-3">
                                     <input type="hidden" name="item" value="{{item.id}}">
                                 </div>
-                                <button type="submit" class="customBTN w-100">Envoyez</button>
+                                <button type="submit" class="customBTN w-100">{{"Envoyez"|trans}}</button>
                             </form>
 
                         </div>
@@ -137,15 +137,12 @@
             </div>
             {% else %}
             <div class="alert alert-info text-dark">
-                Aucun item dans l'inventaire
+               {{"Aucun item dans l'inventaire"|trans}}
             </div>
-
             {% endfor %}
 
-
-
             <h1 class="text-center">
-                Banque
+                {{"Banque"|trans}}
             </h1>
 
             {% for item in bank %}
@@ -154,7 +151,21 @@
                 title="{{item.name}}" data-bs-content="<p>Quantité(s) : {{item.quantity}}</p>">
             {% else %}
             <div class="alert alert-info text-dark">
-                Aucun item en banque
+                {{"Aucun item en banque"|trans}}
+            </div>
+            {% endfor %}
+
+            <h1 class="text-center">
+                {{"Sac à dos"|trans}}
+            </h1>
+
+            {% for item in bag %}
+            <img src="{{asset('assets/general/gamedata/items/' ~ item.icon)}}" class="slot mt-5" alt=""
+                data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-trigger="hover focus"
+                title="{{item.name}}" data-bs-content="<p>Quantité(s) : {{item.quantity}}</p>">
+            {% else %}
+            <div class="alert alert-info text-dark">
+                {{"Aucun item dans le sac à dos"|trans}}
             </div>
             {% endfor %}
 
