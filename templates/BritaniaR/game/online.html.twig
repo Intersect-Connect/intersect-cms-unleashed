@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Liste des joueurs connecté'|trans }}{% endblock %}
+
+{% block body %}
+<h1>{{ 'Liste des joueurs connecté'|trans }}</h1>
+<ul id="breadcrump">
+	<li>
+		<a href="{{ path('home') }}">{{ 'Accueil'|trans }}</a>
+	</li>
+	<li>{{ 'Liste des joueurs connecté'|trans }}</li>
+</ul>
+
+<div id="middle" class="p-0">
+	{% if joueurs is defined %}
+	<div class="table-responsive">
+		<table class="table table-hover text-center">
+			<thead class="text-center bg-table">
+				<tr class="text-center">
+					<th class="text-center">{{ 'Nom'|trans }}</th>
+					<th class="text-center">{{ 'Niveau'|trans }}</th>
+					<th class="text-center">{{ 'Exp'|trans }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for player in joueurs %}
+				<tr>
+					<td>{{ player.name }}</td>
+					<td class="c">{{ player.level }}</td>
+					<td class="r">
+						{% if player.level == 100 %}
+						<strong>{{"Niveau max atteint !"|trans}}</strong>
+						{% else %}
+						<b>{{ player.exp }}/{{player.expNext }}</b>
+						{% endif %}
+					</td>
+				</tr>
+				{% else %}
+				<tr>
+					<td class="w-100" colspan="12">
+						<div class="alert alert-info text-dark shadow mt-5 mb-5">
+							{{"Aucun joueur connecté."|trans}}
+						</div>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+	{% else %}
+	<div class="p-3">
+		<div class="alert alert-info text-dark shadow">
+			{{"Aucun joueur connecté."|trans}}
+		</div>
+	</div>
+	{% endif %}
+
+</div>
+{% endblock %}

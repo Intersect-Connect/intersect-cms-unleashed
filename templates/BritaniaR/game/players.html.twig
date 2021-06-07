@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Liste des joueurs'|trans }}{% endblock %}
+
+{% block body %}
+<h1>{{ 'Liste des joueurs'|trans }}</h1>
+<ul id="breadcrump">
+    <li>
+        <a href="{{ path('home') }}">{{ 'Accueil'|trans }}</a>
+    </li>
+    <li>{{ 'Liste des joueurs'|trans }}</li>
+</ul>
+
+<div id="middle" class="p-0 bg-white">
+    {% if joueurs is defined and joueurs|length >= 1 %}
+
+    <div class="table-responsive">
+        <table class="table table-hover text-center">
+            <thead class="text-center bg-table">
+                <tr class="text-center">
+                    <th class="text-center">{{ 'Nom'|trans }}</th>
+                    <th class="text-center">{{ 'Niveau'|trans }}</th>
+                    <th class="text-center">{{ 'Exp'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for player in joueurs %}
+                <tr>
+                    <td>{{ player.name }}</td>
+                    <td class="c">{{ player.level }}</td>
+                    <td class="r">
+                        {% if player.level == 100 %}
+                        <strong>{{"Niveau max atteint !"|trans}}</strong>
+                        {% else %}
+                        <b>{{ player.exp }}/{{player.expNext }}</b>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="bg-white p-3">
+        {{ knp_pagination_render(joueurs) }}
+    </div>
+
+    {% else %}
+    {% if serveur_statut is defined and serveur_statut == false %}
+    <div class="p-3">
+        <div class="alert alert-warning text-dark">
+            {{"Le serveur est hors ligne, la liste des joueurs est temporairement désactivé."|trans}}
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+
+</div>
+{% endblock %}

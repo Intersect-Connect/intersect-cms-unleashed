@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+
+<h1>
+    <div class="ico_lock"></div>
+    {{ 'Se connecter au site'|trans }}
+</h1>
+<ul id="breadcrump">
+    <li>
+        <a href="{{path('home')}}">{{ 'Accueil'|trans }}</a>
+    </li>
+    <li>{{ 'Se connecter au site'|trans }}</li>
+</ul>
+
+<div id="middle">
+    <form method="post" class="bg-transparent">
+        {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+        {% endif %}
+        <div class="form-group">
+            <label for="inputUsername">
+                <span>*</span>
+                {{ 'Nom de compte'|trans }}:
+            </label>
+            <input type="text" id="inputUsername" name="username" class="w-100">
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">
+                <span>*</span>
+                {{ 'Mot de passe'|trans }}
+                :
+            </label>
+            <input type="password" id="inputPassword" name="password" class="w-100">
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        {#
+        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+        See https://symfony.com/doc/current/security/remember_me.html
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> Remember me
+            </label>
+        </div>
+        #}
+
+        <button name="connection" type="sumbit" class="customBTN w-100" id="customBTN">
+            {{ 'Me connecter'|trans }}
+           </button>
+        <p>
+            <a href="{{ path('passwordResetRequest') }}">{{ 'Mot de passe oublié ?'|trans }}</a>
+        </p>
+    </form>
+</div>
+
+{% endblock %}

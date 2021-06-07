@@ -1,0 +1,64 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+{{news.title}}
+{% endblock %}
+
+	{% block seo %}
+	<!-- Primary Meta Tags -->
+	<meta name="title" content="{{news.title}} | {{settings.get('seo_description')}}">
+	<meta name="description"="{{settings.get('seo_description')}}">
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="{{app.request.uri}}">
+	<meta property="og:title" content="{{news.title}} | {{settings.get('seo_description')}}">
+	<meta property="og:description" content="{{settings.get('seo_description')}}">
+	<meta property="og:image" content="{{asset('assets/general/seo/seo.png')}}">
+
+	<!-- Twitter -->
+	<meta property="twitter:card" content="summary_large_image">
+	<meta property="twitter:url" content="{{app.request.uri}}">
+	<meta property="twitter:title" content="{{news.title}} | {{settings.get('seo_description')}}">
+	<meta property="twitter:description" content="{{settings.get('seo_description')}}">
+	<meta property="twitter:image" content="{{asset('assets/general/seo/seo.png')}}">
+	{% endblock %}
+
+{% block body %}
+
+<h1>
+    {{ 'news'|trans }}
+</h1>
+
+<ul id="breadcrump">
+    <li>
+        <a href="{{path('home')}}">{{ 'home'|trans }}</a>
+    </li>
+    <li>{{news.title}}</li>
+</ul>
+
+<div id="news" class="read">
+    <article>
+        <div class="header" style="background-image:url('{{asset('assets/general/news/'~ news.imgUrl)}}');">
+            <h2>
+                <img src="{{asset('assets/themes/' ~ theme ~ '/img/i_news.png')}}" alt="Icône des articles"
+                    loading="lazy">
+                {{news.title}}
+            </h2>
+        </div>
+        <div class="mb-5">
+            {{news.content|raw }}
+        </div>
+        <div class="footer">
+            {{ 'Publié le'|trans }} <strong>{{ news.date|date('d/m/Y') }}</strong> {{ 'par'|trans }}
+            <strong>
+                {{news.author}}.
+            </strong>
+        </div>
+    </article>
+    <div class="clear"></div>
+</div>
+
+
+
+{% endblock %}

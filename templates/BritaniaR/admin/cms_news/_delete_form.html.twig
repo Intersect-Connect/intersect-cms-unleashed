@@ -1,0 +1,4 @@
+<form method="post" class="mt-n3"action="{{ path('cms_news_delete', {'id': cms_news.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cms_news.id) }}">
+    <button class="btn btn-danger mt-n5">{{"Supprimer"|trans}}</button>
+</form>
