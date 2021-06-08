@@ -65,6 +65,7 @@ class AdminController extends AbstractController
             $youtube_link = $request->request->get('youtube_link');
             $instagram_link = $request->request->get('instagram_link');
             $discord_link = $request->request->get('discord_link');
+            $theme = $request->request->get('theme');
 
 
             if (isset($api_password) && !empty($api_password)) {
@@ -179,11 +180,27 @@ class AdminController extends AbstractController
                 $entityManager->flush();
             }
 
+            if (isset($theme) && !empty($theme)) {
+                $param = $settings->findOneBy(['setting' => 'theme']);
+                $param->setDefaultValue($theme);
+                $entityManager->persist($param);
+                $entityManager->flush();
+            }
+
+
+
             $this->addFlash('success', $translator->trans('Vos paramètres ont bien été mis à jour.'));
             return $this->redirectToRoute('admin.settings');
         }
+
+        $dir    = '../templates';
+        $folders = scandir($dir);
+        array_splice($folders, array_search('.', $folders ), 1);
+        array_splice($folders, array_search('..', $folders ), 1);
+
         return $this->render('admin/cms_settings/index.html.twig', [
-            'params' => $settings->findAll()
+            'params' => $settings->findAll(),
+            'folders' => $folders
         ]);
     }
 
@@ -355,12 +372,12 @@ class AdminController extends AbstractController
             }
 
             if ($action == "del") {
-                 $data = [
+                $data = [
                     'itemid' => $id,
                     'quantity' => $quantity
                 ];
-                
-                 if ($api->takeItem($data, $character)) {
+
+                if ($api->takeItem($data, $character)) {
                     $this->addFlash('success', $translator->trans('L\'opération s\'est bien passé.'));
                     return $this->redirectToRoute('admin.character.detail', ['character' => $character]);
                 }
@@ -374,38 +391,37 @@ class AdminController extends AbstractController
         $bank = $api->getBank($character);
         $bank_list = [];
         // dd($bank);
-        
-        
+
+
 
         foreach ($inventory as $item) {
             if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
                 $object = $api->getObjectDetail($item['ItemId']);
-                if($item['BagId'] != null){
+                if ($item['BagId'] != null) {
                     $bag_items = $api->getBag($item['BagId']);
                     $bag_list = [];
-                    foreach($bag_items['Slots'] as $item){
+                    foreach ($bag_items['Slots'] as $item) {
                         if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
-                      $object = $api->getObjectDetail($item['ItemId']);
+                            $object = $api->getObjectDetail($item['ItemId']);
 
-                      $bag_list[] = [
-                        'id' => $item['ItemId'],
-                        'name' => $object['Name'],
-                        'icon' => $object['Icon'],
-                        'quantity' => $item['Quantity']
-                        ];
+                            $bag_list[] = [
+                                'id' => $item['ItemId'],
+                                'name' => $object['Name'],
+                                'icon' => $object['Icon'],
+                                'quantity' => $item['Quantity']
+                            ];
                         }
                     }
                 }
-                 $inventory_list[] = [
+                $inventory_list[] = [
                     'id' => $item['ItemId'],
                     'name' => $object['Name'],
                     'icon' => $object['Icon'],
                     'quantity' => $item['Quantity']
-                    ];
-                
+                ];
             }
         }
-        
+
         foreach ($bank as $item) {
             if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
                 $object = $api->getObjectDetail($item['ItemId']);
