@@ -903,6 +903,14 @@
         <source>Aucun item dans le sac à dos</source>
         <target>Aucun item dans le sac à dos</target>
       </trans-unit>
+      <trans-unit id="XzJcT6q" resname="Ajouter un item">
+        <source>Ajouter un item</source>
+        <target>Ajouter un item</target>
+      </trans-unit>
+      <trans-unit id="JouWd7G" resname="Entrez l'id de l'item">
+        <source>Entrez l'id de l'item</source>
+        <target>Entrez l'id de l'item</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

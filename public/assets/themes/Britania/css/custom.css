@@ -219,4 +219,11 @@ footer a {
 #news.read h3 {
   font-size: calc(1.3rem + .6vw) !important;
 }
+
+.slot {
+  padding: 8px;
+  border: 1px solid;
+  background: gray;
+  margin-bottom: 1rem;
+}
 /*# sourceMappingURL=custom.css.map */

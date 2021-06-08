@@ -195,8 +195,8 @@ class AdminController extends AbstractController
 
         $dir    = '../templates';
         $folders = scandir($dir);
-        array_splice($folders, array_search('.', $folders ), 1);
-        array_splice($folders, array_search('..', $folders ), 1);
+        array_splice($folders, array_search('.', $folders), 1);
+        array_splice($folders, array_search('..', $folders), 1);
 
         return $this->render('admin/cms_settings/index.html.twig', [
             'params' => $settings->findAll(),
@@ -359,6 +359,18 @@ class AdminController extends AbstractController
             $quantity = $request->request->get('quantity');
             $action = $request->request->get('action');
 
+            if ($action == "give") {
+                
+                $data = [
+                    'itemid' => $id,
+                    'quantity' => $quantity
+                ];
+                if ($api->giveItem($data, $character)) {
+                    $this->addFlash('success', $translator->trans('L\'opération s\'est bien passé.'));
+                    return $this->redirectToRoute('admin.character.detail', ['character' => $character]);
+                }
+            }
+
             if ($action == "add") {
                 $data = [
                     'itemid' => $id,
@@ -386,12 +398,9 @@ class AdminController extends AbstractController
 
         $inventory = $api->getInventory($character);
         $inventory_list = [];
-        // dd($inventory);
 
         $bank = $api->getBank($character);
         $bank_list = [];
-        // dd($bank);
-
 
 
         foreach ($inventory as $item) {

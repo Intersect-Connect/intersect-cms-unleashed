@@ -884,6 +884,14 @@
         <source>Aucun item dans le sac à dos</source>
         <target>No hay artículos en la mochila</target>
       </trans-unit>
+      <trans-unit id="XzJcT6q" resname="Ajouter un item">
+        <source>Ajouter un item</source>
+        <target>Añadir un artículo</target>
+      </trans-unit>
+      <trans-unit id="JouWd7G" resname="Entrez l'id de l'item">
+        <source>Entrez l'id de l'item</source>
+        <target>Introduzca la identificación del artículo</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
