@@ -72,6 +72,9 @@ class CmsPagesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $cmsPage->setUniqueSlug($this->format_uri($form->get('name')->getData()));
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($cmsPage);
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('cms_pages_index');
