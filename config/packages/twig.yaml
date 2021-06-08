@@ -3,4 +3,5 @@ twig:
     globals:
         theme: 'Britania'
         settings: '@App\Settings\CmsSettings'
-        editorKey: 'no-api-key'
+        tinymce_key: '%tinymce.key%'
+        max_level: '%max_level%'

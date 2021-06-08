@@ -68,7 +68,7 @@ class GameController extends AbstractController
 
             $response->setPublic();
             $response->setSharedMaxAge(3600);
-            $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
+            // $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
 
             return $response;
 
