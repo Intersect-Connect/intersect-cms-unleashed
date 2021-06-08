@@ -38,6 +38,9 @@ CREATE TABLE `cms_news` (
   `slug` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
+ALTER TABLE `cms_news` CHANGE `content` `content` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+
+
 --
 -- Déchargement des données de la table `cms_news`
 --
@@ -59,6 +62,8 @@ CREATE TABLE `cms_pages` (
   `content` text NOT NULL,
   `is_visible` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+
+ALTER TABLE `cms_pages` CHANGE `content` `content` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
 
 --
 -- Déchargement des données de la table `cms_pages`
@@ -122,6 +127,8 @@ INSERT INTO `cms_settings` (`id`, `setting`, `default_value`, `description`) VAL
 (36, 'instagram_link', '#', 'Lien Instagram'),
 (37, 'discord_link', '#', 'Lien Discord'),
 (38, 'activate_forum', '1', 'Activate forums parts.');
+
+INSERT INTO `cms_settings` (`id`, `setting`, `default_value`, `description`) VALUES (NULL, 'tinymce_key', 'no-api-key', 'Key for use editor in administration'), (NULL, 'max_level', '100', 'Max level on your game');
 
 -- --------------------------------------------------------
 
