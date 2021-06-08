@@ -71,7 +71,8 @@
                     </li>
                 </ul>
                 <div class="card-body p-0">
-                    <a href="{{path('account.history')}}" class="btn btn-info rounded-0">{{"Historique de transaction"|trans}}</a>
+                    <a href="{{path('account.history')}}" class="btn btn-info rounded-0">{{"Historique de
+                        transaction"|trans}}</a>
                 </div>
             </div>
             <div class="card mt-5">
@@ -86,7 +87,8 @@
                         {{app.user.points}}</li>
                 </ul>
                 <div class="card-body p-0">
-                    <a href="{{path('account.credit.reload')}}" class="btn btn-primary rounded-0">{{"Rechargement crédits"|trans}}</a>
+                    <a href="{{path('account.credit.reload')}}" class="btn btn-primary rounded-0">{{"Rechargement
+                        crédits"|trans}}</a>
                 </div>
             </div>
         </div>
@@ -120,7 +122,13 @@
                                     }}{%
                                     endif %}{% endfor %}</td>
                                 <td class="c">{{ player.Level }}</td>
-                                <td class="c">{{ player.Exp }}/{{ player.Exp + player.ExperienceToNextLevel }}</td>
+                                <td class="c">
+                                    {% if player.Level == settings.get("max_level") %}
+                                    <strong>{{'Niveau max atteint !'|trans}}</strong>
+                                    {% else %}
+                                    <b>{{ player.Exp }}/{{player.Exp + player.ExperienceToNextLevel }}</b>
+                                    {% endif %}
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>

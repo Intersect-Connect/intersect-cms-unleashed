@@ -41,7 +41,7 @@
     <article>
         <div class="header" style="background-image:url('{{asset('assets/general/news/'~ news.imgUrl)}}');">
             <h2>
-                <img src="{{asset('assets/themes/' ~ theme ~ '/img/i_news.png')}}" alt="Icône des articles"
+                <img src="{{asset('assets/themes/' ~ settings.get("theme") ~ '/img/i_news.png')}}" alt="Icône des articles"
                     loading="lazy">
                 {{news.title}}
             </h2>

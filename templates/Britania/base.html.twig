@@ -13,9 +13,9 @@
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.3.0/mdb.min.css" rel="stylesheet" />
 	<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
 
-	<link rel="stylesheet" type="text/css" href="{{asset('assets/themes/' ~ theme ~ '/css/stylesheet.css')}}" />
-	<link rel="stylesheet" type="text/css" href="{{asset('assets/themes/' ~ theme ~ '/css/fontawesome.css')}}" />
-	<link rel="stylesheet" type="text/css" href="{{asset('assets/themes/' ~ theme ~ '/css/custom.min.css')}}" />
+	<link rel="stylesheet" type="text/css" href="{{asset('assets/themes/' ~ settings.get("theme") ~ '/css/stylesheet.css')}}" />
+	<link rel="stylesheet" type="text/css" href="{{asset('assets/themes/' ~ settings.get("theme") ~ '/css/fontawesome.css')}}" />
+	<link rel="stylesheet" type="text/css" href="{{asset('assets/themes/' ~ settings.get("theme") ~ '/css/custom.min.css')}}" />
 
 	{% block stylesheets %}{% endblock %}
 
@@ -213,7 +213,7 @@
 
 	<div class="ct pb-5">
 		<a id="logo" href="{{ path('home') }}" title=" {{ 'home'|trans }}">
-			<img src="{{asset('assets/themes/Britania/img/logotype.png')}}" alt="{{settings.get('game_title')}} logo">
+			<img src="{{asset('assets/themes/' ~ settings.get('theme') ~ '/img/logotype.png')}}" alt="{{settings.get('game_title')}} logo">
 		</a>
 		<main>
 
@@ -242,7 +242,7 @@
 		</div>
 	</footer>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script type="text/javascript" src="{{asset('assets/themes/' ~ theme ~ '/js/interface.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('assets/themes/' ~ settings.get("theme") ~ '/js/interface.min.js')}}"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"
 		integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi"
 		crossorigin="anonymous"></script>
