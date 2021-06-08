@@ -201,6 +201,20 @@ class AdminController extends AbstractController
                 $entityManager->flush();
             }
 
+            if (isset($max_level) && !empty($max_level)) {
+                $param = $settings->findOneBy(['setting' => 'max_level']);
+                $param->setDefaultValue($max_level);
+                $entityManager->persist($param);
+                $entityManager->flush();
+            }
+
+            if (isset($tinymce_key) && !empty($tinymce_key)) {
+                $param = $settings->findOneBy(['setting' => 'tinymce_key']);
+                $param->setDefaultValue($tinymce_key);
+                $entityManager->persist($param);
+                $entityManager->flush();
+            }
+
 
 
             $this->addFlash('success', $translator->trans('Vos paramètres ont bien été mis à jour.'));
