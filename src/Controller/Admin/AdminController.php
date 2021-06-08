@@ -6,6 +6,7 @@ use App\Repository\CmsNewsRepository;
 use App\Repository\CmsSettingsRepository;
 use App\Repository\CmsShopRepository;
 use App\Settings\Api;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,13 +31,24 @@ class AdminController extends AbstractController
             $total_players = $api->getAllPlayers(0)['Total'];
         }
 
+        $server_request = $api->getServerInfo();
+        $server_info = [];
 
+        if (!isset($server_request['error'])) {
+            $server_info['uptime'] = $server_request['uptime'];
+            $server_info['cps'] = $server_request['cps'];
+            $server_info['connectedClients'] = $server_request['connectedClients'];
+            $server_info['onlineCount'] = $server_request['onlineCount'];
+        }else{
+            $server_info = null;
+        }
 
         return $this->render('admin/index.html.twig', [
             'total_users' => $total_users,
             'total_players' => $total_players,
             'total_shop' => count($shop->findAll()),
-            'total_news' => count($news->findAll())
+            'total_news' => count($news->findAll()),
+            'server_info' => $server_info
         ]);
     }
 
@@ -360,7 +372,7 @@ class AdminController extends AbstractController
             $action = $request->request->get('action');
 
             if ($action == "give") {
-                
+
                 $data = [
                     'itemid' => $id,
                     'quantity' => $quantity
