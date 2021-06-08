@@ -834,55 +834,55 @@
       </trans-unit>
       <trans-unit id="80mS6Ss" resname="L'opération s'est bien passé.">
         <source>L'opération s'est bien passé.</source>
-        <target>__L'opération s'est bien passé.</target>
+        <target>La operación salió correctamente.</target>
       </trans-unit>
       <trans-unit id="vgFu9A9" resname="Détail du personnage">
         <source>Détail du personnage</source>
-        <target>__Détail du personnage</target>
+        <target>Detalle de personaje</target>
       </trans-unit>
       <trans-unit id="wIqybnz" resname="Inventaire">
         <source>Inventaire</source>
-        <target>__Inventaire</target>
+        <target>Inventario</target>
       </trans-unit>
       <trans-unit id="n8OMIfw" resname="Sélectionnez l'action que vous souhaitez faire">
         <source>Sélectionnez l'action que vous souhaitez faire</source>
-        <target>__Sélectionnez l'action que vous souhaitez faire</target>
+        <target>Seleccione la acción que quiera realizar</target>
       </trans-unit>
       <trans-unit id="APnFM0V" resname="Ajouter">
         <source>Ajouter</source>
-        <target>__Ajouter</target>
+        <target>Agregar</target>
       </trans-unit>
       <trans-unit id="QeIu2TN" resname="Retirer">
         <source>Retirer</source>
-        <target>__Retirer</target>
+        <target>Retirar</target>
       </trans-unit>
       <trans-unit id="KSYuuFY" resname="Saisir une quantité">
         <source>Saisir une quantité</source>
-        <target>__Saisir une quantité</target>
+        <target>Ingrese una cantidad</target>
       </trans-unit>
       <trans-unit id="0B5hQ6b" resname="Envoyez">
         <source>Envoyez</source>
-        <target>__Envoyez</target>
+        <target>Enviar</target>
       </trans-unit>
       <trans-unit id="tRSwr6o" resname="Aucun item dans l'inventaire">
         <source>Aucun item dans l'inventaire</source>
-        <target>__Aucun item dans l'inventaire</target>
+        <target>No hay artículos en el inventario</target>
       </trans-unit>
       <trans-unit id="5FRjt9W" resname="Banque">
         <source>Banque</source>
-        <target>__Banque</target>
+        <target>Banco</target>
       </trans-unit>
       <trans-unit id="7yNueum" resname="Aucun item en banque">
         <source>Aucun item en banque</source>
-        <target>__Aucun item en banque</target>
+        <target>No hay objetos en el banco</target>
       </trans-unit>
       <trans-unit id="278dwz7" resname="Sac à dos">
         <source>Sac à dos</source>
-        <target>__Sac à dos</target>
+        <target>Mochila</target>
       </trans-unit>
       <trans-unit id="gacdwzp" resname="Aucun item dans le sac à dos">
         <source>Aucun item dans le sac à dos</source>
-        <target>__Aucun item dans le sac à dos</target>
+        <target>No hay artículos en la mochila</target>
       </trans-unit>
     </body>
   </file>
