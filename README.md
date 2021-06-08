@@ -1,4 +1,4 @@
-Current version: 2.2
+Current version: 2.1
 
 ## Status : Ready for use from upgrade or new installation
 ## Do not clone the repo for an online launch of your project. Download the package. 
