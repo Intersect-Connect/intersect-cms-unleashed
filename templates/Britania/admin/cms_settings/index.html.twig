@@ -16,6 +16,19 @@
             </ul>
         </div>
         <div class="card-body border-0">
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success text-dark">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+        <div class="alert alert-danger text-dark">
+            {{ message }}
+        </div>
+        {% endfor %}
+        
             <form action="" method="post">
                 {% for param in params %}
 

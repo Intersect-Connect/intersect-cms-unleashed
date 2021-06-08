@@ -15,7 +15,7 @@
             <div class="header"
                 style="background-image:url('{{asset('assets/general/news/'~ news.imgUrl)|imagine_filter('general')}}');">
                 <h2>
-                    <img src="{{asset('assets/themes/' ~ theme ~ '/img/i_news.png')}}" alt="Icône des articles"
+                    <img src="{{asset('assets/themes/' ~ settings.get("theme") ~ '/img/i_news.png')}}" alt="Icône des articles"
                         loading="lazy">
                     {{news.title}}
                 </h2>
@@ -29,7 +29,7 @@
                     news.author
                     }}</strong>.
                 <a href="{{path('news.read', {'id':news.id, 'slug':news.slug})}}">
-                    <img src="{{asset('assets/themes/' ~ theme ~ '/img/i_bulle.png')}}" alt="Icône bulle lire la suite"
+                    <img src="{{asset('assets/themes/' ~ settings.get("theme") ~ '/img/i_bulle.png')}}" alt="Icône bulle lire la suite"
                         loading="lazy"> {{ 'Lire la suite'|trans }}
                 </a>
             </div>
@@ -78,7 +78,7 @@
                         <div class="col-2">
                             {% if app.user %}
                             <a href="{{path('shop.detail', {'id':item.id})}}">
-                                <img src="{{asset('assets/themes/Britania/img/i_basket.png')}}" width="25px">
+                                <img src="{{asset('assets/themes/' ~ settings.get("theme") ~ '/img/i_basket.png')}}" width="25px">
                             </a>
                             {% endif %}
                         </div>
@@ -112,7 +112,7 @@
                     <strong>{{item.price}} {{"credits"|trans}}</strong>
                     {% if app.user %}
                     <a href="{{path('shop.detail', {'id':item.id})}}">
-                        <img src="{{asset('assets/themes/Britania/img/i_basket.png')}}" width="25px">
+                        <img src="{{asset('assets/themes/' ~ settings.get("theme") ~ '/img/i_basket.png')}}" width="25px">
                     </a>
                     {% endif %}
                 </div>
