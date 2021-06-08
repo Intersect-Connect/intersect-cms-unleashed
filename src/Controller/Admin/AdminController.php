@@ -39,7 +39,7 @@ class AdminController extends AbstractController
             $server_info['cps'] = $server_request['cps'];
             $server_info['connectedClients'] = $server_request['connectedClients'];
             $server_info['onlineCount'] = $server_request['onlineCount'];
-        }else{
+        } else {
             $server_info = null;
         }
 
@@ -78,6 +78,8 @@ class AdminController extends AbstractController
             $instagram_link = $request->request->get('instagram_link');
             $discord_link = $request->request->get('discord_link');
             $theme = $request->request->get('theme');
+            $max_level = $request->request->get('max_level');
+            $tinymce_key = $request->request->get('tinymce_key');
 
 
             if (isset($api_password) && !empty($api_password)) {
