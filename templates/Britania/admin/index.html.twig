@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends settings.get("theme") ~'/base_admin.html.twig' %}
 
 {% block title %}{{"Accueil"|trans}} - Administration{% endblock %}
 

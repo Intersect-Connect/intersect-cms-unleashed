@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends settings.get("theme") ~'/base_admin.html.twig' %}
 
 {% block title %}{{'Liste des articles'|trans}}{% endblock %}
 

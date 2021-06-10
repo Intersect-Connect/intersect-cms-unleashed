@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Settings\Api;
+use App\Settings\CmsSettings;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,7 @@ class GameController extends AbstractController
     /**
      * @Route("/players", name="game.players.liste",  requirements={"_locale": "en|fr"})
      */
-    public function listeJoueurs(Api $api, $page = 0, PaginatorInterface $paginator, Request $request): Response
+    public function listeJoueurs(Api $api, $page = 0, PaginatorInterface $paginator, Request $request, CmsSettings $settings): Response
     {
         $serveur_statut = $api->ServeurStatut();
 
@@ -73,13 +74,13 @@ class GameController extends AbstractController
             return $response;
 
 
-            return $this->render('game/players.html.twig', [
+            return $this->render($settings->get('theme') . '/game/players.html.twig', [
                 'joueurs' => $joueurs,
                 'max' => $total_page,
                 'page_actuel' => $page
             ]);
         } else {
-            return $this->render('game/players.html.twig', [
+            return $this->render($settings->get('theme') . '/game/players.html.twig', [
                 'serveur_statut' => false
             ]);
         }
@@ -88,7 +89,7 @@ class GameController extends AbstractController
     /**
      * @Route("/online-players", name="game.players.liste.online",  requirements={"_locale": "en|fr"})
      */
-    public function listeJoueursEnLigne(Api $api, $page = 0): Response
+    public function listeJoueursEnLigne(Api $api, $page = 0, CmsSettings $settings): Response
     {
         $serveur_statut = $api->ServeurStatut();
         if ($serveur_statut['success']) {
@@ -110,11 +111,11 @@ class GameController extends AbstractController
 
             return $response;
 
-            return $this->render('game/online.html.twig', [
+            return $this->render($settings->get('theme') . '/game/online.html.twig', [
                 'joueurs' => $joueurs_liste,
             ]);
         } else {
-            return $this->render('game/online.html.twig', [
+            return $this->render($settings->get('theme') . '/game/online.html.twig', [
                 'serveur_statut' => false
             ]);
         }
@@ -123,7 +124,7 @@ class GameController extends AbstractController
     /**
      * @Route("/rank/level", name="game.rank.level",  requirements={"_locale": "en|fr"})
      */
-    public function rankNiveau(Api $api): Response
+    public function rankNiveau(Api $api, CmsSettings $settings): Response
     {
         $serveur_statut = $api->ServeurStatut();
         if ($serveur_statut['success']) {
@@ -150,11 +151,11 @@ class GameController extends AbstractController
 
             return $response;
 
-            return $this->render('game/level_rank.html.twig', [
+            return $this->render($settings->get('theme') . '/game/level_rank.html.twig', [
                 'joueurs' => $joueurs_liste,
             ]);
         } else {
-            return $this->render('game/level_rank.html.twig', [
+            return $this->render($settings->get('theme') . '/game/level_rank.html.twig', [
                 'serveur_statut' => false
             ]);
         }

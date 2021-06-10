@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends settings.get("theme") ~'/base_admin.html.twig' %}
 
 {% block title %}{{'Modifier une page'|trans}}{% endblock %}
 
@@ -16,8 +16,8 @@
   </div>
   <div class="card-body bg-white">
 
-    {{ include('admin/cms_pages/_form.html.twig') }}
-    {{ include('admin/cms_pages/_delete_form.html.twig') }}
+    {{ include(settings.get("theme") ~'/admin/cms_pages/_form.html.twig') }}
+    {{ include(settings.get("theme") ~'/admin/cms_pages/_delete_form.html.twig') }}
     <a class="btn btn-sm btn-primary" href="{{ path('cms_pages_index') }}">{{"Retour à la liste"|trans}}</a>
   </div>
 </div>

@@ -6,6 +6,7 @@ use App\Repository\CmsNewsRepository;
 use App\Repository\CmsSettingsRepository;
 use App\Repository\CmsShopRepository;
 use App\Settings\Api;
+use App\Settings\CmsSettings;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin", name="admin")
      */
-    public function index(Api $api, CmsShopRepository $shop, CmsNewsRepository $news): Response
+    public function index(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, CmsSettings $settings): Response
     {
         $total_users = null;
         $total_players = null;
@@ -43,7 +44,7 @@ class AdminController extends AbstractController
             $server_info = null;
         }
 
-        return $this->render('admin/index.html.twig', [
+        return $this->render($settings->get('theme') . '/admin/index.html.twig', [
             'total_users' => $total_users,
             'total_players' => $total_players,
             'total_shop' => count($shop->findAll()),
@@ -56,7 +57,7 @@ class AdminController extends AbstractController
     /**
      * @Route("admin/settings", name="admin.settings")
      */
-    public function settings(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator): Response
+    public function settings(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, CmsSettings $settingCms): Response
     {
         if ($request->isMethod('POST')) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -226,7 +227,7 @@ class AdminController extends AbstractController
         array_splice($folders, array_search('.', $folders), 1);
         array_splice($folders, array_search('..', $folders), 1);
 
-        return $this->render('admin/cms_settings/index.html.twig', [
+        return $this->render($settingCms->get('theme') . '/admin/cms_settings/index.html.twig', [
             'params' => $settings->findAll(),
             'folders' => $folders
         ]);
@@ -235,14 +236,14 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/items/{page}", name="admin.items")
      */
-    public function items(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, $page = 0): Response
+    public function items(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, $page = 0, CmsSettings $settings): Response
     {
         $items = $api->getAllItems($page);
         $total = $items['total'];
         $total_page = floor($total / 30);
 
 
-        return $this->render('admin/items_list/index.html.twig', [
+        return $this->render($settings->get('theme') . '/admin/items_list/index.html.twig', [
             'total_page' => $total_page,
             'items' => $items['entries'],
             'page_actuel' => $page
@@ -252,7 +253,7 @@ class AdminController extends AbstractController
     /**
      * @Route("admin/accounts/{page}", name="admin.account")
      */
-    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $page = 0): Response
+    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $page = 0, CmsSettings $setting): Response
     {
 
         if ($request->isMethod('POST')) {
@@ -309,7 +310,7 @@ class AdminController extends AbstractController
         $total_page = floor($total / 30);
 
 
-        return $this->render('admin/account/index.html.twig', [
+        return $this->render($setting->get('theme') . '/admin/account/index.html.twig', [
             'total_page' => $total_page,
             'items' => $users['Values'],
             'page_actuel' => $page
@@ -319,7 +320,7 @@ class AdminController extends AbstractController
     /**
      * @Route("admin/account/detail/{user}", name="admin.account.detail")
      */
-    public function accountDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $user): Response
+    public function accountDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $user, CmsSettings $setting): Response
     {
         if ($request->isMethod('POST')) {
             $user_id = $request->request->get('user_id');
@@ -370,7 +371,7 @@ class AdminController extends AbstractController
             }
         }
 
-        return $this->render('admin/account/detail.html.twig', [
+        return $this->render($setting->get('theme') . '/admin/account/detail.html.twig', [
             'user' => $api->getUser($user),
             'characters' => $api->getCharacters($user),
             'maxCharacters' => $api->getServerConfig()['Player']['MaxCharacters']
@@ -380,7 +381,7 @@ class AdminController extends AbstractController
     /**
      * @Route("admin/character/detail/{character}", name="admin.character.detail")
      */
-    public function characterDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $character): Response
+    public function characterDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $character, CmsSettings $setting): Response
     {
         if ($request->isMethod('POST')) {
             $id = $request->request->get('item');
@@ -472,7 +473,7 @@ class AdminController extends AbstractController
             }
         }
 
-        return $this->render('admin/account/character.html.twig', [
+        return $this->render($setting->get('theme') . '/admin/account/character.html.twig', [
             'player' => $api->getCharacter($character),
             'inventory' => $inventory_list,
             'bank' => $bank_list,

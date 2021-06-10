@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends settings.get("theme") ~'/base.html.twig' %}
 
 {% block title %}{{"Une erreur s'est produit"|trans}}{% endblock %}
 

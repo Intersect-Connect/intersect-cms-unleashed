@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\LoginAuthenticator;
 use App\Settings\Api;
+use App\Settings\CmsSettings;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +21,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register",  requirements={"_locale": "en|fr"})
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, Api $api, LoginAuthenticator $login, GuardAuthenticatorHandler $guard): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, Api $api, LoginAuthenticator $login, GuardAuthenticatorHandler $guard, CmsSettings $settings): Response
     {
         $serveur_statut = $api->ServeurStatut();
 
@@ -68,11 +69,11 @@ class RegistrationController extends AbstractController
                 return $this->redirectToRoute('home');
             }
 
-            return $this->render('registration/register.html.twig', [
+            return $this->render($settings->get('theme') . '/registration/register.html.twig', [
                 'registrationForm' => $form->createView(),
             ]);
         } else {
-            return $this->render('registration/register.html.twig', [
+            return $this->render($settings->get('theme') . '/registration/register.html.twig', [
                 'serveur_statut' => false,
             ]);
         }

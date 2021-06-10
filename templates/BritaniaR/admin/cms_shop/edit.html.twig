@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends settings.get("theme") ~'/base_admin.html.twig' %}
 
 {% block title %}{{"Modifier un article dans la boutique VIP"|trans}}{% endblock %}
 
@@ -15,9 +15,9 @@
         <li class="breadcrumb-item active" aria-current="page">{{'Modifier un article dans la boutique VIP'|trans}}</li>
       </ol>
     </nav>
-    {{ include('admin/cms_shop/_form.html.twig') }}
+    {{ include(settings.get("theme") ~'/admin/cms_shop/_form.html.twig') }}
     
-    {{ include('admin/cms_shop/_delete_form.html.twig') }}
+    {{ include(settings.get("theme") ~'/admin/cms_shop/_delete_form.html.twig') }}
     <a class="btn btn-sm btn-primary" href="{{ path('cms_shop_index') }}">{{"Retour à la liste"|trans}}</a>
   </div>
 </div>

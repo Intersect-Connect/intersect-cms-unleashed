@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\CmsPages;
 use App\Form\CmsPagesType;
+use App\Settings\CmsSettings;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,13 +18,13 @@ class CmsPagesController extends AbstractController
     /**
      * @Route("/", name="cms_pages_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(CmsSettings $settings): Response
     {
         $cmsPages = $this->getDoctrine()
             ->getRepository(CmsPages::class)
             ->findAll();
 
-        return $this->render('admin/cms_pages/index.html.twig', [
+        return $this->render($settings->get('theme') . '/admin/cms_pages/index.html.twig', [
             'cms_pages' => $cmsPages,
         ]);
     }
@@ -31,7 +32,7 @@ class CmsPagesController extends AbstractController
     /**
      * @Route("/new", name="cms_pages_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, CmsSettings $settings): Response
     {
         $cmsPage = new CmsPages();
         $form = $this->createForm(CmsPagesType::class, $cmsPage);
@@ -47,7 +48,7 @@ class CmsPagesController extends AbstractController
             return $this->redirectToRoute('cms_pages_index');
         }
 
-        return $this->render('admin/cms_pages/new.html.twig', [
+        return $this->render($settings->get('theme') . '/admin/cms_pages/new.html.twig', [
             'cms_page' => $cmsPage,
             'form' => $form->createView(),
         ]);
@@ -56,9 +57,9 @@ class CmsPagesController extends AbstractController
     /**
      * @Route("/{id}", name="cms_pages_show", methods={"GET"})
      */
-    public function show(CmsPages $cmsPage): Response
+    public function show(CmsPages $cmsPage, CmsSettings $setting): Response
     {
-        return $this->render('admin/cms_pages/show.html.twig', [
+        return $this->render($setting->get('theme') . '/admin/cms_pages/show.html.twig', [
             'cms_page' => $cmsPage,
         ]);
     }
@@ -66,7 +67,7 @@ class CmsPagesController extends AbstractController
     /**
      * @Route("/{id}/edit", name="cms_pages_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, CmsPages $cmsPage): Response
+    public function edit(Request $request, CmsPages $cmsPage, CmsSettings $setting): Response
     {
         $form = $this->createForm(CmsPagesType::class, $cmsPage);
         $form->handleRequest($request);
@@ -80,7 +81,7 @@ class CmsPagesController extends AbstractController
             return $this->redirectToRoute('cms_pages_index');
         }
 
-        return $this->render('admin/cms_pages/edit.html.twig', [
+        return $this->render($setting->get('theme') . '/admin/cms_pages/edit.html.twig', [
             'cms_page' => $cmsPage,
             'form' => $form->createView(),
         ]);
@@ -89,7 +90,7 @@ class CmsPagesController extends AbstractController
     /**
      * @Route("/{id}", name="cms_pages_delete", methods={"POST"})
      */
-    public function delete(Request $request, CmsPages $cmsPage): Response
+    public function delete(Request $request, CmsPages $cmsPage, CmsSettings $setting): Response
     {
         if ($this->isCsrfTokenValid('delete'.$cmsPage->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();

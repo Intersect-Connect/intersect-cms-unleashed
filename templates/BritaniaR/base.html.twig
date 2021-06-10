@@ -199,7 +199,7 @@
 			<div class="dropdown mt-n0 languageDropdown {% if app.user %} login {% else %} logout {% endif %}">
 				<button class="btn btn-secondary btn-lg btn-block rounded-0 dropdown-toggle shadow-0" type="button"
 					id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-					<i class="ico_globe"></i></button>
+					<i class="ico_globe"></i></button> 
 				<ul class="dropdown-menu w-100 rounded-0" aria-labelledby="dropdownMenuButton1" style="margin: 0px;">
 					<li><a class="dropdown-item" href="{{path('change_locale', {'locale':'fr'})}}">FR</a></li>
 					<li><a class="dropdown-item" href="{{path('change_locale', {'locale':'en'})}}">EN</a></li>
@@ -236,9 +236,9 @@
 					'graphic_concept_by'|trans }} Nicow - wb x dsg. {{ 'developped_by'|trans }} <a
 						href="https://github.com/Thomasfds/intersect-cms-unleashed">XFallSeane</a>
 				</strong>. <br>
-				<a href="/page/legal-notice">{{"Mentions légales"|trans}}</a> | <a
-					href="/page/terms-and-conditions">{{"Conditions Générales de Ventes"|trans}}</a> |
-				<a href="/page/confidentiality">{{"Confidentialités"|trans}}</a>
+				<a href="{{path('game.pages', {"slug":'legal-notice'})}}">{{"Mentions légales"|trans}}</a> | 
+				<a href="{{path('game.pages', {"slug":'legal-notice'})}}">{{"Conditions Générales de Ventes"|trans}}</a> |
+				<a href="{{path('game.pages', {"slug":'legal-notice'})}}">{{"Confidentialités"|trans}}</a>
 		</div>
 	</footer>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

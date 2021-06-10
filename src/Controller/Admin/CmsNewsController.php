@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\CmsNews;
 use App\Form\CmsNewsType;
 use App\Settings\Api;
+use App\Settings\CmsSettings;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Asset\Packages;
@@ -21,13 +22,13 @@ class CmsNewsController extends AbstractController
     /**
      * @Route("/", name="cms_news_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(CmsSettings $setting): Response
     {
         $cmsNews = $this->getDoctrine()
             ->getRepository(CmsNews::class)
             ->findAll();
 
-        return $this->render('admin/cms_news/index.html.twig', [
+        return $this->render($setting->get('theme') . '/admin/cms_news/index.html.twig', [
             'cms_news' => $cmsNews,
         ]);
     }
@@ -35,7 +36,7 @@ class CmsNewsController extends AbstractController
     /**
      * @Route("/new", name="cms_news_new", methods={"GET","POST"})
      */
-    public function new(Request $request, Api $api, Packages $assetPackage): Response
+    public function new(Request $request, Api $api, Packages $assetPackage, CmsSettings $setting): Response
     {
         $cmsNews = new CmsNews();
         $form = $this->createForm(CmsNewsType::class, $cmsNews);
@@ -66,7 +67,7 @@ class CmsNewsController extends AbstractController
             return $this->redirectToRoute('cms_news_index');
         }
 
-        return $this->render('admin/cms_news/new.html.twig', [
+        return $this->render($setting->get('theme') . '/admin/cms_news/new.html.twig', [
             'cms_news' => $cmsNews,
             'form' => $form->createView(),
         ]);
@@ -75,7 +76,7 @@ class CmsNewsController extends AbstractController
     /**
      * @Route("/{id}/edit", name="cms_news_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, CmsNews $cmsNews): Response
+    public function edit(Request $request, CmsNews $cmsNews, CmsSettings $setting): Response
     {
         $image = $cmsNews->getImgUrl();
         $form = $this->createForm(CmsNewsType::class, $cmsNews);
@@ -105,7 +106,7 @@ class CmsNewsController extends AbstractController
             return $this->redirectToRoute('cms_news_index');
         }
 
-        return $this->render('admin/cms_news/edit.html.twig', [
+        return $this->render($setting->get('theme') . '/admin/cms_news/edit.html.twig', [
             'cms_news' => $cmsNews,
             'form' => $form->createView(),
         ]);
@@ -114,7 +115,7 @@ class CmsNewsController extends AbstractController
     /**
      * @Route("/{id}", name="cms_news_delete", methods={"POST"})
      */
-    public function delete(Request $request, CmsNews $cmsNews): Response
+    public function delete(Request $request, CmsNews $cmsNews, CmsSettings $setting): Response
     {
         if ($this->isCsrfTokenValid('delete' . $cmsNews->getId(), $request->request->get('_token'))) {
             $nom = $cmsNews->getImgUrl();

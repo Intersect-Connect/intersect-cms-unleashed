@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends settings.get("theme") ~'/base_admin.html.twig' %}
 
 {% block title %}{{'Créer un article'|trans}}{% endblock %}
 
@@ -14,7 +14,7 @@
     </ul>
   </div>
   <div class="card-body bg-white">
-    {{ include('admin/cms_news/_form.html.twig') }}
+    {{ include(settings.get("theme") ~'/admin/cms_news/_form.html.twig') }}
     <a class="btn btn-sm btn-primary" href="{{ path('cms_news_index') }}">{{"Retour à la liste"|trans}}</a>
   </div>
 </div>

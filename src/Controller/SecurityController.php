@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\UserRepository;
 use App\Security\LoginAuthenticator;
 use App\Settings\Api;
+use App\Settings\CmsSettings;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -21,7 +23,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="app_login",  requirements={"_locale": "en|fr"})
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, CmsSettings $settings): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('home.index');
@@ -32,7 +34,7 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render($settings->get('theme') . '/security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     /**
@@ -44,9 +46,9 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/password-reset", name="passwordResetRequest")
+     * @Route("/password-reset", name="passwordResetRequest", requirements={"_locale": "en|fr"})
      */
-    public function passwordResetRequest(Request $request, UserRepository $userRepo, TranslatorInterface $translator, MailerInterface $mailer)
+    public function passwordResetRequest(Request $request, UserRepository $userRepo, TranslatorInterface $translator, MailerInterface $mailer, CmsSettings $settings)
     {
         if ($request->isMethod('POST')) {
             $username = $request->request->get('username');
@@ -65,7 +67,8 @@ class SecurityController extends AbstractController
                     $entityManager->persist($user);
                     $entityManager->flush();
 
-                    $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/password-reset/new/" . $token;
+                     $url = $this->generateUrl('passwordResetRequest.new',['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
+
                     $email = (new TemplatedEmail())
                         ->from('hello@example.com')
                         ->to($user->getEmail())
@@ -85,13 +88,14 @@ class SecurityController extends AbstractController
                 }
             }
         }
-        return $this->render('security/password-reset.html.twig', []);
+
+        return $this->render($settings->get('theme') . '/security/password-reset.html.twig', []);
     }
 
     /**
-     * @Route("/password-reset/new/{token}", name="passwordResetRequest.new")
+     * @Route("/password-reset/new/{token}", name="passwordResetRequest.new", requirements={"_locale": "en|fr"})
      */
-    public function passwordReset(Request $request, UserRepository $userRepo, TranslatorInterface $translator, MailerInterface $mailer, $token, Api $api)
+    public function passwordReset(Request $request, UserRepository $userRepo, TranslatorInterface $translator, MailerInterface $mailer, $token, Api $api, CmsSettings $settings)
     {
         if ($request->isMethod('POST')) {
             $username = $request->request->get('username');
@@ -135,11 +139,11 @@ class SecurityController extends AbstractController
 
         $users = $userRepo->findBy(['passwordToken' => $token]);
         if ($users) {
-            return $this->render('security/password-reset-new.html.twig', [
+            return $this->render($settings->get('theme') . '/security/password-reset-new.html.twig', [
                 'confirm' => true
             ]);
         } else {
-            return $this->render('security/password-reset-new.html.twig', [
+            return $this->render($settings->get('theme') . '/security/password-reset-new.html.twig', [
                 'confirm' => false
             ]);
         }

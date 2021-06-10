@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends settings.get("theme") ~'/base_admin.html.twig' %}
 
 {% block title %}{{"Création d'un nouvel article dans la boutique VIP"|trans}}{% endblock %}
 
@@ -17,7 +17,7 @@
           VIP'|trans}}</li>
       </ol>
     </nav>
-    {{ include('admin/cms_shop/_form.html.twig') }}
+    {{ include(settings.get("theme") ~'/admin/cms_shop/_form.html.twig') }}
     <a class="btn btn-sm btn-primary" href="{{ path('cms_shop_index') }}">{{"Retour à la liste"|trans}}</a>
   </div>
 </div>
