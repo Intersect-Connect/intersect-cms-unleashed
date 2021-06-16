@@ -34,13 +34,13 @@ class CmsShopType extends AbstractType
                 'attr' => ['class' => 'w-100']
             ])
             ->add('visible', CheckboxType::class, [
-
+                'attr' => ['class' => 'form-check-input'],
+                'required' => false
             ])
             ->add('image', FileType::class, [
                 'data_class' => null,
                 'required' => false
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

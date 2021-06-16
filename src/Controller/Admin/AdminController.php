@@ -240,7 +240,7 @@ class AdminController extends AbstractController
     {
         $items = $api->getAllItems($page);
         $total = $items['total'];
-        $total_page = floor($total / 30);
+        $total_page = floor($total / 20);
 
 
         return $this->render($settings->get('theme') . '/admin/items_list/index.html.twig', [
@@ -370,6 +370,8 @@ class AdminController extends AbstractController
                 }
             }
         }
+                dd(json_encode($api->getUserIp($user)));
+
 
         return $this->render($setting->get('theme') . '/admin/account/detail.html.twig', [
             'user' => $api->getUser($user),
@@ -472,6 +474,7 @@ class AdminController extends AbstractController
                 ];
             }
         }
+        dd(json_encode($api->getPlayerActivity($character)));
 
         return $this->render($setting->get('theme') . '/admin/account/character.html.twig', [
             'player' => $api->getCharacter($character),

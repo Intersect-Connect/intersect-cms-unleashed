@@ -180,6 +180,18 @@ class Api
         return $user;
     }
 
+    public function giveNationRank($id)
+    {
+        $nationPoint = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/variables/global/' . $id);
+
+        if (isset($user['Message']) && $user['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+        $nationPoint = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/variables/global/' . $id);
+        }
+
+        return $nationPoint;
+    }
+
     /**
      * Permet de récupérer tout les utilisateurs
      */
@@ -540,6 +552,57 @@ class Api
         if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
             $this->setToken();
             $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/info/stats');
+        }
+        return $server;
+    }
+
+    public function getServerMetrics()
+    {
+        $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/info/metrics');
+        if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/info/metrics');
+        }
+        return $server;
+    }
+
+    // Server Log
+    public function getUserActivity($id)
+    {
+        $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/user/' . $id . '/activity');
+        if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/user/' . $id . '/activity');
+        }
+        return $server;
+    }
+
+    public function getPlayerActivity($id)
+    {
+        $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/player/' . $id . '/activity');
+        if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/player/' . $id . '/activity');
+        }
+        return $server;
+    }
+
+    public function getTradeLogs()
+    {
+        $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/trade/');
+        if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/trade/');
+        }
+        return $server;
+    }
+
+    public function getUserIp($id)
+    {
+        $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/user/' . $id . '/ip');
+        if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/user/' . $id . '/ip');
         }
         return $server;
     }

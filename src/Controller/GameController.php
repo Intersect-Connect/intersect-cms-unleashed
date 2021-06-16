@@ -18,13 +18,13 @@ class GameController extends AbstractController
     /**
      * @Route("/players", name="game.players.liste",  requirements={"_locale": "en|fr"})
      */
-    public function listeJoueurs(Api $api, $page = 0, PaginatorInterface $paginator, Request $request, CmsSettings $settings): Response
+    public function listeJoueurs(Api $api, $page = 0, PaginatorInterface $paginator, Request $request): Response
     {
         $serveur_statut = $api->ServeurStatut();
 
         if ($serveur_statut['success']) {
 
-            $joueurs = $api->getAllPlayers($page);
+            $joueurs = $api->getAllPlayers(0);
 
 
             $total_joueurs = $joueurs['Total'];
@@ -35,10 +35,9 @@ class GameController extends AbstractController
             $joueurs_liste = [];
 
 
-            $time_start = microtime(true);
-
-
             for ($i = 0; $i <= $total_page; $i++) {
+                $joueurs = $api->getAllPlayers($i);
+
                 foreach ($joueurs['Values'] as $joueur) {
 
                     if ($joueur['Level'] >= 1 && $joueur['Name'] != "Admin") {
@@ -48,18 +47,12 @@ class GameController extends AbstractController
             }
 
 
-
-            $data = ['joueurs' => $joueurs_liste, 'date' => new DateTime()];
-
-
-            $par_page = 30;
-            $total_page = count((array)$joueurs_liste);
-
             $joueurs = $paginator->paginate(
                 $joueurs_liste, // Requête contenant les données à paginer (ici nos articles)
                 $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
                 10 // Nombre de résultats par page
             );
+
 
             $response = new Response($this->renderView('game/players.html.twig', [
                 'joueurs' => $joueurs,
@@ -73,14 +66,8 @@ class GameController extends AbstractController
 
             return $response;
 
-
-            return $this->render($settings->get('theme') . '/game/players.html.twig', [
-                'joueurs' => $joueurs,
-                'max' => $total_page,
-                'page_actuel' => $page
-            ]);
         } else {
-            return $this->render($settings->get('theme') . '/game/players.html.twig', [
+            return $this->render('game/players.html.twig', [
                 'serveur_statut' => false
             ]);
         }
