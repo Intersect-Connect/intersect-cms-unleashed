@@ -18,7 +18,7 @@ class GameController extends AbstractController
     /**
      * @Route("/players", name="game.players.liste",  requirements={"_locale": "en|fr"})
      */
-    public function listeJoueurs(Api $api, $page = 0, PaginatorInterface $paginator, Request $request): Response
+    public function listeJoueurs(Api $api, $page = 0, PaginatorInterface $paginator, Request $request, CmsSettings $settings): Response
     {
         $serveur_statut = $api->ServeurStatut();
 
@@ -54,7 +54,7 @@ class GameController extends AbstractController
             );
 
 
-            $response = new Response($this->renderView('game/players.html.twig', [
+            $response = new Response($this->renderView($settings->get('theme') . 'game/players.html.twig', [
                 'joueurs' => $joueurs,
                 'max' => $total_page,
                 'page_actuel' => $page
@@ -67,7 +67,7 @@ class GameController extends AbstractController
             return $response;
 
         } else {
-            return $this->render('game/players.html.twig', [
+            return $this->render($settings->get('theme') . '/game/players.html.twig', [
                 'serveur_statut' => false
             ]);
         }
@@ -88,7 +88,7 @@ class GameController extends AbstractController
                 $joueurs_liste[] = ['name' => $joueur['Name'], 'level' => $joueur['Level'], 'exp' => $joueur['Exp'], 'expNext' => $joueur['ExperienceToNextLevel']];
             }
 
-            $response = new Response($this->renderView('game/online.html.twig', [
+            $response = new Response($this->renderView($settings->get('theme') . 'game/online.html.twig', [
                 'joueurs' => $joueurs_liste,
             ]));
 
@@ -128,7 +128,7 @@ class GameController extends AbstractController
                 }
             }
 
-            $response = new Response($this->renderView('game/level_rank.html.twig', [
+            $response = new Response($this->renderView($settings->get('theme') . '/game/level_rank.html.twig', [
                   'joueurs' => $joueurs_liste,
             ]));
 
