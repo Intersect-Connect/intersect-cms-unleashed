@@ -54,7 +54,7 @@ class GameController extends AbstractController
             );
 
 
-            $response = new Response($this->renderView($settings->get('theme') . 'game/players.html.twig', [
+            $response = new Response($this->renderView($settings->get('theme') . '/game/players.html.twig', [
                 'joueurs' => $joueurs,
                 'max' => $total_page,
                 'page_actuel' => $page
@@ -88,7 +88,7 @@ class GameController extends AbstractController
                 $joueurs_liste[] = ['name' => $joueur['Name'], 'level' => $joueur['Level'], 'exp' => $joueur['Exp'], 'expNext' => $joueur['ExperienceToNextLevel']];
             }
 
-            $response = new Response($this->renderView($settings->get('theme') . 'game/online.html.twig', [
+            $response = new Response($this->renderView($settings->get('theme') . '/game/online.html.twig', [
                 'joueurs' => $joueurs_liste,
             ]));
 
@@ -98,9 +98,6 @@ class GameController extends AbstractController
 
             return $response;
 
-            return $this->render($settings->get('theme') . '/game/online.html.twig', [
-                'joueurs' => $joueurs_liste,
-            ]);
         } else {
             return $this->render($settings->get('theme') . '/game/online.html.twig', [
                 'serveur_statut' => false
@@ -137,10 +134,7 @@ class GameController extends AbstractController
             $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
 
             return $response;
-
-            return $this->render($settings->get('theme') . '/game/level_rank.html.twig', [
-                'joueurs' => $joueurs_liste,
-            ]);
+            
         } else {
             return $this->render($settings->get('theme') . '/game/level_rank.html.twig', [
                 'serveur_statut' => false
