@@ -6,6 +6,8 @@ Current version: pre-2.2
 Supporting the Creator: https://www.paypal.me/thomaaasfds
 
  -------------------------
+
+ [![Codacy Badge](https://app.codacy.com/project/badge/Grade/334647c6a15641a18a4a03510b0c9ab7)](https://www.codacy.com/gh/Thomasfds/intersect-cms-unleashed/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Thomasfds/intersect-cms-unleashed&amp;utm_campaign=Badge_Grade)
  
 # Intersect CMS Rework
 
