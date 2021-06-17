@@ -25,8 +25,25 @@ class AdminController extends AbstractController
         $total_players = null;
 
         if (isset($api->getAllUsers(0)['Total'])) {
-            $total_users = $api->getAllUsers(0)['Total'];
+            $total_users = $api->getAllUsers(0);
+            $moyenne_play = [];
+            $last_register = [];
+            $par_page = 30;
+            $total_page = floor($total_users['Total'] / $par_page);
+
+            for ($i = 0; $i <= $total_page; $i++) {
+                $users = $api->getAllUsers($i);
+                foreach ($users['Values'] as $user) {
+                    $last_register[] = ['id' => $user['Id'], 'username' => $user['Name'], 'date' => $user['RegistrationDate']];
+                    $moyenne_play[] = $user['PlayTimeSeconds'];
+                }
+            }
         }
+
+         usort($last_register, function ($a, $b) {
+                return $b['date'] > $a['date'];
+            });
+
 
         if (isset($api->getAllPlayers(0)['Total'])) {
             $total_players = $api->getAllPlayers(0)['Total'];
@@ -36,7 +53,7 @@ class AdminController extends AbstractController
         $server_info = [];
 
         if (!isset($server_request['error'])) {
-            $server_info['uptime'] = $server_request['uptime'];
+            $server_info['uptime'] = $server_request['uptime'] / 1000;
             $server_info['cps'] = $server_request['cps'];
             $server_info['connectedClients'] = $server_request['connectedClients'];
             $server_info['onlineCount'] = $server_request['onlineCount'];
@@ -45,11 +62,15 @@ class AdminController extends AbstractController
         }
 
         return $this->render($settings->get('theme') . '/admin/index.html.twig', [
-            'total_users' => $total_users,
+            'total_users' => $total_users['Total'],
             'total_players' => $total_players,
             'total_shop' => count($shop->findAll()),
             'total_news' => count($news->findAll()),
-            'server_info' => $server_info
+            'server_info' => $server_info,
+            'total_playTime' => array_sum($moyenne_play),
+            'moyenne_play' => array_sum($moyenne_play) / count($moyenne_play),
+            'last_register' => $last_register,
+            'online_players' => $api->onlinePlayers()
         ]);
     }
 
@@ -370,7 +391,8 @@ class AdminController extends AbstractController
                 }
             }
         }
-                dd(json_encode($api->getUserIp($user)));
+
+        // dd($api->getUser($user));
 
 
         return $this->render($setting->get('theme') . '/admin/account/detail.html.twig', [
@@ -432,14 +454,14 @@ class AdminController extends AbstractController
 
         $bank = $api->getBank($character);
         $bank_list = [];
-
+        $bag_list = [];
 
         foreach ($inventory as $item) {
             if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
                 $object = $api->getObjectDetail($item['ItemId']);
                 if ($item['BagId'] != null) {
                     $bag_items = $api->getBag($item['BagId']);
-                    $bag_list = [];
+
                     foreach ($bag_items['Slots'] as $item) {
                         if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
                             $object = $api->getObjectDetail($item['ItemId']);
@@ -474,7 +496,6 @@ class AdminController extends AbstractController
                 ];
             }
         }
-        dd(json_encode($api->getPlayerActivity($character)));
 
         return $this->render($setting->get('theme') . '/admin/account/character.html.twig', [
             'player' => $api->getCharacter($character),

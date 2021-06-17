@@ -1,23 +1,19 @@
-{% extends settings.get("theme") ~'/base_admin.html.twig' %}
+{% extends settings.get("theme") ~'/admin.html.twig' %}
 
 {% block title %}{{'Créer une page'|trans}}{% endblock %}
 
 {% block body %}
 
-<div class="card bg-transparent">
-  <div class="card-header p-0 bg-transparent">
-    <h1>{{'Créer une page'|trans}}</h1>
-    <ul id="breadcrump">
-            <li><a href="{{path('admin')}}">{{"Administration"|trans}}</a></li>
-      <li><a href="{{path('cms_pages_index')}}">{{"Gérer les pages"|trans}}</a></li>
-      <li>{{'Créer une page'|trans}}</li>
-    </ul>
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">{{'Créer une page'|trans}}</h6>
   </div>
-  <div class="card-body bg-white">
+  <div class="card-body">
     {{ include(settings.get("theme") ~'/admin/cms_pages/_form.html.twig') }}
-    <a class="btn btn-sm btn-primary" href="{{ path('cms_pages_index') }}">{{"Retour à la liste"|trans}}</a>
+    <a class="btn btn-primary btn-block mt-3" href="{{ path('cms_news_index') }}">{{"Retour à la liste"|trans}}</a>
   </div>
 </div>
+
 {% endblock %}
 
 {% block javascripts %}

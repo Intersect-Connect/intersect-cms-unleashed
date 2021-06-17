@@ -1,21 +1,16 @@
-{% extends settings.get("theme") ~'/base_admin.html.twig' %}
+{% extends settings.get("theme") ~'/admin.html.twig' %}
 
 {% block title %}{{"Liste des items"|trans}}{% endblock %}
 
 {% block body %}
 
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">{{'Liste des items'|trans}}</h6>
+  </div>
+  <div class="card-body">
 
-<section id="news">
-  <div class="card border-0">
-    <div class="card-header p-0 border-0">
-      <h1>{{"Liste des items"|trans}}</h1>
-
-      <ul id="breadcrump">
-            <li><a href="{{path('admin')}}">{{"Administration"|trans}}</a></li>
-        <li>{{"Liste des items"|trans}}</li>
-      </ul>
-    </div>
-    <div class="card-body border-0">
+    <div class="table-responsive">
       <table class="ladder table table-striped py-3">
         <thead>
           <tr>
@@ -43,13 +38,12 @@
         <ul class="pagination p-3 overflow-auto">
           {% for i in 0..total_page %}
           <li class="page-item  {% if page_actuel == i %}active{% endif %}">
-            <a class="page-link" data-page="{{i}}" href="{{path('admin.items', {"page":i})}}">{{ i + 1}}</a>
+            <a class="page-link" data-page="{{i}}" href="{{path('admin.items', {" page":i})}}">{{ i + 1}}</a>
           </li>
           {% endfor %}
         </ul>
       </nav>
     </div>
   </div>
-
-</section>
+</div>
 {% endblock %}

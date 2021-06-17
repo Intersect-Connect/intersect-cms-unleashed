@@ -18,10 +18,10 @@ class CmsPagesType extends AbstractType
         $builder
             ->add('category', ChoiceType::class, [
                 'choices' => ['Game' => 'game', 'Wiki' => "wiki", "Legal" => "Legal"],
-                'attr' => ['class' => 'w-100']
+                'attr' => ['class' => 'w-100 form-control']
             ])
             ->add('name', TextType::class, [
-                'attr' => ['class' => 'w-100']
+                'attr' => ['class' => 'w-100 form-control']
             ])
             ->add('content', TextareaType::class, [
                 'attr' => ['aria-hidden' => false],

@@ -16,7 +16,7 @@ class CmsNewsType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'attr' => ['class' => 'w-100']
+                'attr' => ['class' => 'form-control w-100']
             ])
             ->add('content', TextareaType::class, [
                 'attr' => ['aria-hidden' => false],

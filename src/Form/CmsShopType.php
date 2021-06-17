@@ -18,20 +18,20 @@ class CmsShopType extends AbstractType
     {
         $builder
             ->add('idItem', TextType::class, [
-                'attr' => ['class' => 'w-100']
+                'attr' => ['class' => 'w-100 form-control']
             ])
             ->add('price', NumberType::class, [
-                'attr' => ['class' => 'w-100']
+                'attr' => ['class' => 'w-100 form-control']
             ])
             ->add('forceddescription', TextareaType::class, [
                 'attr' => ['aria-hidden' => false],
                 'required' => false
             ])
             ->add('quantity', NumberType::class, [
-                'attr' => ['class' => 'w-100']
+                'attr' => ['class' => 'w-100 form-control']
             ])
             ->add('promotion', NumberType::class, [
-                'attr' => ['class' => 'w-100']
+                'attr' => ['class' => 'w-100 form-control']
             ])
             ->add('visible', CheckboxType::class, [
                 'attr' => ['class' => 'form-check-input'],

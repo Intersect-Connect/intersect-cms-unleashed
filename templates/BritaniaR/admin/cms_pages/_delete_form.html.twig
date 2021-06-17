@@ -1,4 +1,4 @@
 <form method="post" class="mt-n3" action="{{ path('cms_pages_delete', {'id': cms_page.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cms_page.id) }}">
-    <button class="btn btn-danger mt-n5">{{"Supprimer"|trans}}</button>
+    <button class="btn btn-danger mt-4 btn-block">{{"Supprimer"|trans}}</button>
 </form>

@@ -1,31 +1,25 @@
-{% extends settings.get("theme") ~'/base_admin.html.twig' %}
+{% extends settings.get("theme") ~'/admin.html.twig' %}
 
 {% block title %}{{"Modifier un article dans la boutique VIP"|trans}}{% endblock %}
 
 {% block body %}
-<div class="card">
-  <div class="card-header p-0">
-    <h1>{{"Modifier un article dans la boutique VIP"|trans}}</h1>
+
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">{{'Modifier un article dans la boutique VIP'|trans}}</h6>
   </div>
   <div class="card-body">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb p-2">
-        <li class="breadcrumb-item"><a href="{{path('admin')}}">{{"Administration"|trans}}</a></li>
-        <li class="breadcrumb-item"><a href="{{path('cms_shop_index')}}">{{"Gérer la boutique"|trans}}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{'Modifier un article dans la boutique VIP'|trans}}</li>
-      </ol>
-    </nav>
     {{ include(settings.get("theme") ~'/admin/cms_shop/_form.html.twig') }}
-    
-    {{ include(settings.get("theme") ~'/admin/cms_shop/_delete_form.html.twig') }}
-    <a class="btn btn-sm btn-primary" href="{{ path('cms_shop_index') }}">{{"Retour à la liste"|trans}}</a>
+    {{ include(settings.get("theme") ~'/admin/cms_shop/_delete_form.html.twig') }} <a
+      class="btn btn-primary btn-block mt-3" href="{{ path('cms_shop_index') }}">{{"Retour à la liste"|trans}}</a>
   </div>
 </div>
 {% endblock %}
 
 {% block javascripts %}
-<script src='https://cdn.tiny.cloud/1/{{ settings.get("tinymce_key") }}/tinymce/5/tinymce.min.js' referrerpolicy="origin">
-</script>
+<script src='https://cdn.tiny.cloud/1/{{ settings.get("tinymce_key") }}/tinymce/5/tinymce.min.js'
+  referrerpolicy="origin">
+  </script>
 <script>
   tinymce.init({
     selector: 'textarea',

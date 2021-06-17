@@ -221,8 +221,7 @@
 				{% block body %}{% endblock %}
 			</div>
 			<aside>
-				{{ render(controller('App\\Controller\\HomeController::aside')) }}
-
+				{% include settings.get('theme') ~ "/includes/aside.html.twig" %}
 			</aside>
 
 		</main>
@@ -238,7 +237,8 @@
 				</strong>. <br>
 				<a href="{{path('game.pages', {"slug":'legal-notice'})}}">{{"Mentions légales"|trans}}</a> | 
 				<a href="{{path('game.pages', {"slug":'legal-notice'})}}">{{"Conditions Générales de Ventes"|trans}}</a> |
-				<a href="{{path('game.pages', {"slug":'legal-notice'})}}">{{"Confidentialités"|trans}}</a>
+				<a href="{{path('game.pages', {"slug":'legal-notice'})}}">{{"Confidentialités"|trans}}</a> | Version 2.2
+			</p>
 		</div>
 	</footer>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

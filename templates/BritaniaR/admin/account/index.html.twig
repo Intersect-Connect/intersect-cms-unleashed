@@ -1,20 +1,15 @@
-{% extends settings.get("theme") ~'/base_admin.html.twig' %}
+{% extends settings.get("theme") ~'/admin.html.twig' %}
 
 {% block title %}{{"Liste des comptes"|trans}}{% endblock %}
 
 {% block body %}
-<section id="news">
-    <div class="card border-0">
-        <div class="card-header p-0 border-0">
-            <h1>{{"Liste des comptes"|trans}}</h1>
 
-            <ul id="breadcrump">
-                <li><a href="/admin">Administration</a></li>
-                <li>{{"Liste des comptes"|trans}}</li>
-            </ul>
-        </div>
-        <div class="card-body border-0">
-
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">{{'Liste des comptes'|trans}}</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
             <div class="alert alert-warning text-dark" role="alert">
                 <h4 class="alert-heading text-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
@@ -94,19 +89,18 @@
                     {% endfor %}
                 </tbody>
             </table>
-                <nav aria-label="Pagination de la liste des joueurs">
-                    <ul class="pagination p-3 overflow-auto">
-                        {% for i in 0..total_page %}
-                        <li class="page-item  {% if page_actuel == i %}active{% endif %}">
-                            <a class="page-link" data-page="{{i}}" href="{{path('admin.account', {"page":i})}}">{{ i + 1}}</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </nav>
+            <nav aria-label="Pagination de la liste des joueurs">
+                <ul class="pagination p-3 overflow-auto">
+                    {% for i in 0..total_page %}
+                    <li class="page-item  {% if page_actuel == i %}active{% endif %}">
+                        <a class="page-link" data-page="{{i}}" href="{{path('admin.account', {" page":i})}}">{{ i +
+                            1}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </nav>
         </div>
     </div>
+</div>
 
-
-</section>
 {% endblock %}
-
