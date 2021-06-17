@@ -16,7 +16,7 @@
                             {{"Joueurs"|trans}}
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                            {{total_users}}
+                            {% if total_users is not null %}  {{total_users}} {% else %} <div class="alert alert-info">Server offline</div> {% endif %}
                         </div>
                     </div>
                 </div>

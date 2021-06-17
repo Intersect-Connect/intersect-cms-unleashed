@@ -186,7 +186,7 @@ class Api
 
         if (isset($user['Message']) && $user['Message'] == "Authorization has been denied for this request.") {
             $this->setToken();
-        $nationPoint = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/variables/global/' . $id);
+            $nationPoint = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/variables/global/' . $id);
         }
 
         return $nationPoint;
@@ -371,7 +371,11 @@ class Api
             $this->setToken();
             $online = $this->APIcall_POST($this->getServer(), $data, $this->getToken(), '/api/v1/players/online');
         }
-        return $online['entries'];
+        if (isset($online['entries'])) {
+            return $online['entries'];
+        } else {
+            return null;
+        }
     }
 
     /**

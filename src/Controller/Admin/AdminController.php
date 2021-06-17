@@ -23,11 +23,12 @@ class AdminController extends AbstractController
     {
         $total_users = null;
         $total_players = null;
+        $moyenne_play = [];
+        $last_register = [];
 
         if (isset($api->getAllUsers(0)['Total'])) {
             $total_users = $api->getAllUsers(0);
-            $moyenne_play = [];
-            $last_register = [];
+
             $par_page = 30;
             $total_page = floor($total_users['Total'] / $par_page);
 
@@ -40,9 +41,13 @@ class AdminController extends AbstractController
             }
         }
 
-         usort($last_register, function ($a, $b) {
+        if ($last_register != null) {
+            usort($last_register, function ($a, $b) {
                 return $b['date'] > $a['date'];
             });
+        }
+
+
 
 
         if (isset($api->getAllPlayers(0)['Total'])) {
@@ -61,14 +66,17 @@ class AdminController extends AbstractController
             $server_info = null;
         }
 
+                //    $total_users['Total'] != null ? $total_users['Total'] : null;
+
+
         return $this->render($settings->get('theme') . '/admin/index.html.twig', [
-            'total_users' => $total_users['Total'],
+            'total_users' => $total_users != null ? $total_users['Total'] : null,
             'total_players' => $total_players,
             'total_shop' => count($shop->findAll()),
             'total_news' => count($news->findAll()),
             'server_info' => $server_info,
             'total_playTime' => array_sum($moyenne_play),
-            'moyenne_play' => array_sum($moyenne_play) / count($moyenne_play),
+            'moyenne_play' => array_sum($moyenne_play) > 0 ? array_sum($moyenne_play) / count($moyenne_play) : null,
             'last_register' => $last_register,
             'online_players' => $api->onlinePlayers()
         ]);
