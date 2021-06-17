@@ -18,10 +18,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @IsGranted("ROLE_ADMIN")
- *
- * or use @Security for more flexibility:
- *
- * @Security("is_granted('ROLE_ADMIN')")
  */
 
 class AdminController extends AbstractController
