@@ -1,6 +1,7 @@
 Current version: pre-2.2
 
-# This branch is for developpement and this are frequently updated !
+## Status : Ready for use from upgrade or new installation
+## Do not clone the repo for an online launch of your project Download the package.
 
 Supporting the Creator: https://www.paypal.me/thomaaasfds
 
