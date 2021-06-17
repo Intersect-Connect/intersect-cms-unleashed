@@ -9,6 +9,7 @@ Supporting the Creator: https://www.paypal.me/thomaaasfds
  
 # Intersect CMS Rework
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/20694175670d4167b4fab125c0108e04)](https://app.codacy.com/gh/Thomasfds/intersect-cms-unleashed?utm_source=github.com&utm_medium=referral&utm_content=Thomasfds/intersect-cms-unleashed&utm_campaign=Badge_Grade_Settings)
 [![N|Solid](https://s3.us-east-2.amazonaws.com/ascensiongamedev/filehost/a4727b61d3221e25d4960d124f383986.png)](https://www.freemmorpgmaker.com/)
 
 IntersectCMS uses the Intersect Engine API to process data as simply as possible through a web interface. Whether you use the sqlite or mysql database, this CMS will automatically adapt itself thanks to the game engine API. Part of the CMS uses a MySQL database, so it is necessary to have one for the proper functioning of the site's functionalities.
