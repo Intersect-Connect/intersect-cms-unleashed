@@ -59,12 +59,19 @@
         <h1 class="text-center mb-3">
             {{player.Name}}
         </h1>
+
+        {% if player.MapName is defined and player.MapName is not null %}
         <h2 class="text-center mb-3">
             {{"Position"|trans}} {{player.MapName}}
         </h2>
+        {% endif %}
+
+        {% if player.PlayTimeSeconds is defined and player.PlayTimeSeconds is not null %}
         <h2 class="text-center mb-3">
             {{"Temps de jeu"|trans}} : {{player.PlayTimeSeconds|ago}}
         </h2>
+        {% endif %}
+
         <label>
             {{"Vie"|trans}} : {{player.Vitals[0]}} / {{player.MaxVitals[0]}}
 
@@ -127,7 +134,7 @@
         {% for item in inventory %}
         <img src="{{asset('assets/general/gamedata/items/' ~ item.icon)}}" class="inventory slot" alt=""
             data-toggle="tooltip" data-placement="top" data-html="true" data-bs-trigger="hover focus"
-            data-id="{{item.id}}" title="{{item.name}}" data-content="<p>Quantité : {{item.quantity}}</p>">
+            data-id="{{item.id}}" title="{{item.name}} x{{item.quantity}}" data-content="<p>Quantité : {{item.quantity}}</p>">
 
         <!-- Modal for admin action in inventory -->
         <div class="modal fade" id="inventory-{{item.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -176,7 +183,7 @@
 
         {% for item in bank %}
         <img src="{{asset('assets/general/gamedata/items/' ~ item.icon)}}" class="slot mt-5" alt=""
-            data-toggle="tooltip" data-placement="top" data-html="true" data-trigger="hover focus" title="{{item.name}}"
+            data-toggle="tooltip" data-placement="top" data-html="true" data-trigger="hover focus" title="{{item.name}} x{{item.quantity}}"
             data-content="<p>Quantité(s) : {{item.quantity}}</p>">
         {% else %}
         <div class="alert alert-info text-dark">
@@ -191,7 +198,7 @@
         {% if bag is defined %}
         {% for item in bag %}
         <img src="{{asset('assets/general/gamedata/items/' ~ item.icon)}}" class="slot mt-5" alt=""
-            data-toggle="tooltip" data-placement="top" data-html="true" data-trigger="hover focus" title="{{item.name}}"
+            data-toggle="tooltip" data-placement="top" data-html="true" data-trigger="hover focus" title="{{item.name}} x{{item.quantity}}"
             data-content="<p>Quantité(s) : {{item.quantity}}</p>">
         {% else %}
         <div class="alert alert-info text-dark">
@@ -209,5 +216,5 @@
 {% endblock %}
 
 {% block javascripts %}
-<script src="{{asset('assets/themes/' ~ settings.get("theme") ~ '/js/admin/character_details.min.js' )}}"></script>
+<script src="{{asset('assets/themes/' ~ settings.get(" theme") ~ '/js/admin/character_details.min.js' )}}"></script>
 {% endblock %}

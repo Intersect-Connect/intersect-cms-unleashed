@@ -45,14 +45,14 @@
                         </li>
 
 
-                        {% if user.PlayTimeSeconds is not null %}
+                        {% if user.PlayTimeSeconds is defined and user.PlayTimeSeconds is not null %}
                         <li class="list-group-item">
                             {{"Temps de jeu"|trans}} : ~ {{user.PlayTimeSeconds|ago}}
                         </li>
                         {% endif %}
 
 
-                        {% if user.RegistrationDate is not null %}
+                        {% if user.RegistrationDate is defined and user.RegistrationDate is not null %}
                         <li class="list-group-item">
                             {{"Date d'inscription"}} : {{user.RegistrationDate|date('d/m/Y')}}
                         </li>
