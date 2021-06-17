@@ -99,6 +99,7 @@
     width: 5rem;
     top: 0;
   }
+
   .languageDropdown.login {
     position: absolute;
     right: 39rem;
@@ -116,6 +117,7 @@
     width: 5rem;
     top: 0;
   }
+
   .languageDropdown.login {
     position: absolute;
     right: 13.5rem;
@@ -176,7 +178,7 @@ main article.card .card-footer {
 
 .search {
   -webkit-box-shadow: none !important;
-          box-shadow: none !important;
+  box-shadow: none !important;
   padding: 0.5rem !important;
 }
 
@@ -185,42 +187,18 @@ main article.card .card-footer {
 }
 
 /********** FOOTER **********/
-/* footer {
-    color: #efefef;
-    font-size: 11px;
-    opacity: .4;
-    text-align: right;
-    padding: 20px 5px;
-} */
+
 footer {
   width: 100%;
-  height: 160px;
-  background: #0f1d33;
+  height: 85px;
+  background-color: #335580;
   opacity: 1 !important;
   color: white;
 }
 
-@media (min-width: 576px) {
+@media (max-width: 575.98px) {
   footer {
-    height: 85px;
-  }
-}
-
-@media (min-width: 576px) and (orientation: landscape) {
-  footer {
-    height: 135px;
-  }
-}
-
-@media (min-width: 768px) and (orientation: portrait) {
-  footer {
-    height: 110px;
-  }
-}
-
-@media (min-width: 1400px) {
-  footer {
-    height: 85px;
+    height: 160px;
   }
 }
 
@@ -244,4 +222,5 @@ footer a {
   background: gray;
   margin-bottom: 1rem;
 }
+
 /*# sourceMappingURL=custom.css.map */
