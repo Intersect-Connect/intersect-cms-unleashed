@@ -91,10 +91,10 @@ CREATE TABLE `cms_settings` (
 --
 
 INSERT INTO `cms_settings` (`id`, `setting`, `default_value`, `description`) VALUES
-(1, 'api_password', 'cd0cd607d6df1a3855f7441b6b02824989d7e3901121ac2d6450075aa54065dc', 'API Password'),
-(2, 'api_server', 'http://server.thewalking2d.fr:5800', 'API Server'),
-(3, 'api_token', '8LTzg1Dlu-Mj27Gs-bEJ3ToqON_R08HFBCBL7JBtAUZccq2AO4V5AEVWnx1kl7Yuq-m0fwvGXoezzu75jNK3Hp7tbB79Rr7Tuhnzw9ES0Wyp1AzEPrRxVgRLeMX6p55cV97oqDOzgJF6ZgjsNtOdZDiwOITyEFqBhglqsKLgFaPh1WQRXL2Xs8OCGowZSgYcOy9Cljqu3kp2xEzrTX2SmZ2YFrFoMRYpBOYPI-AGmV3tpJd6fMgJNqNGiKndxBhrzGszhxGHZocb_o59lVT7qZdyI74KQvv14i0FAwhIOgbz4K55plCd51IywKr2zKJuS4p1dIkJLjQcVjxp88g1kc25k3kNTEP_k2M6oCtnhYrqqaygWfGmGIzu8XD15WPKPwcwgCOqRprCg6LRlCbdnF8UBKmmmTsAEK1nukcHddpt6zqEsoe0eGjx6yFa43n-Sz-8Kjql3DT_Kv1mS9B3-4VhO_BdfNscbfYltlDQMZvEg73DbLhEDYbh82e0dx9osbunJCXPFgoOt0phJSkARZ5heO5sAcUSkQ2DjDZO3vpiaHHV0TTb6_QeUav76d2A4i9gOckOLmpJr4fqi7tHtLrIzp2ys9heRxanIyTzQrthpM_FOh_oKvfiyWh3iCru', 'Token API'),
-(4, 'api_username', 'API', 'API User'),
+(1, 'api_password', 'password_account_api', 'API Password'),
+(2, 'api_server', 'http://yourserver:yourport', 'API Server'),
+(3, 'api_token', '', 'Token API'),
+(4, 'api_username', 'username_account_api', 'API User'),
 (5, 'base_url', 'http://intersectcms-rework.teste/', 'CMS Base URL'),
 (7, 'credit_dedipass_private_key', 'ff5d27e41f27baa414bb62633474066fd072047a', 'Dedipass private key'),
 (8, 'credit_dedipass_public_key', '7992623d79b6598878f1166d10a71856', 'Dedipass public key'),
