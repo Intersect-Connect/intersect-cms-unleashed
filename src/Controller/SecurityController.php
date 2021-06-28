@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -70,10 +71,10 @@ class SecurityController extends AbstractController
                      $url = $this->generateUrl('passwordResetRequest.new',['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
                     $email = (new TemplatedEmail())
-                        ->from('hello@example.com')
+                        ->from(new Address("hello@example.com", "Your Name"))
                         ->to($user->getEmail())
                         ->subject($translator->trans('Demande de nouveau mot de passe'))
-                        ->htmlTemplate('emails/password-reset.html.twig')
+                        ->htmlTemplate($settings->get('theme') . '/emails/password-reset.html.twig')
                         ->context([
                             'username' => $user->getUsername(),
                             'url' => $url,
