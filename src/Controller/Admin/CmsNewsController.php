@@ -13,9 +13,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
- * @Route("admin/news")
+ * @IsGranted("ROLE_ADMIN")
+ * @Route("admin/news/")
  */
 class CmsNewsController extends AbstractController
 {

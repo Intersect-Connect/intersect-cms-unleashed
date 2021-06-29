@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CmsSettings;
+use App\Repository\CmsNewsCategoryRepository;
 use App\Repository\CmsNewsRepository;
 use App\Repository\CmsPagesRepository;
 use App\Repository\CmsSettingsRepository;
@@ -25,7 +26,7 @@ class HomeController extends AbstractController
         if ($serveur_statut['success']) {
             $serveur_online = true;
 
-            return $this->render($settings->get('theme') .'/includes/aside.html.twig', [
+            return $this->render($settings->get('theme') . '/includes/aside.html.twig', [
                 'serveur_online' => $serveur_online,
                 'players_count' => $serveur_statut['online'],
                 'news' => $newRepo->findBy([], ['id' => 'DESC'], 5)
@@ -93,16 +94,26 @@ class HomeController extends AbstractController
     /**
      *  @Route("/news", name="home.news",  requirements={"_locale": "en|fr"})
      */
-    public function newsLists(CmsNewsRepository $newsRepo, PaginatorInterface $paginator, Request $request, SettingsCmsSettings $settings): Response
+    public function newsLists(CmsNewsRepository $newsRepo, PaginatorInterface $paginator, Request $request, SettingsCmsSettings $settings, CmsNewsCategoryRepository $categoryRepo): Response
     {
-        $news = $paginator->paginate(
-            $newsRepo->findBy([], ['id' => 'DESC']), // Requête contenant les données à paginer (ici nos articles)
-            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
-            6 // Nombre de résultats par page
-        );
+        if ($request->query->get('category')) {
+            $news = $paginator->paginate(
+                $newsRepo->findBy(['category' => $request->query->get('category')], ['id' => 'DESC']), // Requête contenant les données à paginer (ici nos articles)
+                $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+                6 // Nombre de résultats par page
+            );
+        } else {
+            $news = $paginator->paginate(
+                $newsRepo->findBy([], ['id' => 'DESC']), // Requête contenant les données à paginer (ici nos articles)
+                $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+                6 // Nombre de résultats par page
+            );
+        }
+
 
         return $this->render($settings->get('theme') . '/home/news.html.twig', [
             'news' => $news,
+            'categorys' => $categoryRepo->findAll()
         ]);
     }
 
