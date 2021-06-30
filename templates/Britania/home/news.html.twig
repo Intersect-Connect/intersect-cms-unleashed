@@ -28,7 +28,7 @@
 
 <section class="bg-white p-3">
     {% for news in news %}
-
+<a href="{{path('news.read', {'id':news.id, 'slug':news.slug})}}" class="text-white">
     <div class="row border-bottom mt-3">
         <div class="col-sm-4 grid-margin">
             <div class="position-relative">
@@ -43,13 +43,12 @@
                 {{news.title}}
             </h1>
 
-            <div class="fs-13 mb-2">
-                {{ 'Publié le'|trans }} <strong>{{ news.date|date('d/m/Y') }}</strong> {{ 'par'|trans }} <strong>{{
-                    news.author
-                    }}</strong>.
+            <div class="fs-13 mb-2 text-dark">
+                {{ 'Publié le'|trans }} <strong>{{ news.date|date('d/m/Y') }}</strong> {{ 'par'|trans }}.
             </div>
         </div>
     </div>
+</a>
     {% endfor %}
 
     <div class="bg-white p-2 mt-3">
