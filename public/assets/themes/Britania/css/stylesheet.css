@@ -1345,7 +1345,7 @@ main article .header h2 {
 	font-family: 'proxima-nova_bold', Helvetica, Arial, sans-serif;
 	width: 100%;
 	position: absolute;
-	bottom: 0;
+	bottom: 40px;
 	font-weight: 400;
 	letter-spacing: 0.5px;
 	text-shadow: 0 0 5px #000000, 0 0 3px #000000, 0 0 1px #000000;

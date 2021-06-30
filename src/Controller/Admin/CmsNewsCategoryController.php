@@ -40,9 +40,6 @@ class CmsNewsCategoryController extends AbstractController
             $color = $request->request->get('color');
 
             if (isset($name) && !empty($name) && isset($color) && !empty($color)) {
-
-                
-
                 $newCategory = new CmsNewsCategory();
                 $newCategory->setName($name);
                 $entityManager->persist($newCategory);

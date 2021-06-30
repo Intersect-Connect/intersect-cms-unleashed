@@ -35,6 +35,8 @@
         </a>
         <div id="collapseNews" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{path('cms_news_category')}}">{{"Liste des catégories"|trans}}</a>
+                <a class="collapse-item" href="{{path('cms_news_category.new')}}">{{"Créer une catégorie"|trans}}</a>
                 <a class="collapse-item" href="{{path('cms_news_index')}}">{{"Liste des news"|trans}}</a>
                 <a class="collapse-item" href="{{path('cms_news_new')}}">{{"Créer un article"|trans}}</a>
             </div>
@@ -92,7 +94,7 @@
 
     <li class="nav-item">
         <a class="nav-link" href="{{path('admin.items')}}">
-           <i class="fas fa-database"></i>
+            <i class="fas fa-database"></i>
             <span>{{"Voir la liste des items"|trans}}</span>
         </a>
     </li>

@@ -4,12 +4,10 @@ namespace App\Controller;
 
 use App\Settings\Api;
 use App\Settings\CmsSettings;
-use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Filesystem\Filesystem;
-use Knp\Component\Pager\PaginatorInterface; // Nous appelons le bundle KNP Paginator
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 

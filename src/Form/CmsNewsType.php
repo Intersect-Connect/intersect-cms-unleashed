@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\CmsNews;
+use App\Entity\CmsNewsCategory;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -26,6 +28,11 @@ class CmsNewsType extends AbstractType
                 "data_class" => null,
                 'required' => false,
                  'mapped' => false,
+            ])
+            ->add('category', EntityType::class, [
+                'class' => CmsNewsCategory::class,
+                'choice_label' => 'name',
+                'attr' => ['class' => 'form-control']
             ])
         ;
     }

@@ -7,6 +7,12 @@
     {{ form_widget(form.title) }}
 </div>
 <div class="form-group mt-3 mb-3">
+    <label for="cms_news_content">
+        {{"Sélectionnez une catégorie"|trans}}
+    </label>
+    {{ form_widget(form.category) }}
+</div>
+<div class="form-group mt-3 mb-3">
     <label for="cms_news_imgUrl">
         {{"L'image de l'article"|trans}}
     </label>
