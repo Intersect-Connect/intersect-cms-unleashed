@@ -911,6 +911,70 @@
         <source>Entrez l'id de l'item</source>
         <target>Entrez l'id de l'item</target>
       </trans-unit>
+      <trans-unit id="SQ9XzUH" resname="Votre catégorie à bien été enregistré.">
+        <source>Votre catégorie à bien été enregistré.</source>
+        <target>Votre catégorie à bien été enregistré.</target>
+      </trans-unit>
+      <trans-unit id="JheThQm" resname="Ajouter un&#10;            item">
+        <source>Ajouter un
+            item</source>
+        <target>Ajouter un
+            item</target>
+      </trans-unit>
+      <trans-unit id="dma9y65" resname="Sélectionnez une catégorie">
+        <source>Sélectionnez une catégorie</source>
+        <target>Sélectionnez une catégorie</target>
+      </trans-unit>
+      <trans-unit id="wtO5Zrx" resname="Modifier une catégorie d'article">
+        <source>Modifier une catégorie d'article</source>
+        <target>Modifier une catégorie d'article</target>
+      </trans-unit>
+      <trans-unit id="a3wiUW." resname="Nom de la catégorie">
+        <source>Nom de la catégorie</source>
+        <target>Nom de la catégorie</target>
+      </trans-unit>
+      <trans-unit id="hacX94p" resname="Liste des catégories d'article">
+        <source>Liste des catégories d'article</source>
+        <target>Liste des catégories d'article</target>
+      </trans-unit>
+      <trans-unit id="TjiXpWc" resname="Créer une catégorie d'article">
+        <source>Créer une catégorie d'article</source>
+        <target>Créer une catégorie d'article</target>
+      </trans-unit>
+      <trans-unit id="8B.6aWR" resname="Créer une nouvelle&#10;            page">
+        <source>Créer une nouvelle
+            page</source>
+        <target>Créer une nouvelle
+            page</target>
+      </trans-unit>
+      <trans-unit id=".fgNDjf" resname="Créer un item">
+        <source>Créer un item</source>
+        <target>Créer un item</target>
+      </trans-unit>
+      <trans-unit id="7BkZ03h" resname="Liste des catégories">
+        <source>Liste des catégories</source>
+        <target>Liste des catégories</target>
+      </trans-unit>
+      <trans-unit id="3Oy2Ql6" resname="Créer une catégorie">
+        <source>Créer une catégorie</source>
+        <target>Créer une catégorie</target>
+      </trans-unit>
+      <trans-unit id="faEgt9H" resname="Liste des news">
+        <source>Liste des news</source>
+        <target>Liste des news</target>
+      </trans-unit>
+      <trans-unit id="OEk7epw" resname="Liste des transactions">
+        <source>Liste des transactions</source>
+        <target>Liste des transactions</target>
+      </trans-unit>
+      <trans-unit id="8MX92k1" resname="CPS">
+        <source>CPS</source>
+        <target>CPS</target>
+      </trans-unit>
+      <trans-unit id="Y6B9jrX" resname="Voir tous">
+        <source>Voir tous</source>
+        <target>Voir tous</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
