@@ -12,6 +12,9 @@
     <div id="news" class="mb-3">
         {% for news in news %}
         <article class="border shadow">
+             {% if news.category is not null %}
+            <div class="category_tag" style="background: rgb({{news.category.color|categoryColor}});"><span class="p-3">{{news.category.name}}</span></div>
+            {% endif %}
             <div class="header"
                 style="background-image:url('{{asset('assets/general/news/'~ news.imgUrl)|imagine_filter('general')}}');">
                 <h2>
@@ -20,10 +23,6 @@
                     {{news.title}}
                 </h2>
             </div>
-            <p>
-                {{ (news.content|striptags|length) > 380 ? ((news.content|striptags|slice(0, 380)) ~ '...')|raw :
-                (news.content|striptags|raw) }}
-            </p>
             <div class="footer">
                 {{ 'Publié le'|trans }} <strong>{{ news.date|date('d/m/Y') }}</strong> {{ 'par'|trans }} <strong>{{
                     news.author

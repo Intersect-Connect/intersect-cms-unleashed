@@ -248,3 +248,18 @@ footer a {
   background: gray;
   margin-bottom: 1rem;
 }
+
+.category_tag{
+padding: 0.2rem;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    min-width: 100px;
+    color: white;
+    max-width: 300px;
+
+    span{
+      color:white;
+      opacity: 1;
+    }
+}
