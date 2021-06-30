@@ -833,6 +833,66 @@
         <target>Your
                              current email address</target>
       </trans-unit>
+      <trans-unit id="80mS6Ss" resname="L'opération s'est bien passé.">
+        <source>L'opération s'est bien passé.</source>
+        <target>The operation went well.</target>
+      </trans-unit>
+      <trans-unit id="vgFu9A9" resname="Détail du personnage">
+        <source>Détail du personnage</source>
+        <target>Character detail</target>
+      </trans-unit>
+      <trans-unit id="wIqybnz" resname="Inventaire">
+        <source>Inventaire</source>
+        <target>Inventory</target>
+      </trans-unit>
+      <trans-unit id="n8OMIfw" resname="Sélectionnez l'action que vous souhaitez faire">
+        <source>Sélectionnez l'action que vous souhaitez faire</source>
+        <target>Select the action you want to do</target>
+      </trans-unit>
+      <trans-unit id="APnFM0V" resname="Ajouter">
+        <source>Ajouter</source>
+        <target>Add</target>
+      </trans-unit>
+      <trans-unit id="QeIu2TN" resname="Retirer">
+        <source>Retirer</source>
+        <target>Remove</target>
+      </trans-unit>
+      <trans-unit id="KSYuuFY" resname="Saisir une quantité">
+        <source>Saisir une quantité</source>
+        <target>Enter a quantity</target>
+      </trans-unit>
+      <trans-unit id="0B5hQ6b" resname="Envoyez">
+        <source>Envoyez</source>
+        <target>Send</target>
+      </trans-unit>
+      <trans-unit id="tRSwr6o" resname="Aucun item dans l'inventaire">
+        <source>Aucun item dans l'inventaire</source>
+        <target>No items in inventory</target>
+      </trans-unit>
+      <trans-unit id="5FRjt9W" resname="Banque">
+        <source>Banque</source>
+        <target>Bank</target>
+      </trans-unit>
+      <trans-unit id="7yNueum" resname="Aucun item en banque">
+        <source>Aucun item en banque</source>
+        <target>No items in bank</target>
+      </trans-unit>
+      <trans-unit id="278dwz7" resname="Sac à dos">
+        <source>Sac à dos</source>
+        <target>Bag</target>
+      </trans-unit>
+      <trans-unit id="gacdwzp" resname="Aucun item dans le sac à dos">
+        <source>Aucun item dans le sac à dos</source>
+        <target>No items in bag</target>
+      </trans-unit>
+      <trans-unit id="XzJcT6q" resname="Ajouter un item">
+        <source>Ajouter un item</source>
+        <target>Add a item</target>
+      </trans-unit>
+      <trans-unit id="JouWd7G" resname="Entrez l'id de l'item">
+        <source>Entrez l'id de l'item</source>
+        <target>Enter id of item</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

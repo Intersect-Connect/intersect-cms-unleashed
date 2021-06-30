@@ -6,6 +6,7 @@ use App\Entity\CmsShopHistory;
 use App\Repository\CmsShopRepository;
 use App\Repository\UserRepository;
 use App\Settings\Api;
+use App\Settings\CmsSettings;
 use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +20,7 @@ class ShopController extends AbstractController
     /**
      * @Route("/shop", name="shop.index",  requirements={"_locale": "en|fr"})
      */
-    public function index(CmsShopRepository $shopRepo, Api $api, PaginatorInterface $paginator, Request $request): Response
+    public function index(CmsShopRepository $shopRepo, Api $api, PaginatorInterface $paginator, Request $request, CmsSettings $settings): Response
     {
 
         $shopItems = $shopRepo->findBy(['visible' => true]);
@@ -63,7 +64,7 @@ class ShopController extends AbstractController
             6 // Nombre de résultats par page
         );
 
-        return $this->render('shop/index.html.twig', [
+        return $this->render($settings->get('theme') .'/shop/index.html.twig', [
             'shop' => $items,
         ]);
     }
@@ -71,7 +72,7 @@ class ShopController extends AbstractController
     /**
      * @Route("/shop/detail/{id}", name="shop.detail",  requirements={"_locale": "en|fr"})
      */
-    public function detail(CmsShopRepository $shopRepo, Request $request, Api $api, $id, TranslatorInterface $translator, UserRepository $userRepo): Response
+    public function detail(CmsShopRepository $shopRepo, Request $request, Api $api, $id, TranslatorInterface $translator, UserRepository $userRepo, CmsSettings $settings): Response
     {
         $shopItem = $shopRepo->find($id);
         $itemData = $api->getObjectDetail($shopItem->getIdItem());
@@ -138,7 +139,7 @@ class ShopController extends AbstractController
                 return $this->redirectToRoute('shop.detail', ['id' => $id]);
             }
         }
-        return $this->render('shop/detail.html.twig', [
+        return $this->render($settings->get('theme') .'/shop/detail.html.twig', [
             'item' => $item,
             'personnages' => $personnages
         ]);

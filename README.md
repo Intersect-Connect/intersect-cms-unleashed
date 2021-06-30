@@ -1,11 +1,13 @@
-Current version: 2.1
+Current version: 2.2
 
 ## Status : Ready for use from upgrade or new installation
-## Do not clone the repo for an online launch of your project. Download the package. 
+## Do not clone the repo for an online launch of your project Download the package.
 
 Supporting the Creator: https://www.paypal.me/thomaaasfds
 
  -------------------------
+
+ [![Codacy Badge](https://app.codacy.com/project/badge/Grade/334647c6a15641a18a4a03510b0c9ab7)](https://www.codacy.com/gh/Thomasfds/intersect-cms-unleashed/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Thomasfds/intersect-cms-unleashed&amp;utm_campaign=Badge_Grade)
  
  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/20694175670d4167b4fab125c0108e04)](https://app.codacy.com/gh/Thomasfds/intersect-cms-unleashed?utm_source=github.com&utm_medium=referral&utm_content=Thomasfds/intersect-cms-unleashed&utm_campaign=Badge_Grade_Settings)
  

@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends settings.get("theme") ~'/base.html.twig' %}
 
 {% block title %}{{"Actualités"|trans}}{% endblock %}
 
@@ -7,44 +7,53 @@
 <h1>
     {{ 'Actualités'|trans }}
 </h1>
-<ul id="breadcrump">
-	<li>
-		<a href="{{ path('home') }}">{{ 'Accueil'|trans }}</a>
-	</li>
-	<li>{{ 'Actualités'|trans }}</li>
+<ul id="breadcrump" class="mb-0">
+    <li>
+        <a href="{{ path('home') }}">{{ 'Accueil'|trans }}</a>
+    </li>
+    <li>{{ 'Actualités'|trans }}</li>
 </ul>
 
-<div id="news" class="mb-3">
+<ul class="nav justify-content-center bg-white border shadow rounded-0">
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{{path('home.news')}}">{{"Voir tous"|trans}}</a>
+    </li>
+
+    {% for category in categorys %}
+    <li class="nav-item">
+        <a class="nav-link" href="?category={{category.id}}">{{category.name}}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<section class="bg-white p-3">
     {% for news in news %}
-    <article>
-        <div class="header"
-            style="background-image:url('{{asset('assets/general/news/'~ news.imgUrl)|imagine_filter('general')}}');">
-            <h2>
-                <img src="{{asset('assets/themes/' ~ theme ~ '/img/i_news.png')}}" alt="Icône des articles"
-                    loading="lazy">
+
+    <div class="row border-bottom mt-3">
+        <div class="col-sm-4 grid-margin">
+            <div class="position-relative">
+                <div class="rotate-img">
+                    <img src="{{asset('assets/general/news/'~ news.imgUrl)|imagine_filter('general')}}" alt="thumb"
+                        class="img-fluid">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8  grid-margin">
+            <h1 class="mb-3 mb-md-5 font-weight-600">
                 {{news.title}}
-            </h2>
+            </h1>
+
+            <div class="fs-13 mb-2">
+                {{ 'Publié le'|trans }} <strong>{{ news.date|date('d/m/Y') }}</strong> {{ 'par'|trans }} <strong>{{
+                    news.author
+                    }}</strong>.
+            </div>
         </div>
-        <p>
-            {{ (news.content|striptags|length) > 380 ? ((news.content|striptags|slice(0, 380)) ~ '...')|raw :
-            (news.content|striptags|raw) }}
-        </p>
-        <div class="footer">
-            {{ 'Publié le'|trans }} <strong>{{ news.date|date('d/m/Y') }}</strong> {{ 'par'|trans }} <strong>{{
-                news.author
-                }}</strong>.
-            <a href="{{path('news.read', {'id':news.id, 'slug':news.slug})}}">
-                <img src="{{asset('assets/themes/' ~ theme ~ '/img/i_bulle.png')}}" alt="Icône bulle lire la suite"
-                    loading="lazy"> {{ 'Lire la suite'|trans }}
-            </a>
-        </div>
-    </article>
+    </div>
     {% endfor %}
 
-    <div class="clear"></div>
-
-    <div class="bg-white p-3">
+    <div class="bg-white p-2 mt-3">
         {{ knp_pagination_render(news) }}
     </div>
-</div>
+</section>
 {% endblock %}

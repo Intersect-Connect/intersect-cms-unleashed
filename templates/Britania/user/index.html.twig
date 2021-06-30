@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends settings.get("theme") ~'/base.html.twig' %}
 
 {% block title %}{{'Mon compte'|trans }}{% endblock %}
 
@@ -120,7 +120,13 @@
                                     }}{%
                                     endif %}{% endfor %}</td>
                                 <td class="c">{{ player.Level }}</td>
-                                <td class="c">{{ player.Exp }}/{{ player.Exp + player.ExperienceToNextLevel }}</td>
+                                <td class="c">
+                                    {% if player.Level == settings.get("max_level") %}
+                                    <strong>{{'Niveau max atteint !'|trans}}</strong>
+                                    {% else %}
+                                    <b>{{ player.Exp }}/{{player.Exp + player.ExperienceToNextLevel }}</b>
+                                    {% endif %}
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>

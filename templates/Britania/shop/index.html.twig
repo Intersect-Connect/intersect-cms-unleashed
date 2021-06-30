@@ -1,4 +1,5 @@
-{% extends 'base.html.twig' %}
+{% extends settings.get("theme") ~'/base.html.twig' %}
+
 
 {% block title %}{{'Boutique VIP'|trans}}{% endblock %}
 
@@ -28,7 +29,11 @@
             </div>
 
             <div class="card-body">
-                {{item.description|striptags|raw}}
+                <p>
+                    {{ (item.description|striptags|length) > 150 ? ((item.description|striptags|slice(0, 150)) ~
+                    '...')|raw :
+                    (item.description|striptags|raw) }}
+                </p>
             </div>
 
             <div class="card-footer border-0">

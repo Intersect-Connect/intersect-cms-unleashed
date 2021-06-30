@@ -101,7 +101,7 @@ class Api
         if ($response === false) {
             return (curl_error($ch));
         }
-        
+
         $responseData = json_decode($response, true);
         curl_close($ch);
         return $responseData;
@@ -180,6 +180,21 @@ class Api
         return $user;
     }
 
+    public function giveNationRank($id)
+    {
+        $nationPoint = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/variables/global/' . $id);
+
+        if (isset($user['Message']) && $user['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $nationPoint = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/variables/global/' . $id);
+        }
+
+        return $nationPoint;
+    }
+
+    /**
+     * Permet de récupérer tout les utilisateurs
+     */
     public function getAllUsers($page = 0)
     {
         $user = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/users?page=' . $page . '&pageSize=30');
@@ -191,6 +206,9 @@ class Api
         return $user;
     }
 
+    /***
+     * Permet de changer l'email d'un compte
+     */
     public function changeEmailAccount($data, $user_id)
     {
         $user = $this->APIcall_POST($this->getServer(), $data, $this->getToken(), '/api/v1/users/' . $user_id . '/email/change');
@@ -205,6 +223,9 @@ class Api
         }
     }
 
+    /**
+     * Permet de modifier le mot de passe d'un compte
+     */
     public function changePasswordAccount($data, $user_id)
     {
         $user = $this->APIcall_POST($this->getServer(), $data, $this->getToken(), '/api/v1/users/' . $user_id . '/manage/password/change');
@@ -220,6 +241,10 @@ class Api
         }
     }
 
+
+    /**
+     * Permet de récupérer les classes du jeu
+     */
     public function getGameClass($data)
     {
         $classes = $this->APIcall_POST($this->getServer(), $data, $this->getToken(), '/api/v1/gameobjects/class');
@@ -232,6 +257,9 @@ class Api
         return $classes;
     }
 
+    /**
+     * Permet de récupérer les informations d'un personnages
+     */
     public function getCharacter($id)
     {
         $players = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id);
@@ -243,6 +271,9 @@ class Api
         return $players;
     }
 
+    /**
+     * Permet de récupérer tout les personnages d'un compte
+     */
     public function getCharacters($id)
     {
         $players = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/users/' . $id . '/players');
@@ -253,6 +284,9 @@ class Api
         return $players;
     }
 
+    /**
+     * Permet de récupérer tout les personnages existant
+     */
     public function getAllPlayers($page)
     {
 
@@ -264,6 +298,9 @@ class Api
         return $joueurs;
     }
 
+    /**
+     * Vérifie si l'inventaire n'est pas pleins
+     */
     public function isInventoryFull($id)
     {
         $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id . '/items/inventory');
@@ -275,6 +312,54 @@ class Api
         }
     }
 
+    /**
+     * Permet de récupérer les items de l'inventaire d'un personnage
+     */
+
+    public function getInventory($id)
+    {
+        $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id . '/items/inventory');
+
+        if (isset($inventory['Message']) && $inventory['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id . '/items/inventory');
+        }
+
+        return $inventory;
+    }
+
+    /**
+     * Permet de récupérer les items d'une banque d'un joueur
+     */
+    public function getBank($id)
+    {
+        $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id . '/items/bank');
+
+        if (isset($inventory['Message']) && $inventory['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id . '/items/bank');
+        }
+
+        return $inventory;
+    }
+
+    /**
+     * Permet de récupérer les items d'un sac du joueur
+     */
+    public function getBag($id)
+    {
+        $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/bag/' . $id);
+        if (isset($inventory['Message']) && $inventory['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/bag/' . $id);
+        }
+
+        return $inventory;
+    }
+
+    /**
+     * Permet de récupérer la liste des joueurs en ligne
+     */
     public function onlinePlayers()
     {
         $data = [
@@ -286,8 +371,16 @@ class Api
             $this->setToken();
             $online = $this->APIcall_POST($this->getServer(), $data, $this->getToken(), '/api/v1/players/online');
         }
-        return $online['entries'];
+        if (isset($online['entries'])) {
+            return $online['entries'];
+        } else {
+            return null;
+        }
     }
+
+    /**
+     * Récupère l'ensemble des items du jeu
+     */
 
     public function getAllItems($page = 0)
     {
@@ -303,6 +396,10 @@ class Api
         }
         return $items;
     }
+
+    /**
+     * Permet de récupérer les détails d'un item
+     */
 
     public function getObjectDetail($id)
     {
@@ -330,12 +427,34 @@ class Api
     }
 
 
+    /**
+     * Permet de donner un objet au personnage
+     */
     public function giveItem($data, $character)
     {
         $item = $this->APIcall_POST($this->getServer(), $data,  $this->getToken(), '/api/v1/players/' . $character . '/items/give');
         if (isset($item['Message']) && $item['Message'] == "Authorization has been denied for this request.") {
             $this->setToken();
             $item = $this->APIcall_POST($this->getServer(), $data,  $this->getToken(), '/api/v1/players/' . $character . '/items/give');
+        }
+
+        if (isset($item['id'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Permet de prendre un objet du personnage
+     */
+
+    public function takeItem($data, $character)
+    {
+        $item = $this->APIcall_POST($this->getServer(), $data,  $this->getToken(), '/api/v1/players/' . $character . '/items/take');
+        if (isset($item['Message']) && $item['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $item = $this->APIcall_POST($this->getServer(), $data,  $this->getToken(), '/api/v1/players/' . $character . '/items/take');
         }
 
         if (isset($item['id'])) {
@@ -427,6 +546,71 @@ class Api
             return false;
         }
     }
+
+
+    // Server Data
+
+    public function getServerInfo()
+    {
+        $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/info/stats');
+        if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/info/stats');
+        }
+        return $server;
+    }
+
+    public function getServerMetrics()
+    {
+        $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/info/metrics');
+        if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/info/metrics');
+        }
+        return $server;
+    }
+
+    // Server Log
+    public function getUserActivity($id)
+    {
+        $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/user/' . $id . '/activity');
+        if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/user/' . $id . '/activity');
+        }
+        return $server;
+    }
+
+    public function getPlayerActivity($id)
+    {
+        $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/player/' . $id . '/activity');
+        if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/player/' . $id . '/activity');
+        }
+        return $server;
+    }
+
+    public function getTradeLogs()
+    {
+        $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/trade/');
+        if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/trade/');
+        }
+        return $server;
+    }
+
+    public function getUserIp($id)
+    {
+        $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/user/' . $id . '/ip');
+        if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/user/' . $id . '/ip');
+        }
+        return $server;
+    }
+
 
     // Discord API
 

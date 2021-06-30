@@ -1,338 +1,134 @@
-{% extends 'base.html.twig' %}
+{% extends settings.get("theme") ~'/admin.html.twig' %}
 
 {% block title %}{{"Détail du compte"|trans}} {{user.Name}}{% endblock %}
 
 {% block body %}
 
 
-<section id="news">
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">{{"Détail du compte"|trans}} {{user.Name}}</h6>
+    </div>
+    <div class="card-body border-0">
 
-    <div class="card border-0">
-        <div class="card-header p-0 border-0">
-            <h1>{{"Détail du compte"|trans}} {{user.Name}}</h1>
-
-            <ul id="breadcrump">
-                <li><a href="/admin">Administration</a></li>
-                <li><a href="{{path('admin.account', {'page':0})}}">{{"Gérer les comptes utilisateurs"|trans}}</a></li>
-                <li>{{"Détail du compte"|trans}} {{user.Name}}</li>
-            </ul>
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-success text-dark">
+            {{ message }}
         </div>
-        <div class="card-body border-0">
+        {% endfor %}
 
-            {% for message in app.flashes('success') %}
-            <div class="alert alert-success text-dark">
-                {{ message }}
-            </div>
-            {% endfor %}
-
-            {% for message in app.flashes('error') %}
-            <div class="alert alert-danger text-dark">
-                {{ message }}
-            </div>
-            {% endfor %}
-
-            {% if maxCharacters == 1 %}
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h1>
-                            {{"Information du compte"|trans}}
-                        </h1>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                Id : {{user.Id}}
-                            </li>
-
-                            <li class="list-group-item">
-                                {{"Nom du compte"|trans}} : {{user.Name}}
-                            </li>
-
-                            <li class="list-group-item">
-                                {{"Email du compte"|trans}} : {{user.Email}}
-                            </li>
-
-                            <li class="list-group-item">
-                                {{"Temps de jeu"|trans}} : {{user.PlayTime}}
-                            </li>
+        {% for message in app.flashes('error') %}
+        <div class="alert alert-danger text-dark">
+            {{ message }}
+        </div>
+        {% endfor %}
 
 
-                            <li class="list-group-item">
-                                {{"Status"|trans}} :
-                                {% if user.IsBanned %}
-                                <span class="badge bg-danger">{{"Banni"|trans}}</span>
-                                {% else %}
-                                {% if user.IsMuted %}
-                                <span class="badge bg-danger">{{"En sourdine"|trans}}</span>
-                                {% else %}
-                                <span class="badge bg-success">{{"Normal"|trans}}</span>
-                                {% endif %}
-                                {% endif %}
-                            </li>
-                        </ul>
 
-                        <form method="POST">
-                            <input type="hidden" name="user_id" value="{{user.Id}}">
-                            <input type="hidden" name="username" value="{{user.Name}}">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>
+                        {{"Information du compte"|trans}}
+                    </h1>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Id : {{user.Id}}
+                        </li>
+
+                        <li class="list-group-item">
+                            {{"Nom du compte"|trans}} : {{user.Name}}
+                        </li>
+
+                        <li class="list-group-item">
+                            {{"Email du compte"|trans}} : {{user.Email}}
+                        </li>
+
+
+                        {% if user.PlayTimeSeconds is defined and user.PlayTimeSeconds is not null %}
+                        <li class="list-group-item">
+                            {{"Temps de jeu"|trans}} : ~ {{user.PlayTimeSeconds|ago}}
+                        </li>
+                        {% endif %}
+
+
+                        {% if user.RegistrationDate is defined and user.RegistrationDate is not null %}
+                        <li class="list-group-item">
+                            {{"Date d'inscription"}} : {{user.RegistrationDate|date('d/m/Y')}}
+                        </li>
+                        {% endif %}
+
+
+                        <li class="list-group-item">
+                            {{"Status"|trans}} :
                             {% if user.IsBanned %}
-                            <button name="unban" type="submit" class="btn btn-info btn-sm btn-block">unBan</button>
+                            <span class="badge bg-danger">{{"Banni"|trans}}</span>
                             {% else %}
-                            <button name="ban" type="submit" class="btn btn-danger btn-sm btn-block">Ban</button>
-                            {% endif %}
-
                             {% if user.IsMuted %}
-                            <button name="unmute" type="submit" class="btn btn-info btn-sm btn-block">unMute</button>
+                            <span class="badge bg-danger">{{"En sourdine"|trans}}</span>
                             {% else %}
-                            <button name="mute" type="submit" class="btn btn-danger btn-sm btn-block">Mute</button>
+                            <span class="badge bg-success">{{"Normal"|trans}}</span>
                             {% endif %}
-                        </form>
-                    </div>
-                    <div class="col-12 mt-3 mb-3">
-                        <h1 class="text-center">
-                            {{"Personnage"|trans}}
-                        </h1>
-                    </div>
-                    <div class="col-md-6">
-                        <h1 class="text-center mb-3">
-                            {{characters[0].Name}}
-                        </h1>
-                        <h2 class="text-center mb-3">
-                            {{"Position"|trans}} {{characters[0].MapName}}
-                        </h2>
-                        <h2 class="text-center mb-3">
-                            {{"Temps de jeu"|trans}} : {{characters[0].PlayTime}}
-                        </h2>
-                        <label>
-                            {{"Vie"|trans}} : {{characters[0].Vitals[0]}} / {{characters[0].MaxVitals[0]}}
+                            {% endif %}
+                        </li>
+                    </ul>
 
-                        </label>
-                        <div class="progress mb-0" style="height: 20px;">
-                            <div class="progress-bar bg-danger" role="progressbar"
-                                style="width: {{characters[0].Vitals[0] * 100 / characters[0].MaxVitals[0]}}%;"
-                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                {{characters[0].Vitals[0] * 100 / characters[0].MaxVitals[0]}}%</div>
-                        </div>
-                        <label>
-                            {{"Mana"|trans}} : {{characters[0].Vitals[1]}} / {{characters[0].MaxVitals[1]}}
-                        </label>
-                        <div class="progress mb-3" style="height: 20px;">
-                            <div class="progress-bar bg-primary" role="progressbar"
-                                style="width: {{characters[0].Vitals[1] * 100 / characters[0].MaxVitals[1]}}%;"
-                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                {{characters[0].Vitals[1] * 100 / characters[0].MaxVitals[1]}}%</div>
-                        </div>
-                        <label>
-                            {{"Exp"|trans}} : {{characters[0].Exp}} / {{characters[0].ExperienceToNextLevel}}
-                        </label>
-                        <div class="progress mb-3" style="height: 20px;">
-                            <div class="progress-bar bg-warning" role="progressbar"
-                                style="width: {{characters[0].Exp * 100 / characters[0].ExperienceToNextLevel}}%;"
-                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                {{(characters[0].Exp * 100 / characters[0].ExperienceToNextLevel)|round(1,'floor')}}%
-                            </div>
-                        </div>
+                    <form method="POST">
+                        <input type="hidden" name="user_id" value="{{user.Id}}">
+                        <input type="hidden" name="username" value="{{user.Name}}">
+                        {% if user.IsBanned %}
+                        <button name="unban" type="submit" class="btn btn-info btn-sm btn-block">unBan</button>
+                        {% else %}
+                        <button name="ban" type="submit" class="btn btn-danger btn-sm btn-block">Ban</button>
+                        {% endif %}
 
-                    </div>
-                    <div class="col-md-6">
-                        <ul class="list-group list-group-flush">
-                            <h1 class="text-center">
-                                Stats
-                            </h1>
-                            <li class="list-group-item">
-                                {{"Attaque"|trans}} : {{characters[0].BaseStats[0] +
-                                characters[0].StatPointAllocations[0]}}
-                            </li>
-                            <li class="list-group-item">
-                                {{"Ability Power"|trans}} : {{characters[0].BaseStats[1] +
-                                characters[0].StatPointAllocations[1]}}
-                            </li>
-                            <li class="list-group-item">
-                                {{"Défense"|trans}} : {{characters[0].BaseStats[2] +
-                                characters[0].StatPointAllocations[2]}}
-                            </li>
-                            <li class="list-group-item">
-                                {{"Résistance magique"|trans}} : {{characters[0].BaseStats[3] +
-                                characters[0].StatPointAllocations[3]}}
-                            </li>
-                            <li class="list-group-item">
-                                {{"Vitesse"|trans}} : {{characters[0].BaseStats[4] +
-                                characters[0].StatPointAllocations[4]}}
-                            </li>
-                        </ul>
-                    </div>
+                        {% if user.IsMuted %}
+                        <button name="unmute" type="submit" class="btn btn-info btn-sm btn-block">unMute</button>
+                        {% else %}
+                        <button name="mute" type="submit" class="btn btn-danger btn-sm btn-block">Mute</button>
+                        {% endif %}
+                    </form>
                 </div>
+                <div class="col-12 mt-3 mb-3">
+                    <h1 class="text-center">
+                        {{"Personnage"|trans}}
+                    </h1>
+                </div>
+                <table class="table table-hover text-center">
+                    <thead class="text-center bg-table">
+                        <tr class="text-center">
+                            <th width="50px" class="text-center">#</th>
+                            <th class="text-center">{{ 'Nom'|trans }}</th>
+                            <th class="text-center">{{ 'Niveau'|trans }}</th>
+                            <th class="text-center">{{ 'Exp'|trans }}</th>
+                            <th class="text-center">{{ 'Action'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in characters %}
+                        <tr>
+                            <td class="text-center">
+                                <span class="rang">{{ loop.index }}</span>
+                            </td>
+                            <td>{{ player.Name }}</td>
+                            <td class="c">{{ player.Level }}</td>
+                            <td class="r">
+                                {% if player.Level == 100 %}
+                                <strong>Niveau max atteint !</strong>
+                                {% else %}
+                                <b>{{ player.Exp }}/{{player.ExperienceToNextLevel }}</b>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a class="btn btn-primary"
+                                    href="{{path('admin.character.detail', {'character':player.Id})}}">Détail</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-
-            {% else %}
-            <h1>
-                {{"Information du compte"|trans}}
-            </h1>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    Id : {{user.Id}}
-                </li>
-
-                <li class="list-group-item">
-                    {{"Nom du compte"|trans}} : {{user.Name}}
-                </li>
-
-                <li class="list-group-item">
-                    {{"Email du compte"|trans}} : {{user.Email}}
-                </li>
-
-                <li class="list-group-item">
-                    {{"Temps de jeu"|trans}} : {{user.PlayTime}}
-                </li>
-
-
-                <li class="list-group-item">
-                    {{"Status"|trans}} :
-                    {% if user.IsBanned %}
-                    <span class="badge bg-danger">{{"Banni"|trans}}</span>
-                    {% else %}
-                    {% if user.IsMuted %}
-                    <span class="badge bg-danger">{{"En sourdine"|trans}}</span>
-                    {% else %}
-                    <span class="badge bg-success">{{"Normal"|trans}}</span>
-                    {% endif %}
-                    {% endif %}
-                </li>
-            </ul>
-
-            <form method="POST">
-                <input type="hidden" name="user_id" value="{{user.Id}}">
-                <input type="hidden" name="username" value="{{user.Name}}">
-                {% if user.IsBanned %}
-                <button name="unban" type="submit" class="btn btn-info btn-sm btn-block">unBan</button>
-                {% else %}
-                <button name="ban" type="submit" class="btn btn-danger btn-sm btn-block">Ban</button>
-                {% endif %}
-
-                {% if user.IsMuted %}
-                <button name="unmute" type="submit" class="btn btn-info btn-sm btn-block">unMute</button>
-                {% else %}
-                <button name="mute" type="submit" class="btn btn-danger btn-sm btn-block">Mute</button>
-                {% endif %}
-            </form>
-
-
-            <table class="table table-hover text-center">
-                <thead class="text-center bg-table">
-                    <tr class="text-center">
-                        <th width="50px" class="text-center">#</th>
-                        <th class="text-center">{{ 'Nom'|trans }}</th>
-                        <th class="text-center">{{ 'Niveau'|trans }}</th>
-                        <th class="text-center">{{ 'Exp'|trans }}</th>
-                        <th class="text-center">{{ 'Action'|trans }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for player in characters %}
-                    <tr>
-                        <td class="text-center">
-                            <span class="rang">{{ loop.index }}</span>
-                        </td>
-                        <td>{{ player.Name }}</td>
-                        <td class="c">{{ player.Level }}</td>
-                        <td class="r">
-                            {% if player.Level == 100 %}
-                            <strong>Niveau max atteint !</strong>
-                            {% else %}
-                            <b>{{ player.Exp }}/{{player.ExperienceToNextLevel }}</b>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <button class="btn btn-primary" type="button" data-bs-toggle="modal"
-                                data-bs-target="#modalPlayer{{player.Name}}">{{"Détail"|trans}}</button>
-                        </td>
-                    </tr>
-                    <!-- Modal -->
-                    <div class="modal fade" id="modalPlayer{{player.Name}}" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-body">
-
-                                    <h1 class="text-center mb-3">
-                                        {{player.Name}}
-                                    </h1>
-                                    <h2 class="text-center mb-3">
-                                        {{"Position"|trans}} {{player.MapName}}
-                                    </h2>
-                                    <h2 class="text-center mb-3">
-                                        {{"Temps de jeu"|trans}} : {{player.PlayTime}}
-                                    </h2>
-                                    <label>
-                                        {{"Vie"|trans}} : {{player.Vitals[0]}} / {{player.MaxVitals[0]}}
-
-                                    </label>
-                                    <div class="progress mb-3" style="height: 20px;">
-                                        <div class="progress-bar bg-danger" role="progressbar"
-                                            style="width: {{player.Vitals[0] * 100 / player.MaxVitals[0]}}%;"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                            {{player.Vitals[0] * 100 / player.MaxVitals[0]}}%</div>
-                                    </div>
-                                    <label>
-                                        {{"Mana"|trans}} : {{player.Vitals[1]}} / {{player.MaxVitals[1]}}
-                                    </label>
-                                    <div class="progress mb-3" style="height: 20px;">
-                                        <div class="progress-bar bg-primary" role="progressbar"
-                                            style="width: {{player.Vitals[1] * 100 / player.MaxVitals[1]}}%;"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                            {{player.Vitals[1] * 100 / player.MaxVitals[1]}}%</div>
-                                    </div>
-                                    <label>
-                                        {{"Exp"|trans}} : {{player.Exp}} / {{player.ExperienceToNextLevel}}
-                                    </label>
-                                    <div class="progress mb-3" style="height: 20px;">
-                                        <div class="progress-bar bg-warning" role="progressbar"
-                                            style="width: {{player.Exp * 100 / player.ExperienceToNextLevel}}%;"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                            {{(player.Exp * 100 / player.ExperienceToNextLevel)|round(1,'floor')}}%
-                                        </div>
-                                    </div>
-                                    <ul class="list-group list-group-flush mt-5">
-                                        <h1 class="text-center">
-                                            Stats
-                                        </h1>
-                                        <li class="list-group-item">
-                                            {{"Attaque"|trans}} : {{player.BaseStats[0] +
-                                            player.StatPointAllocations[0]}}
-                                        </li>
-                                        <li class="list-group-item">
-                                            {{"Ability Power"|trans}} : {{player.BaseStats[1] +
-                                            player.StatPointAllocations[1]}}
-                                        </li>
-                                        <li class="list-group-item">
-                                            {{"Défense"|trans}} : {{player.BaseStats[2] +
-                                            player.StatPointAllocations[2]}}
-                                        </li>
-                                        <li class="list-group-item">
-                                            {{"Résistence magique"|trans}} : {{player.BaseStats[3] +
-                                            player.StatPointAllocations[3]}}
-                                        </li>
-                                        <li class="list-group-item">
-                                            {{"Vitesse"|trans}} : {{player.BaseStats[4] +
-                                            player.StatPointAllocations[4]}}
-                                        </li>
-                                    </ul>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">{{"Fermer"|trans}}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% endif %}
-
-
         </div>
     </div>
-
-</section>
+</div>
 {% endblock %}

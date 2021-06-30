@@ -185,13 +185,6 @@ main article.card .card-footer {
 }
 
 /********** FOOTER **********/
-/* footer {
-    color: #efefef;
-    font-size: 11px;
-    opacity: .4;
-    text-align: right;
-    padding: 20px 5px;
-} */
 footer {
   width: 100%;
   height: 85px;
@@ -218,5 +211,27 @@ footer a {
 #news.read .h3,
 #news.read h3 {
   font-size: calc(1.3rem + .6vw) !important;
+}
+
+.slot {
+  padding: 8px;
+  border: 1px solid;
+  background: gray;
+  margin-bottom: 1rem;
+}
+
+.category_tag {
+  padding: 0.2rem;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  min-width: 100px;
+  color: white;
+  max-width: 300px;
+}
+
+.category_tag span {
+  color: white;
+  opacity: 1;
 }
 /*# sourceMappingURL=custom.css.map */

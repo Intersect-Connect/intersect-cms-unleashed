@@ -5,12 +5,15 @@ namespace App\Controller\Admin;
 use App\Entity\CmsShop;
 use App\Form\CmsShopType;
 use App\Settings\Api;
+use App\Settings\CmsSettings;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
+ * @IsGranted("ROLE_ADMIN")
  * @Route("admin/shop")
  */
 class CmsShopController extends AbstractController
@@ -18,13 +21,13 @@ class CmsShopController extends AbstractController
     /**
      * @Route("/", name="cms_shop_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(CmsSettings $settings): Response
     {
         $cmsShops = $this->getDoctrine()
             ->getRepository(CmsShop::class)
             ->findAll();
 
-        return $this->render('admin/cms_shop/index.html.twig', [
+        return $this->render($settings->get('theme') . '/admin/cms_shop/index.html.twig', [
             'cms_shops' => $cmsShops,
         ]);
     }
@@ -32,7 +35,7 @@ class CmsShopController extends AbstractController
     /**
      * @Route("/new", name="cms_shop_new", methods={"GET","POST"})
      */
-    public function new(Request $request, Api $api): Response
+    public function new(Request $request, Api $api, CmsSettings $settings): Response
     {
         $cmsShop = new CmsShop();
         $form = $this->createForm(CmsShopType::class, $cmsShop);
@@ -70,7 +73,7 @@ class CmsShopController extends AbstractController
             return $this->redirectToRoute('cms_shop_index');
         }
 
-        return $this->render('admin/cms_shop/new.html.twig', [
+        return $this->render($settings->get('theme') . '/admin/cms_shop/new.html.twig', [
             'cms_shop' => $cmsShop,
             'form' => $form->createView(),
         ]);
@@ -80,7 +83,7 @@ class CmsShopController extends AbstractController
     /**
      * @Route("/{id}/edit", name="cms_shop_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, CmsShop $cmsShop): Response
+    public function edit(Request $request, CmsShop $cmsShop, CmsSettings $settings): Response
     {
         $form = $this->createForm(CmsShopType::class, $cmsShop);
         $form->handleRequest($request);
@@ -107,7 +110,7 @@ class CmsShopController extends AbstractController
             return $this->redirectToRoute('cms_shop_index');
         }
 
-        return $this->render('admin/cms_shop/edit.html.twig', [
+        return $this->render($settings->get('theme') . '/admin/cms_shop/edit.html.twig', [
             'cms_shop' => $cmsShop,
             'form' => $form->createView(),
         ]);

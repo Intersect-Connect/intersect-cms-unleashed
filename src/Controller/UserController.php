@@ -30,7 +30,7 @@ class UserController extends AbstractController
     /**
      * @Route("/account", name="account")
      */
-    public function index(Api $api, Request $request, UserRepository $userRepo, TranslatorInterface $translator): Response
+    public function index(Api $api, Request $request, UserRepository $userRepo, TranslatorInterface $translator, CmsSettings $settings): Response
     {
         $data = [
             'page' => 0,
@@ -119,7 +119,7 @@ class UserController extends AbstractController
         }
 
 
-        return $this->render('user/index.html.twig', [
+        return $this->render($settings->get('theme') . '/user/index.html.twig', [
             'classes' => $classes,
             'players' => $players
         ]);
@@ -170,7 +170,7 @@ class UserController extends AbstractController
                 }
             }
         }
-        return $this->render('user/credit.html.twig', [
+        return $this->render($settings->get('theme') . '/user/credit.html.twig', [
             'dedipass' => $api->getDedipassPublic()
         ]);
     }
@@ -178,7 +178,7 @@ class UserController extends AbstractController
     /**
      * @Route("/account/history", name="account.history",  requirements={"_locale": "en|fr"})
      */
-    public function history(Api $api, Request $request, UserRepository $userRepo, CmsShopHistoryRepository $shopHistory, TranslatorInterface $translator, CmsShopRepository $cmsShopRepo, CmsPointsHistoryRepository $pointsRepo): Response
+    public function history(Api $api, Request $request, UserRepository $userRepo, CmsShopHistoryRepository $shopHistory, TranslatorInterface $translator, CmsShopRepository $cmsShopRepo, CmsPointsHistoryRepository $pointsRepo, CmsSettings $settings): Response
     {
 
         $shop_history = $shopHistory->findBy(['userId' => $this->getUser()->getId()]);
@@ -211,7 +211,7 @@ class UserController extends AbstractController
 
 
 
-        return $this->render('user/history.html.twig', [
+        return $this->render($settings->get('theme') . '/user/history.html.twig', [
             'history' => $history
         ]);
     }
