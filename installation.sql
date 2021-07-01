@@ -37,7 +37,7 @@ CREATE TABLE `cms_news` (
   `slug` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 ALTER TABLE `cms_news` ADD `id` INT NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`);
-ALTER TABLE `cms_news` ADD `category_id` int(11)
+ALTER TABLE `cms_news` ADD `category_id` int(11);
 
 -- --------------------------------------------------------
 
