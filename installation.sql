@@ -52,7 +52,7 @@ CREATE TABLE `cms_news_category` (
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 ALTER TABLE `cms_news_category` ADD `id` INT NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`);
-ALTER TABLE cms_news ADD CONSTRAINT FK_DA45342D12469DE2 FOREIGN KEY (category_id) REFERENCES cms_news_category (id)
+ALTER TABLE cms_news ADD CONSTRAINT FK_DA45342D12469DE2 FOREIGN KEY (category_id) REFERENCES cms_news_category (id);
 ALTER TABLE `cms_news_category` ADD `color` VARCHAR(255) NOT NULL AFTER `name`;
 
 -- --------------------------------------------------------
