@@ -187,11 +187,6 @@ CREATE TABLE `cms_users` (
 -- Index pour les tables déchargées
 --
 
---
--- Index pour la table `cms_news`
---
-ALTER TABLE `cms_news`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `cms_pages`
