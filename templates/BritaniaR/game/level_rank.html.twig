@@ -70,5 +70,5 @@
 <script defer>
     const local = "{{ app.request.getLocale() }}";
 </script>
-<script src="{{asset('assets/themes/' ~ theme ~ '/js/table.min.js')}}" defer></script>
+<script src="{{asset('assets/themes/' ~ settings.get("theme") ~ '/js/table.min.js')}}" defer></script>
 {% endblock %}

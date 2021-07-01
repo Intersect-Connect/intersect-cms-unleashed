@@ -6,6 +6,7 @@ ALTER TABLE `cms_pages` CHANGE `content` `content` LONGTEXT CHARACTER SET utf8mb
 
 -- CMS News
 ALTER TABLE `cms_news` CHANGE `content` `content` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+ALTER TABLE `cms_news` ADD `category_id` int(11)
 
 
 -- --------------------------------------------------------
