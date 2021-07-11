@@ -63,7 +63,7 @@ IntersectCMS requirements :
 
 Installation step by step :
 
-In write.
+https://intersect.thomasfds.fr/documentation/getting-started
 
 ### Screenshots
 
