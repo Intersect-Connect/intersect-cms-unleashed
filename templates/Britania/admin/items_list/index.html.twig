@@ -38,7 +38,7 @@
         <ul class="pagination p-3 overflow-auto">
           {% for i in 0..total_page %}
           <li class="page-item  {% if page_actuel == i %}active{% endif %}">
-            <a class="page-link" data-page="{{i}}" href="{{path('admin.items', {" page":i})}}">{{ i + 1}}</a>
+            <a class="page-link" data-page="{{i}}" href="{{path('admin.items', {"page":i})}}">{{ i + 1}}</a>
           </li>
           {% endfor %}
         </ul>
