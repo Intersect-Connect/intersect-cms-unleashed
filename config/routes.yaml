@@ -1,3 +1,7 @@
 index:
    path: /
    controller: App\Controller\HomeController::index
+
+updater:
+    path:       /updater/
+    controller: App\Controller\UpdaterController::index
