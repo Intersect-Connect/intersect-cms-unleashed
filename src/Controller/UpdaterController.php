@@ -24,10 +24,7 @@ class UpdaterController extends AbstractController
         $obj->Files = [];
         $this->scanD($path, $obj);
 
-        // return $this->json($obj);
-        // echo new JsonEncoder(new JsonEncode((array) $obj, JSON_UNESCAPED_SLASHES));
-        echo json_encode($obj, JSON_UNESCAPED_SLASHES);
-
+        // echo json_encode($obj, JSON_UNESCAPED_SLASHES);
 
         return new JsonResponse((array) $obj, 200, [], false);
     }
