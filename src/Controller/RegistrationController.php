@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
 use App\Security\LoginAuthenticator;
 use App\Settings\Api;
 use App\Settings\CmsSettings;
@@ -21,7 +22,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register",  requirements={"_locale": "en|fr"})
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, Api $api, LoginAuthenticator $login, GuardAuthenticatorHandler $guard, CmsSettings $settings): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, Api $api, LoginAuthenticator $login, GuardAuthenticatorHandler $guard, CmsSettings $settings, UserRepository $userRepo): Response
     {
         $serveur_statut = $api->ServeurStatut();
 
@@ -32,8 +33,10 @@ class RegistrationController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $user_infos = $api->getUser($form->get('username')->getData());
+                $userEmailExist = $userRepo->findOneBy(['email' => $form->get('email')->getData()]);
 
-                if (isset($user_infos['Message']) && $user_infos['Message'] == "No user with name '" . $form->get('username')->getData() . "'.") {
+
+                if (isset($user_infos['Message']) && $user_infos['Message'] == "No user with name '" . $form->get('username')->getData() . "'." && !$userEmailExist) {
                     
                     $userData = array(
                         'username' => $form->get('username')->getData(),
