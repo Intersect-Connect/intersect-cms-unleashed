@@ -132,8 +132,6 @@ class ShopController extends AbstractController
                         $entityManager->persist($boutiqueHistorique);
                         $entityManager->flush();
 
-                        // Ajout de l'email
-
                         $this->addFlash('success', $translator->trans('Votre achat à bien été effectuer, vous devriez avoir reçu votre objet en jeu.'));
                         return $this->redirectToRoute('shop.detail', ['id' => $id]);
                     } else {
