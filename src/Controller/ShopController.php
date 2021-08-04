@@ -47,7 +47,7 @@ class ShopController extends AbstractController
             $shop[$itemShop->getId()]['promotion'] = $itemShop->getPromotion();
             $shop[$itemShop->getId()]['id'] = $itemShop->getId();
 
-            
+
 
             $shop[$itemShop->getId()]['name'] = $itemShop->getName();
 
@@ -64,7 +64,7 @@ class ShopController extends AbstractController
             6 // Nombre de résultats par page
         );
 
-        return $this->render($settings->get('theme') .'/shop/index.html.twig', [
+        return $this->render($settings->get('theme') . '/shop/index.html.twig', [
             'shop' => $items,
         ]);
     }
@@ -93,7 +93,7 @@ class ShopController extends AbstractController
             }
         }
 
- // Si la requête est bien POST
+        // Si la requête est bien POST
         if ($request->isMethod('POST')) {
             // On récupère la quantité voulu du joueur
             $quantity = $request->request->get('quantity');
@@ -116,9 +116,15 @@ class ShopController extends AbstractController
                         // Si la requête on retourne true, on récupère l'utilisateur actuel
                         $user = $userRepo->find($this->getUser());
                         // On définit le prix de l'objet actuel
-                        $prix_objet = $shopItem->getPrice() - $shopItem->getPrice() * ($quantity - ($shopItem->getPromotion() / 100));
-                        
-                        $user->setPoints($user->getPoints() - $prix_objet);
+                        $prix_objet = $shopItem->getPrice() - $shopItem->getPrice() * $shopItem->getPromotion() / 100;
+
+                        if ($quantity == 1) {
+                            $user->setPoints($user->getPoints() - $prix_objet);
+                        } else {
+                            $prix_objet_q = $prix_objet * $quantity;
+                            $user->setPoints($user->getPoints() - $prix_objet_q);
+                        }
+
                         $entityManager = $this->getDoctrine()->getManager();
                         $entityManager->persist($user);
                         $entityManager->flush();
@@ -147,7 +153,7 @@ class ShopController extends AbstractController
                 return $this->redirectToRoute('shop.detail', ['id' => $id]);
             }
         }
-        return $this->render($settings->get('theme') .'/shop/detail.html.twig', [
+        return $this->render($settings->get('theme') . '/shop/detail.html.twig', [
             'item' => $item,
             'personnages' => $personnages
         ]);
