@@ -93,24 +93,32 @@ class ShopController extends AbstractController
             }
         }
 
+ // Si la requête est bien POST
         if ($request->isMethod('POST')) {
+            // On récupère la quantité voulu du joueur
             $quantity = $request->request->get('quantity');
+            // On récupère l'id du personnage pour l'envoyez dans son inventaire
             $character = $request->request->get('playerShop');
 
+            // Si la quantité n'est pas null et pas égal à 0 et que l'id du personnage existe est n'est pas vide
             if ($quantity != null || $quantity != 0 && isset($character) && !empty($character)) {
-
+                // On prépare les données d'envoi api avec l'id de l'item, et la quantité
                 $data = [
                     'itemId' => $shopItem->getIdItem(),
                     'quantity' => $quantity,
                     'bankoverflow' => false
                 ];
 
-                // Si le nombre de point est supérieur au prix de l'objet
+                // Si le nombre de point est supérieur ou égal au prix de l'objet
                 if ($this->getUser()->getPoints() >= $shopItem->getPrice() * $quantity) {
-                    //  alors on peut acheter
+                    //  alors on lance la requête d'achat, l'objet est envoyez dans l'inventaire et la requête doit retourner true
                     if ($api->giveItem($data, $character)) {
+                        // Si la requête on retourne true, on récupère l'utilisateur actuel
                         $user = $userRepo->find($this->getUser());
-                        $user->setPoints($user->getPoints() - $shopItem->getPrice() * ($quantity - ($shopItem->getPromotion() / 100)));
+                        // On définit le prix de l'objet actuel
+                        $prix_objet = $shopItem->getPrice() - $shopItem->getPrice() * ($quantity - ($shopItem->getPromotion() / 100));
+                        
+                        $user->setPoints($user->getPoints() - $prix_objet);
                         $entityManager = $this->getDoctrine()->getManager();
                         $entityManager->persist($user);
                         $entityManager->flush();
@@ -119,10 +127,12 @@ class ShopController extends AbstractController
                         $boutiqueHistorique->setDate(new DateTime());
                         $boutiqueHistorique->setShopId($id);
                         $boutiqueHistorique->setUserId($this->getUser()->getId());
-                        $boutiqueHistorique->setCreditsNow($user->getPoints() - $shopItem->getPrice() * ($quantity - ($shopItem->getPromotion() / 100)));
+                        $boutiqueHistorique->setCreditsNow($user->getPoints());
                         $entityManager = $this->getDoctrine()->getManager();
                         $entityManager->persist($boutiqueHistorique);
                         $entityManager->flush();
+
+                        // Ajout de l'email
 
                         $this->addFlash('success', $translator->trans('Votre achat à bien été effectuer, vous devriez avoir reçu votre objet en jeu.'));
                         return $this->redirectToRoute('shop.detail', ['id' => $id]);
