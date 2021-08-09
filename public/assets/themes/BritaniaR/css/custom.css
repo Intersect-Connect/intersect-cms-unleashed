@@ -168,7 +168,6 @@ main article.card .card-header h2 {
   background: linear-gradient(to top, #202c24 15%, rgba(0, 0, 0, 0));
   color: white;
   left: 0;
-  bottom: 30px !important;
 }
 
 main article.card .card-footer {
