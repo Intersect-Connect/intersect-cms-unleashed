@@ -951,9 +951,9 @@
         <source>CPS</source>
         <target>CPS</target>
       </trans-unit>
-      <trans-unit id="Y6B9jrX" resname="Voir tous">
-        <source>Voir tous</source>
-        <target>Voir tous</target>
+      <trans-unit id="Y6B9jrX" resname="Voir tout">
+        <source>Voir tout</source>
+        <target>Show all</target>
       </trans-unit>
     </body>
   </file>

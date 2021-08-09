@@ -1345,7 +1345,6 @@ main article .header h2 {
 	font-family: 'proxima-nova_bold', Helvetica, Arial, sans-serif;
 	width: 100%;
 	position: absolute;
-	bottom: 40px;
 	font-weight: 400;
 	letter-spacing: 0.5px;
 	text-shadow: 0 0 5px #000000, 0 0 3px #000000, 0 0 1px #000000;
@@ -1353,6 +1352,7 @@ main article .header h2 {
 	line-height: 22px;
 	padding: 15px;
 	background: linear-gradient(to top, #202c24 15%, rgba(0, 0, 0, 0));
+	bottom: 0;
 }
 
 
