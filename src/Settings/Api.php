@@ -360,11 +360,11 @@ class Api
     /**
      * Permet de récupérer la liste des joueurs en ligne
      */
-    public function onlinePlayers()
+    public function onlinePlayers($page)
     {
         $data = [
-            'page' => 0,
-            'size' => 0
+            'page' => $page,
+            'size' => 100
         ];
         $online = $this->APIcall_POST($this->getServer(), $data, $this->getToken(), '/api/v1/players/online');
         if (isset($online['Message']) && $online['Message'] == "Authorization has been denied for this request.") {
