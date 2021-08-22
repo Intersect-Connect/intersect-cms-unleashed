@@ -119,7 +119,7 @@ class ShopController extends AbstractController
                 }
 
                 // Si le nombre de point est supérieur ou égal au prix de l'objet
-                if ($this->getUser()->getPoints() >= $shopItem->getPrice() * $quantity) {
+                if ($this->getUser()->getPoints() >= $item['price'] * $quantity) {
                     //  alors on lance la requête d'achat, l'objet est envoyez dans l'inventaire et la requête doit retourner true
                     if ($api->giveItem($data, $character)) {
                         // Si la requête on retourne true, on récupère l'utilisateur actuel
