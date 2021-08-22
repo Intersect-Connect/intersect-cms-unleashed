@@ -103,11 +103,20 @@ class ShopController extends AbstractController
             // Si la quantité n'est pas null et pas égal à 0 et que l'id du personnage existe est n'est pas vide
             if ($quantity != null || $quantity != 0 && isset($character) && !empty($character)) {
                 // On prépare les données d'envoi api avec l'id de l'item, et la quantité
-                $data = [
-                    'itemId' => $shopItem->getIdItem(),
-                    'quantity' => $quantity,
-                    'bankoverflow' => false
-                ];
+
+                if ($shopItem->getQuantity() > 1) {
+                    $data = [
+                        'itemId' => $shopItem->getIdItem(),
+                        'quantity' => $shopItem->getQuantity() * $quantity,
+                        'bankoverflow' => false
+                    ];
+                } else {
+                    $data = [
+                        'itemId' => $shopItem->getIdItem(),
+                        'quantity' => $quantity,
+                        'bankoverflow' => false
+                    ];
+                }
 
                 // Si le nombre de point est supérieur ou égal au prix de l'objet
                 if ($this->getUser()->getPoints() >= $shopItem->getPrice() * $quantity) {
