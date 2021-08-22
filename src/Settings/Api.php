@@ -360,11 +360,11 @@ class Api
     /**
      * Permet de récupérer la liste des joueurs en ligne
      */
-    public function onlinePlayers()
+    public function onlinePlayers($page)
     {
         $data = [
-            'page' => 0,
-            'size' => 0
+            'page' => $page,
+            'size' => 100
         ];
         $online = $this->APIcall_POST($this->getServer(), $data, $this->getToken(), '/api/v1/players/online');
         if (isset($online['Message']) && $online['Message'] == "Authorization has been denied for this request.") {
@@ -416,12 +416,12 @@ class Api
      * Récupère le classement général de l'API
      */
 
-    public function getRank()
+    public function getRank($page)
     {
-        $joueurs = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/rank?page=0&pageSize=25&sortDirection=Descending');
+        $joueurs = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/rank?page='.$page.'&pageSize=25&sortDirection=Descending');
         if (isset($joueurs['Message']) && $joueurs['Message'] == "Authorization has been denied for this request.") {
             $this->setToken();
-            $joueurs = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/rank?page=0&pageSize=25&sortDirection=Descending');
+           $joueurs = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/rank?page='.$page.'&pageSize=25&sortDirection=Descending');
         }
         return $joueurs['Values'];
     }

@@ -47,7 +47,7 @@ class ShopController extends AbstractController
             $shop[$itemShop->getId()]['promotion'] = $itemShop->getPromotion();
             $shop[$itemShop->getId()]['id'] = $itemShop->getId();
 
-            
+
 
             $shop[$itemShop->getId()]['name'] = $itemShop->getName();
 
@@ -64,7 +64,7 @@ class ShopController extends AbstractController
             6 // Nombre de résultats par page
         );
 
-        return $this->render($settings->get('theme') .'/shop/index.html.twig', [
+        return $this->render($settings->get('theme') . '/shop/index.html.twig', [
             'shop' => $items,
         ]);
     }
@@ -93,24 +93,47 @@ class ShopController extends AbstractController
             }
         }
 
+        // Si la requête est bien POST
         if ($request->isMethod('POST')) {
+            // On récupère la quantité voulu du joueur
             $quantity = $request->request->get('quantity');
+            // On récupère l'id du personnage pour l'envoyez dans son inventaire
             $character = $request->request->get('playerShop');
 
+            // Si la quantité n'est pas null et pas égal à 0 et que l'id du personnage existe est n'est pas vide
             if ($quantity != null || $quantity != 0 && isset($character) && !empty($character)) {
+                // On prépare les données d'envoi api avec l'id de l'item, et la quantité
 
-                $data = [
-                    'itemId' => $shopItem->getIdItem(),
-                    'quantity' => $quantity,
-                    'bankoverflow' => false
-                ];
+                if ($shopItem->getQuantity() > 1) {
+                    $data = [
+                        'itemId' => $shopItem->getIdItem(),
+                        'quantity' => $shopItem->getQuantity() * $quantity,
+                        'bankoverflow' => false
+                    ];
+                } else {
+                    $data = [
+                        'itemId' => $shopItem->getIdItem(),
+                        'quantity' => $quantity,
+                        'bankoverflow' => false
+                    ];
+                }
 
-                // Si le nombre de point est supérieur au prix de l'objet
+                // Si le nombre de point est supérieur ou égal au prix de l'objet
                 if ($this->getUser()->getPoints() >= $shopItem->getPrice() * $quantity) {
-                    //  alors on peut acheter
+                    //  alors on lance la requête d'achat, l'objet est envoyez dans l'inventaire et la requête doit retourner true
                     if ($api->giveItem($data, $character)) {
+                        // Si la requête on retourne true, on récupère l'utilisateur actuel
                         $user = $userRepo->find($this->getUser());
-                        $user->setPoints($user->getPoints() - $shopItem->getPrice() * ($quantity - ($shopItem->getPromotion() / 100)));
+                        // On définit le prix de l'objet actuel
+                        $prix_objet = $shopItem->getPrice() - $shopItem->getPrice() * $shopItem->getPromotion() / 100;
+
+                        if ($quantity == 1) {
+                            $user->setPoints($user->getPoints() - $prix_objet);
+                        } else {
+                            $prix_objet_q = $prix_objet * $quantity;
+                            $user->setPoints($user->getPoints() - $prix_objet_q);
+                        }
+
                         $entityManager = $this->getDoctrine()->getManager();
                         $entityManager->persist($user);
                         $entityManager->flush();
@@ -119,7 +142,7 @@ class ShopController extends AbstractController
                         $boutiqueHistorique->setDate(new DateTime());
                         $boutiqueHistorique->setShopId($id);
                         $boutiqueHistorique->setUserId($this->getUser()->getId());
-                        $boutiqueHistorique->setCreditsNow($user->getPoints() - $shopItem->getPrice() * ($quantity - ($shopItem->getPromotion() / 100)));
+                        $boutiqueHistorique->setCreditsNow($user->getPoints());
                         $entityManager = $this->getDoctrine()->getManager();
                         $entityManager->persist($boutiqueHistorique);
                         $entityManager->flush();
@@ -139,7 +162,7 @@ class ShopController extends AbstractController
                 return $this->redirectToRoute('shop.detail', ['id' => $id]);
             }
         }
-        return $this->render($settings->get('theme') .'/shop/detail.html.twig', [
+        return $this->render($settings->get('theme') . '/shop/detail.html.twig', [
             'item' => $item,
             'personnages' => $personnages
         ]);

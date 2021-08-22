@@ -16,7 +16,7 @@
 
 <ul class="nav justify-content-center bg-white border shadow rounded-0">
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{path('home.news')}}">{{"Voir tous"|trans}}</a>
+        <a class="nav-link active" aria-current="page" href="{{path('home.news')}}">{{"Voir tout"|trans}}</a>
     </li>
 
     {% for category in categorys %}
@@ -44,7 +44,7 @@
             </h1>
 
             <div class="fs-13 mb-2 text-dark">
-                {{ 'Publié le'|trans }} <strong>{{ news.date|date('d/m/Y') }}</strong> {{ 'par'|trans }}.
+                {{ 'Publié le'|trans }} <strong>{{ news.date|date('d/m/Y') }}</strong> {{ 'par'|trans }} {{news.author}}.
             </div>
         </div>
     </div>

@@ -240,8 +240,8 @@
         <target>Liste des joueurs</target>
       </trans-unit>
       <trans-unit id="eZbtT6E" resname="Joueurs connecté">
-        <source>Joueurs connecté</source>
-        <target>Joueurs connecté</target>
+        <source>Joueurs connectés</source>
+        <target>Joueurs connectés</target>
       </trans-unit>
       <trans-unit id="QXsY7GS" resname="Classements">
         <source>Classements</source>
@@ -971,9 +971,9 @@
         <source>CPS</source>
         <target>CPS</target>
       </trans-unit>
-      <trans-unit id="Y6B9jrX" resname="Voir tous">
-        <source>Voir tous</source>
-        <target>Voir tous</target>
+      <trans-unit id="Y6B9jrX" resname="Voir tout">
+        <source>Voir tout</source>
+        <target>Voir tout</target>
       </trans-unit>
     </body>
   </file>
