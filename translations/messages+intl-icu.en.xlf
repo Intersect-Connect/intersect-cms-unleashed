@@ -951,9 +951,13 @@
         <source>CPS</source>
         <target>CPS</target>
       </trans-unit>
-      <trans-unit id="Y6B9jrX" resname="Voir tout">
+      <trans-unit id="akscyP2" resname="Voir tout">
         <source>Voir tout</source>
         <target>Show all</target>
+      </trans-unit>
+      <trans-unit id="I00mM4O" resname="Liste des Joueurs connectés">
+        <source>Liste des Joueurs connectés</source>
+        <target>Online Players List</target>
       </trans-unit>
     </body>
   </file>
