@@ -78,7 +78,7 @@ class GameController extends AbstractController
     {
         $serveur_statut = $api->ServeurStatut();
         if ($serveur_statut['success']) {
-            $joueurs = $api->onlinePlayers();
+            $joueurs = $api->onlinePlayers(0);
 
             $joueurs_liste = [];
 
@@ -112,7 +112,7 @@ class GameController extends AbstractController
         if ($serveur_statut['success']) {
 
 
-            $joueurs = $api->getRank();
+            $joueurs = $api->getRank(0);
 
             $joueurs_liste = [];
 

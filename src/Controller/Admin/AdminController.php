@@ -84,7 +84,7 @@ class AdminController extends AbstractController
             'total_playTime' => array_sum($moyenne_play),
             'moyenne_play' => array_sum($moyenne_play) > 0 ? array_sum($moyenne_play) / count($moyenne_play) : null,
             'last_register' => $last_register,
-            'online_players' => $api->onlinePlayers()
+            'online_players' => $api->onlinePlayers(0)
         ]);
     }
 
