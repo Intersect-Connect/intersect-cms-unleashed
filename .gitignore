@@ -8,6 +8,7 @@
 /var/
 /vendor/
 /public/assets/general/
+/public/updater/
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
