@@ -1,0 +1,961 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" target-language="es" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="glZccs4" resname="Vos paramètres ont bien été mis à jour.">
+        <source>Vos paramètres ont bien été mis à jour.</source>
+        <target>Su configuración se ha actualizado correctamente.</target>
+      </trans-unit>
+      <trans-unit id="z56gmdY" resname="Votre achat à bien été effectuer, vous devriez avoir reçu votre objet en jeu.">
+        <source>Votre achat à bien été effectuer, vous devriez avoir reçu votre objet en jeu.</source>
+        <target>Tu compra se ha completado, deberías haber recibido tu artículo del juego.</target>
+      </trans-unit>
+      <trans-unit id="YHwu.bG" resname="Une erreur s'est produit, veuillez réessayer.">
+        <source>Une erreur s'est produit, veuillez réessayer.</source>
+        <target>Ha ocurrido un error. Por favor inténtelo de nuevo.</target>
+      </trans-unit>
+      <trans-unit id="qeOGkYt" resname="Vous n'avez pas assez de points.">
+        <source>Vous n'avez pas assez de points.</source>
+        <target>No tienes suficientes puntos.</target>
+      </trans-unit>
+      <trans-unit id="GPkKH1R" resname="Un champ est manquant. Vérifier la quantité et le personnage choisis.">
+        <source>Un champ est manquant. Vérifier la quantité et le personnage choisis.</source>
+        <target>Falta un campo. Comprueba la cantidad y el personaje elegido.</target>
+      </trans-unit>
+      <trans-unit id="Gf_RnaR" resname="Votre compte a été rechargé en points boutique">
+        <source>Votre compte a été rechargé en points boutique</source>
+        <target>Su cuenta se ha recargado con los puntos de la tienda</target>
+      </trans-unit>
+      <trans-unit id="wpkGDG." resname="Modifier un article">
+        <source>Modifier un article</source>
+        <target>Modificar un artículo</target>
+      </trans-unit>
+      <trans-unit id="S0LGaQ6" resname="Administration">
+        <source>Administration</source>
+        <target>Administración</target>
+      </trans-unit>
+      <trans-unit id="d2hcEvA" resname="Gérer les news">
+        <source>Gérer les news</source>
+        <target>Administrar noticias</target>
+      </trans-unit>
+      <trans-unit id="QLeNDdM" resname="Retour à la liste">
+        <source>Retour à la liste</source>
+        <target>Volver a la lista</target>
+      </trans-unit>
+      <trans-unit id="juojpGE" resname="Liste des articles">
+        <source>Liste des articles</source>
+        <target>Lista de artículos</target>
+      </trans-unit>
+      <trans-unit id="LkrYGJ4" resname="Créer un article">
+        <source>Créer un article</source>
+        <target>Crear un artículo</target>
+      </trans-unit>
+      <trans-unit id="eOeSABC" resname="Titre">
+        <source>Titre</source>
+        <target>Título</target>
+      </trans-unit>
+      <trans-unit id="QuN2BLY" resname="Modifier">
+        <source>Modifier</source>
+        <target>Editar</target>
+      </trans-unit>
+      <trans-unit id="JTo.TcP" resname="Aucun enregistrement trouvé">
+        <source>Aucun enregistrement trouvé</source>
+        <target>Registro no encontrado</target>
+      </trans-unit>
+      <trans-unit id="Xl0CFs4" resname="Supprimer">
+        <source>Supprimer</source>
+        <target>Borrar</target>
+      </trans-unit>
+      <trans-unit id="_YcfKuE" resname="L'image de l'article">
+        <source>L'image de l'article</source>
+        <target>La imagen del artículo</target>
+      </trans-unit>
+      <trans-unit id="Y6_ABz8" resname="Contenu de l'article">
+        <source>Contenu de l'article</source>
+        <target>Contenido del artículo</target>
+      </trans-unit>
+      <trans-unit id="QAzfTEE" resname="Sauvegarder">
+        <source>Sauvegarder</source>
+        <target>Guardar</target>
+      </trans-unit>
+      <trans-unit id="qIIRaHY" resname="Modifier une page">
+        <source>Modifier une page</source>
+        <target>Editar una página</target>
+      </trans-unit>
+      <trans-unit id="YZ.jEXp" resname="Gérer les pages">
+        <source>Gérer les pages</source>
+        <target>Administrar páginas</target>
+      </trans-unit>
+      <trans-unit id="oi7Z_1y" resname="Liste des pages">
+        <source>Liste des pages</source>
+        <target>Listado de páginas</target>
+      </trans-unit>
+      <trans-unit id="Oiqt3vO" resname="Créer une nouvelle page">
+        <source>Créer une nouvelle page</source>
+        <target>Crear una nueva página</target>
+      </trans-unit>
+      <trans-unit id="aKU0H8a" resname="Catégorie">
+        <source>Catégorie</source>
+        <target>Categoría</target>
+      </trans-unit>
+      <trans-unit id="ODsmwkC" resname="Créer une page">
+        <source>Créer une page</source>
+        <target>Crear una página</target>
+      </trans-unit>
+      <trans-unit id="mGdcSY8" resname="Titre de la page">
+        <source>Titre de la page</source>
+        <target>Título de la página</target>
+      </trans-unit>
+      <trans-unit id="31aa4GU" resname="Catégorie de la page">
+        <source>Catégorie de la page</source>
+        <target>Categoría de la página</target>
+      </trans-unit>
+      <trans-unit id="FgVULZ8" resname="Contenu de la page">
+        <source>Contenu de la page</source>
+        <target>Contenido de la página</target>
+      </trans-unit>
+      <trans-unit id="lY8uJB4" resname="Page visible ?">
+        <source>Page visible ?</source>
+        <target>Página visible ?</target>
+      </trans-unit>
+      <trans-unit id="BgXhARY" resname="Paramètres du site">
+        <source>Paramètres du site</source>
+        <target>Configuración del sitio</target>
+      </trans-unit>
+      <trans-unit id="CpBAdjn" resname="Oui">
+        <source>Oui</source>
+        <target>Sí</target>
+      </trans-unit>
+      <trans-unit id="f2JJawy" resname="Non">
+        <source>Non</source>
+        <target>No</target>
+      </trans-unit>
+      <trans-unit id="6JRmLTh" resname="Modifier un article dans la boutique VIP">
+        <source>Modifier un article dans la boutique VIP</source>
+        <target>Modificar un artículo de la tienda</target>
+      </trans-unit>
+      <trans-unit id="lP.JgtW" resname="Gérer la boutique">
+        <source>Gérer la boutique</source>
+        <target>Administrar la tienda</target>
+      </trans-unit>
+      <trans-unit id="VpjAU3g" resname="Liste des articles de la boutique VIP">
+        <source>Liste des articles de la boutique VIP</source>
+        <target>Listado de objetos de la tienda VIP</target>
+      </trans-unit>
+      <trans-unit id="NpDa8ue" resname="ID de l'item">
+        <source>ID de l'item</source>
+        <target>ID de objeto</target>
+      </trans-unit>
+      <trans-unit id="ssEkU20" resname="Nom">
+        <source>Nom</source>
+        <target>Nombre</target>
+      </trans-unit>
+      <trans-unit id="VMMk9sE" resname="Prix">
+        <source>Prix</source>
+        <target>Precio</target>
+      </trans-unit>
+      <trans-unit id="jGoAJNr" resname="Promotion">
+        <source>Promotion</source>
+        <target>Promoción</target>
+      </trans-unit>
+      <trans-unit id="hBH1q7T" resname="Visible">
+        <source>Visible</source>
+        <target>Visible</target>
+      </trans-unit>
+      <trans-unit id="zOF0Vv9" resname="Création d'un nouvel article dans la boutique VIP">
+        <source>Création d'un nouvel article dans la boutique VIP</source>
+        <target>Creación de un nuevo artículo en la tienda VIP</target>
+      </trans-unit>
+      <trans-unit id=".hwExX9" resname="Création d'un nouvel article dans la boutique&#10;          VIP">
+        <source>Création d'un nouvel article dans la boutique
+          VIP</source>
+        <target>Creación de un nuevo artículo en la tienda VIP</target>
+      </trans-unit>
+      <trans-unit id="olio7wM" resname="Quantité">
+        <source>Quantité</source>
+        <target>Cantidad</target>
+      </trans-unit>
+      <trans-unit id="Um4Ah8w" resname="Description">
+        <source>Description</source>
+        <target>Descripción</target>
+      </trans-unit>
+      <trans-unit id="JWL6DqF" resname="Visible ?">
+        <source>Visible ?</source>
+        <target>Visible ?</target>
+      </trans-unit>
+      <trans-unit id="tVBJvn8" resname="Joueurs">
+        <source>Joueurs</source>
+        <target>Jugadores</target>
+      </trans-unit>
+      <trans-unit id="c.CJ_Mt" resname="Personnages">
+        <source>Personnages</source>
+        <target>Personajes</target>
+      </trans-unit>
+      <trans-unit id="K7iKgAf" resname="Boutique">
+        <source>Boutique</source>
+        <target>Tienda</target>
+      </trans-unit>
+      <trans-unit id="KdlJIlE" resname="Article">
+        <source>Article</source>
+        <target>Artículo</target>
+      </trans-unit>
+      <trans-unit id="x_0b8Lr" resname="Accéder">
+        <source>Accéder</source>
+        <target>Acceder</target>
+      </trans-unit>
+      <trans-unit id="NpQDxKe" resname="Gérer les paramètres">
+        <source>Gérer les paramètres</source>
+        <target>Administrar parámetros</target>
+      </trans-unit>
+      <trans-unit id="VU6zjRz" resname="Gérer les comptes utilisateurs">
+        <source>Gérer les comptes utilisateurs</source>
+        <target>Administrar cuentas de usuario</target>
+      </trans-unit>
+      <trans-unit id="qL7j1vX" resname="Voir la liste des items">
+        <source>Voir la liste des items</source>
+        <target>Ver la lista de objetos</target>
+      </trans-unit>
+      <trans-unit id="UzFhc1Y" resname="Accueil">
+        <source>Accueil</source>
+        <target>Inicio</target>
+      </trans-unit>
+      <trans-unit id="pIXGq1S" resname="Le jeu">
+        <source>Le jeu</source>
+        <target>El juego</target>
+      </trans-unit>
+      <trans-unit id="z7GsDIB" resname="Inscription">
+        <source>Inscription</source>
+        <target>Registro</target>
+      </trans-unit>
+      <trans-unit id="OIWM1Yj" resname="Téléchargement">
+        <source>Téléchargement</source>
+        <target>Descargas</target>
+      </trans-unit>
+      <trans-unit id="AXoA42Y" resname="Liste des joueurs">
+        <source>Liste des joueurs</source>
+        <target>Listado de jugadores</target>
+      </trans-unit>
+      <trans-unit id="eZbtT6E" resname="Joueurs connecté">
+        <source>Joueurs connecté</source>
+        <target>Jugadores conectados</target>
+      </trans-unit>
+      <trans-unit id="QXsY7GS" resname="Classements">
+        <source>Classements</source>
+        <target>Clasificaciones</target>
+      </trans-unit>
+      <trans-unit id="B8xpUns" resname="Communauté">
+        <source>Communauté</source>
+        <target>Comunidad</target>
+      </trans-unit>
+      <trans-unit id="BTvGWHS" resname="Discord">
+        <source>Discord</source>
+        <target>Discord</target>
+      </trans-unit>
+      <trans-unit id="1B9bSXf" resname="Facebook">
+        <source>Facebook</source>
+        <target>Facebook</target>
+      </trans-unit>
+      <trans-unit id="vNGOrV_" resname="Twitter">
+        <source>Twitter</source>
+        <target>Twitter</target>
+      </trans-unit>
+      <trans-unit id="HJGa8e4" resname="Youtube">
+        <source>Youtube</source>
+        <target>Youtube</target>
+      </trans-unit>
+      <trans-unit id="utV_94N" resname="Instagram">
+        <source>Instagram</source>
+        <target>Instagram</target>
+      </trans-unit>
+      <trans-unit id="PNyCjXH" resname="Boutiques">
+        <source>Boutiques</source>
+        <target>Tienda</target>
+      </trans-unit>
+      <trans-unit id="KVbRCFw" resname="Boutique VIP">
+        <source>Boutique VIP</source>
+        <target>Tienda VIP</target>
+      </trans-unit>
+      <trans-unit id="Y_xp.eM" resname="Wiki">
+        <source>Wiki</source>
+        <target>Wiki</target>
+      </trans-unit>
+      <trans-unit id="KPRXHyi" resname="Mon compte">
+        <source>Mon compte</source>
+        <target>Mi cuenta</target>
+      </trans-unit>
+      <trans-unit id="q0Uca0i" resname="Mon profil">
+        <source>Mon profil</source>
+        <target>Mi perfil </target>
+      </trans-unit>
+      <trans-unit id="_1_eksG" resname="Déconnexion">
+        <source>Déconnexion</source>
+        <target>Cerrar sesión</target>
+      </trans-unit>
+      <trans-unit id="rNQhlOq" resname="login_panel_login">
+        <source>login_panel_login</source>
+        <target>login_panel_login</target>
+      </trans-unit>
+      <trans-unit id="rucs5BG" resname="login_panel_register">
+        <source>login_panel_register</source>
+        <target>login_panel_register</target>
+      </trans-unit>
+      <trans-unit id="TqFAWIF" resname="home">
+        <source>home</source>
+        <target>Inicio</target>
+      </trans-unit>
+      <trans-unit id="QsGlOHv" resname="game_title">
+        <source>game_title</source>
+        <target>game_title</target>
+      </trans-unit>
+      <trans-unit id="7OZsK72" resname="all_rights_reserved">
+        <source>all_rights_reserved</source>
+        <target>Todos los derechos reservados</target>
+      </trans-unit>
+      <trans-unit id="CfIGE7B" resname="graphic_concept_by">
+        <source>graphic_concept_by</source>
+        <target>Concepto gráfico creado por </target>
+      </trans-unit>
+      <trans-unit id="RTAk7Dj" resname="developped_by">
+        <source>developped_by</source>
+        <target>Desarrollado por</target>
+      </trans-unit>
+      <trans-unit id="vE_FEw8" resname="Classement par niveau">
+        <source>Classement par niveau</source>
+        <target>Clasificación por nivel</target>
+      </trans-unit>
+      <trans-unit id="K1EE9fw" resname="Niveau">
+        <source>Niveau</source>
+        <target>Nivel</target>
+      </trans-unit>
+      <trans-unit id="2oqbkzZ" resname="Exp">
+        <source>Exp</source>
+        <target>Exp</target>
+      </trans-unit>
+      <trans-unit id="p873_RI" resname="Liste des joueurs connecté">
+        <source>Liste des joueurs connecté</source>
+        <target>Listado de jugadores conectados</target>
+      </trans-unit>
+      <trans-unit id="Jh29XZq" resname="Sélectionner le personnage receveur">
+        <source>Sélectionner le personnage receveur</source>
+        <target>Selecciona el personaje destinatario</target>
+      </trans-unit>
+      <trans-unit id="ik4fpcx" resname="Solde après achat">
+        <source>Solde après achat</source>
+        <target>Saldo después de la compra</target>
+      </trans-unit>
+      <trans-unit id="od9PXXj" resname="Le personnage doit être connecté pour recevoir l'objet.">
+        <source>Le personnage doit être connecté pour recevoir l'objet.</source>
+        <target>El jugador debe estar conectado para recibir el objeto.</target>
+      </trans-unit>
+      <trans-unit id="Mn2.N2W" resname="Sélectionnez un personnage">
+        <source>Sélectionnez un personnage</source>
+        <target>Seleccionar un personaje</target>
+      </trans-unit>
+      <trans-unit id="FtudgN." resname="Niv">
+        <source>Niv</source>
+        <target>Nivel</target>
+      </trans-unit>
+      <trans-unit id="EfOoRdM" resname="Inventaire du personnage pleins">
+        <source>Inventaire du personnage pleins</source>
+        <target>Inventario del personaje lleno</target>
+      </trans-unit>
+      <trans-unit id="Oeo9Xt_" resname="Entrer une quantité">
+        <source>Entrer une quantité</source>
+        <target>Introduce una cantidad</target>
+      </trans-unit>
+      <trans-unit id="3KErf_t" resname="L'inventaire pour ce personnage est pleins">
+        <source>L'inventaire pour ce personnage est pleins</source>
+        <target>El inventario de este personaje está lleno</target>
+      </trans-unit>
+      <trans-unit id="vdRg5Xd" resname="ACHETER">
+        <source>ACHETER</source>
+        <target>Comprar</target>
+      </trans-unit>
+      <trans-unit id="7Sm87Me" resname="pour">
+        <source>pour</source>
+        <target>para</target>
+      </trans-unit>
+      <trans-unit id="2iiN0qP" resname="Actualités">
+        <source>Actualités</source>
+        <target>Noticias</target>
+      </trans-unit>
+      <trans-unit id="e1pHRc_" resname="Publié le">
+        <source>Publié le</source>
+        <target>Publicado el</target>
+      </trans-unit>
+      <trans-unit id="ydnSxL6" resname="par">
+        <source>par</source>
+        <target>por</target>
+      </trans-unit>
+      <trans-unit id="xGWsLuh" resname="Lire la suite">
+        <source>Lire la suite</source>
+        <target>Leer más</target>
+      </trans-unit>
+      <trans-unit id="Gfug6ZW" resname="news">
+        <source>news</source>
+        <target>Noticias</target>
+      </trans-unit>
+      <trans-unit id="1W4nQD." resname="Etat du serveur">
+        <source>Etat du serveur</source>
+        <target>Estado del servidor</target>
+      </trans-unit>
+      <trans-unit id="4gU.tot" resname="En ligne">
+        <source>En ligne</source>
+        <target>En línea</target>
+      </trans-unit>
+      <trans-unit id="SpmVizx" resname="joueurs">
+        <source>joueurs</source>
+        <target>jugadores</target>
+      </trans-unit>
+      <trans-unit id="IbuMdd5" resname="Hors ligne">
+        <source>Hors ligne</source>
+        <target>Desconectado</target>
+      </trans-unit>
+      <trans-unit id="vjeaMPG" resname="credits">
+        <source>credits</source>
+        <target>créditos</target>
+      </trans-unit>
+      <trans-unit id="9_QC76a" resname="Discuter avec les joueurs">
+        <source>Discuter avec les joueurs</source>
+        <target>Chatear con los jugadores</target>
+      </trans-unit>
+      <trans-unit id="rd9NOrf" resname="Suivez-nous sur Facebook">
+        <source>Suivez-nous sur Facebook</source>
+        <target>Síguenos en Facebook</target>
+      </trans-unit>
+      <trans-unit id="7dD5N4F" resname="Suivez-nous sur Twitter">
+        <source>Suivez-nous sur Twitter</source>
+        <target>Síguenos en twitter</target>
+      </trans-unit>
+      <trans-unit id="AjmNf1n" resname="Suivez-nous sur Youtube">
+        <source>Suivez-nous sur Youtube</source>
+        <target>Síguenos en Youtube</target>
+      </trans-unit>
+      <trans-unit id="d3ysyyY" resname="Suivez-nous sur Instagram">
+        <source>Suivez-nous sur Instagram</source>
+        <target>Síguenos en Instagram</target>
+      </trans-unit>
+      <trans-unit id="GuGIgR_" resname="inscription">
+        <source>inscription</source>
+        <target>Registro</target>
+      </trans-unit>
+      <trans-unit id="hUy7E2e" resname="join_our_community">
+        <source>join_our_community</source>
+        <target>ÚNETE A LA COMUNIDAD</target>
+      </trans-unit>
+      <trans-unit id="wEAA69T" resname="join_our_community_desc">
+        <source>join_our_community_desc</source>
+        <target>Solo puedes entrar a jugar una vez hayas creado tu cuenta. No se requiere validación por correo electrónico, sin embargo, asegúrate de poner un correo electrónico correcto para recuperarla en caso de pérdida de contraseña!</target>
+      </trans-unit>
+      <trans-unit id="zrML1ra" resname="Nom de compte">
+        <source>Nom de compte</source>
+        <target>Nombre de la cuenta</target>
+      </trans-unit>
+      <trans-unit id="j5qSClf" resname="Adresse e-mail">
+        <source>Adresse e-mail</source>
+        <target>Correo electrónico</target>
+      </trans-unit>
+      <trans-unit id=".5yLjAZ" resname="Mot de passe">
+        <source>Mot de passe</source>
+        <target>Contraseña</target>
+      </trans-unit>
+      <trans-unit id="ZyMJiqQ" resname="register_agree">
+        <source>register_agree</source>
+        <target>Confirmar registro</target>
+      </trans-unit>
+      <trans-unit id="R1ccqGM" resname="register_register_button">
+        <source>register_register_button</source>
+        <target>Registro</target>
+      </trans-unit>
+      <trans-unit id="QtdMvsP" resname="register_offline">
+        <source>register_offline</source>
+        <target>El servidor está desconectado, los registros están deshabilitados.</target>
+      </trans-unit>
+      <trans-unit id="eaEIyVd" resname="Se connecter au site">
+        <source>Se connecter au site</source>
+        <target>Iniciar sesión en el sitio</target>
+      </trans-unit>
+      <trans-unit id="JxMJ_zB" resname="Me connecter">
+        <source>Me connecter</source>
+        <target>Iniciar sesión</target>
+      </trans-unit>
+      <trans-unit id="Gh8kmN." resname="'Boutique">
+        <source>'Boutique</source>
+        <target>Tienda</target>
+      </trans-unit>
+      <trans-unit id="xUoGHfz" resname="points">
+        <source>points</source>
+        <target>puntos</target>
+      </trans-unit>
+      <trans-unit id="cnQzKNA" resname="Vous n'avez pas assez de points">
+        <source>Vous n'avez pas assez de points</source>
+        <target>No tienes suficientes puntos</target>
+      </trans-unit>
+      <trans-unit id="mNEhPhk" resname="Recharger">
+        <source>Recharger</source>
+        <target>Recargar</target>
+      </trans-unit>
+      <trans-unit id="dV.fHRC" resname="INFORMATIONS PERSONNELLES">
+        <source>INFORMATIONS PERSONNELLES</source>
+        <target>INFORMACIÓN PERSONAL</target>
+      </trans-unit>
+      <trans-unit id="s1xPanq" resname="Informations web">
+        <source>Informations web</source>
+        <target>Información de la web</target>
+      </trans-unit>
+      <trans-unit id="rzo67aw" resname="Recharger mes crédits">
+        <source>Recharger mes crédits</source>
+        <target>Recargar mis puntos</target>
+      </trans-unit>
+      <trans-unit id="v5aKW4U" resname="Mes personnages">
+        <source>Mes personnages</source>
+        <target>Mis personajes</target>
+      </trans-unit>
+      <trans-unit id="rtER.gz" resname="Sexe">
+        <source>Sexe</source>
+        <target>Sexo</target>
+      </trans-unit>
+      <trans-unit id=".sGf49V" resname="Classe">
+        <source>Classe</source>
+        <target>Clase</target>
+      </trans-unit>
+      <trans-unit id="BqGtY35" resname="EXP">
+        <source>EXP</source>
+        <target>EXP</target>
+      </trans-unit>
+      <trans-unit id="V9cHmsk" resname="Liste des items">
+        <source>Liste des items</source>
+        <target>Lista de objetos</target>
+      </trans-unit>
+      <trans-unit id="MsjTaZy" resname="Id de l'item">
+        <source>Id de l'item</source>
+        <target>Id</target>
+      </trans-unit>
+      <trans-unit id="TF01V7H" resname="Nom de l'item">
+        <source>Nom de l'item</source>
+        <target>Nombre del item</target>
+      </trans-unit>
+      <trans-unit id="vjJoAp9" resname="Gérer le CMS">
+        <source>Gérer le CMS</source>
+        <target>Administrar el CMS</target>
+      </trans-unit>
+      <trans-unit id="Nuv96kP" resname="Le compte ">
+        <source>Le compte </source>
+        <target>La cuenta</target>
+      </trans-unit>
+      <trans-unit id="rU3k8aA" resname="Une erreur s'est produit.">
+        <source>Une erreur s'est produit.</source>
+        <target>Se ha producido un error.</target>
+      </trans-unit>
+      <trans-unit id="GuWHOHP" resname="Demande de nouveau mot de passe">
+        <source>Demande de nouveau mot de passe</source>
+        <target>Pide una nueva contraseña</target>
+      </trans-unit>
+      <trans-unit id="9JwWG.7" resname="Votre demande de mot de passe a bien été envoyée.">
+        <source>Votre demande de mot de passe a bien été envoyée.</source>
+        <target>Su solicitud de contraseña ha sido enviada con éxito.</target>
+      </trans-unit>
+      <trans-unit id="HnlGJoH" resname="Votre mot de passe a bien été modifié.">
+        <source>Votre mot de passe a bien été modifié.</source>
+        <target>Tu contraseña ha cambiado exitosamente.</target>
+      </trans-unit>
+      <trans-unit id=".0U2hHC" resname="Votre adresse e-mail a été modifier">
+        <source>Votre adresse e-mail a été modifier</source>
+        <target>Su dirección de correo electrónico ha sido modificada</target>
+      </trans-unit>
+      <trans-unit id="EB9dGjp" resname="Achat points boutique VIP">
+        <source>Achat points boutique VIP</source>
+        <target>Compra de puntos tienda VIP</target>
+      </trans-unit>
+      <trans-unit id="OtcXxzj" resname="Détail du compte">
+        <source>Détail du compte</source>
+        <target>Detalles de la cuenta</target>
+      </trans-unit>
+      <trans-unit id="oFaGmvu" resname="Information du compte">
+        <source>Information du compte</source>
+        <target>Información de la cuenta</target>
+      </trans-unit>
+      <trans-unit id="zExfTct" resname="Nom du compte">
+        <source>Nom du compte</source>
+        <target>Nombre de la cuenta</target>
+      </trans-unit>
+      <trans-unit id="I0Ng9_N" resname="Email du compte">
+        <source>Email du compte</source>
+        <target>Email de la cuenta</target>
+      </trans-unit>
+      <trans-unit id="I5U53NX" resname="Temps de jeu">
+        <source>Temps de jeu</source>
+        <target>Tiempo de juego</target>
+      </trans-unit>
+      <trans-unit id="kg5BPH1" resname="Status">
+        <source>Status</source>
+        <target>Estado</target>
+      </trans-unit>
+      <trans-unit id="TPKOdoL" resname="Banni">
+        <source>Banni</source>
+        <target>Baneado</target>
+      </trans-unit>
+      <trans-unit id="ND_rNcq" resname="En sourdine">
+        <source>En sourdine</source>
+        <target>Silenciado</target>
+      </trans-unit>
+      <trans-unit id="pySO60X" resname="Normal">
+        <source>Normal</source>
+        <target>Normal</target>
+      </trans-unit>
+      <trans-unit id="2fK1Jru" resname="Personnage">
+        <source>Personnage</source>
+        <target>Personaje</target>
+      </trans-unit>
+      <trans-unit id="bQMa8Q2" resname="Position">
+        <source>Position</source>
+        <target>Posición</target>
+      </trans-unit>
+      <trans-unit id="ftG50dA" resname="Vie">
+        <source>Vie</source>
+        <target>Vida</target>
+      </trans-unit>
+      <trans-unit id="Bm._SsV" resname="Mana">
+        <source>Mana</source>
+        <target>Maná</target>
+      </trans-unit>
+      <trans-unit id="c_vUtX4" resname="Attaque">
+        <source>Attaque</source>
+        <target>Ataque</target>
+      </trans-unit>
+      <trans-unit id="7DBoHOx" resname="Ability Power">
+        <source>Ability Power</source>
+        <target>Poder de habilidad</target>
+      </trans-unit>
+      <trans-unit id="n3OSXJp" resname="Défense">
+        <source>Défense</source>
+        <target>Defensa</target>
+      </trans-unit>
+      <trans-unit id="fzmMMNj" resname="Résistance magique">
+        <source>Résistance magique</source>
+        <target>Resistencia mágica</target>
+      </trans-unit>
+      <trans-unit id="PRc5mtz" resname="Vitesse">
+        <source>Vitesse</source>
+        <target>Velocidad</target>
+      </trans-unit>
+      <trans-unit id="ZM.xMZ0" resname="Action">
+        <source>Action</source>
+        <target>Acción</target>
+      </trans-unit>
+      <trans-unit id="MXXfdYY" resname="Détail">
+        <source>Détail</source>
+        <target>Detalles</target>
+      </trans-unit>
+      <trans-unit id="GU31ndi" resname="Résistence magique">
+        <source>Résistence magique</source>
+        <target>Resistencia mágica</target>
+      </trans-unit>
+      <trans-unit id="cR5fLhm" resname="Fermer">
+        <source>Fermer</source>
+        <target>Cerrar</target>
+      </trans-unit>
+      <trans-unit id="E6fslTP" resname="Liste des comptes">
+        <source>Liste des comptes</source>
+        <target>Lista de cuentas</target>
+      </trans-unit>
+      <trans-unit id="M0NZuQ7" resname="#">
+        <source>#</source>
+        <target>#</target>
+      </trans-unit>
+      <trans-unit id="jNDgE55" resname="Demander un nouveau mot de passe">
+        <source>Demander un nouveau mot de passe</source>
+        <target>Pedir una nueva contraseña</target>
+      </trans-unit>
+      <trans-unit id="kXLo7sm" resname="Bonjour">
+        <source>Bonjour</source>
+        <target>Hola</target>
+      </trans-unit>
+      <trans-unit id=".sIpuLh" resname="Mot de passe oublié ?">
+        <source>Mot de passe oublié ?</source>
+        <target>¿ Olvidaste tu contraseña ?</target>
+      </trans-unit>
+      <trans-unit id="M_Sd1Kk" resname="Réinitialiser mon mot de passe">
+        <source>Réinitialiser mon mot de passe</source>
+        <target>Reiniciar mi contraseña</target>
+      </trans-unit>
+      <trans-unit id=".At.tuP" resname="Votre adresse e-mail">
+        <source>Votre adresse e-mail</source>
+        <target>Tu dirección de e-mail</target>
+      </trans-unit>
+      <trans-unit id="QlH1kUh" resname="Votre nouveau mot de passe">
+        <source>Votre nouveau mot de passe</source>
+        <target>Tu nueva contraseña</target>
+      </trans-unit>
+      <trans-unit id="sZ2HiBJ" resname="Confirmer votre nouveau mot de passe">
+        <source>Confirmer votre nouveau mot de passe</source>
+        <target>Confirma tu nueva contraseña</target>
+      </trans-unit>
+      <trans-unit id="wYDQpgg" resname="Lien invalide">
+        <source>Lien invalide</source>
+        <target>Link inválido</target>
+      </trans-unit>
+      <trans-unit id="2GUW_bq" resname="Historique de transaction">
+        <source>Historique de transaction</source>
+        <target>Historial de transacción</target>
+      </trans-unit>
+      <trans-unit id="mcQKtAW" resname="Date">
+        <source>Date</source>
+        <target>Fecha</target>
+      </trans-unit>
+      <trans-unit id="uq3fcPt" resname="Type">
+        <source>Type</source>
+        <target>Tipo</target>
+      </trans-unit>
+      <trans-unit id="CUqMkDM" resname="Prix/code">
+        <source>Prix/code</source>
+        <target>Precio/código</target>
+      </trans-unit>
+      <trans-unit id="ihsfAE." resname="Achat boutique VIP">
+        <source>Achat boutique VIP</source>
+        <target>Compra en tienda VIP</target>
+      </trans-unit>
+      <trans-unit id="gRLEeiQ" resname="Rechargement crédits">
+        <source>Rechargement crédits</source>
+        <target>Recargar puntos</target>
+      </trans-unit>
+      <trans-unit id="c_Gaiv2" resname="Mes informations">
+        <source>Mes informations</source>
+        <target>Mi información</target>
+      </trans-unit>
+      <trans-unit id="JCtLchv" resname="Historique des achats">
+        <source>Historique des achats</source>
+        <target>Historial de compra</target>
+      </trans-unit>
+      <trans-unit id="glEYp7q" resname="Mes points">
+        <source>Mes points</source>
+        <target>Mis puntos</target>
+      </trans-unit>
+      <trans-unit id="8SUoml0" resname="Modifier l'adresse e-mail">
+        <source>Modifier l'adresse e-mail</source>
+        <target>Cambiar la dirección e-mail</target>
+      </trans-unit>
+      <trans-unit id="cQAILtX" resname="Votre adresse e-mail actuel">
+        <source>Votre adresse e-mail actuel</source>
+        <target>Tu dirección de e-mail actual</target>
+      </trans-unit>
+      <trans-unit id="q5jrw_G" resname="Votre nouvelle adresse e-mail">
+        <source>Votre nouvelle adresse e-mail</source>
+        <target>Tu nueva dirección de e-mail</target>
+      </trans-unit>
+      <trans-unit id="MyT4F13" resname="Confirmer votre nouvelle adresse e-mail">
+        <source>Confirmer votre nouvelle adresse e-mail</source>
+        <target>Confirma tu nueva dirección e-mail</target>
+      </trans-unit>
+      <trans-unit id="i5cUDhL" resname="Votre mot de passe">
+        <source>Votre mot de passe</source>
+        <target>Tu contraseña</target>
+      </trans-unit>
+      <trans-unit id="lW.Fwvv" resname="Modifier le mot de passe">
+        <source>Modifier le mot de passe</source>
+        <target>Cambiar la contraseña</target>
+      </trans-unit>
+      <trans-unit id="AMvy2O0" resname="Votre mot de passe actuel">
+        <source>Votre mot de passe actuel</source>
+        <target>Tu contraseña actual</target>
+      </trans-unit>
+      <trans-unit id="ZzkBrAu" resname="Classement niveaux">
+        <source>Classement niveaux</source>
+        <target>Por nivel</target>
+      </trans-unit>
+      <trans-unit id="6hzweBR" resname="Dernière mise à jour du classement le">
+        <source>Dernière mise à jour du classement le</source>
+        <target>Última actualización de la clasificación el</target>
+      </trans-unit>
+      <trans-unit id="USE0KGd" resname="Niveau max atteint !">
+        <source>Niveau max atteint !</source>
+        <target>Máximo nivel alcanzado!</target>
+      </trans-unit>
+      <trans-unit id="Q3xd05c" resname="Aucun joueur connecté.">
+        <source>Aucun joueur connecté.</source>
+        <target>Ningún jugador conectado.</target>
+      </trans-unit>
+      <trans-unit id="zHTtUPx" resname="Le serveur est hors ligne, la liste des joueurs est temporairement désactivé.">
+        <source>Le serveur est hors ligne, la liste des joueurs est temporairement désactivé.</source>
+        <target>El servidor está desconectado, la lista de jugadores está temporalmente deshabilitada.</target>
+      </trans-unit>
+      <trans-unit id="8Ic6iG0" resname="tu as fait une nouvelle demande de mot de passe, voici le lien qui va te permettre de changer ton mot de passe.">
+        <source>tu as fait une nouvelle demande de mot de passe, voici le lien qui va te permettre de changer ton mot de passe.</source>
+        <target>has pedido una nueva solicitud de contraseña, aquí está el enlace que le permite cambiar la contraseña.</target>
+      </trans-unit>
+      <trans-unit id="yvbsUe4" resname="Une erreur s'est produit">
+        <source>Une erreur s'est produit</source>
+        <target>Ha ocurrido un error</target>
+      </trans-unit>
+      <trans-unit id="658vh9O" resname="Une erreur s'est produit, contactez un administrateur.">
+        <source>Une erreur s'est produit, contactez un administrateur.</source>
+        <target>Ha ocurrido un error, contacte al administrador.</target>
+      </trans-unit>
+      <trans-unit id="kVcG7p7" resname="Page non trouvée">
+        <source>Page non trouvée</source>
+        <target>Página no encontrada</target>
+      </trans-unit>
+      <trans-unit id="QTMgW_U" resname="La page que vous cherchez n'a pas été trouvée">
+        <source>La page que vous cherchez n'a pas été trouvée</source>
+        <target>La página que estabas buscando no se ha encontrado.</target>
+      </trans-unit>
+      <trans-unit id="GqTLC8y" resname="Image">
+        <source>Image</source>
+        <target>Imagen</target>
+      </trans-unit>
+      <trans-unit id=".4qZxcb" resname="Tout afficher">
+        <source>Tout afficher</source>
+        <target>Mostrar todo</target>
+      </trans-unit>
+      <trans-unit id="zOnAobl" resname="Mentions légales">
+        <source>Mentions légales</source>
+        <target>Nota legal</target>
+      </trans-unit>
+      <trans-unit id="kwgjsCr" resname="Conditions Générales de Ventes">
+        <source>Conditions Générales de Ventes</source>
+        <target>Términos y condiciones</target>
+      </trans-unit>
+      <trans-unit id="coX9BS8" resname="Confidentialités">
+        <source>Confidentialités</source>
+        <target>Privacidad</target>
+      </trans-unit>
+      <trans-unit id="TNe42Nc" resname="Le serveur est hors ligne, le classement est temporairement désactivé.">
+        <source>Le serveur est hors ligne, le classement est temporairement désactivé.</source>
+        <target>El servidor está desconectado, la clasificación está temporalmente deshabilitada.</target>
+      </trans-unit>
+      <trans-unit id="nOKiG6e" resname="Votre&#10;                            adresse e-mail actuel">
+        <source>Votre
+                            adresse e-mail actuel</source>
+        <target>Tu
+                             dirección e-mail actual</target>
+      </trans-unit>
+      <trans-unit id="80mS6Ss" resname="L'opération s'est bien passé.">
+        <source>L'opération s'est bien passé.</source>
+        <target>La operación salió correctamente.</target>
+      </trans-unit>
+      <trans-unit id="vgFu9A9" resname="Détail du personnage">
+        <source>Détail du personnage</source>
+        <target>Detalle de personaje</target>
+      </trans-unit>
+      <trans-unit id="wIqybnz" resname="Inventaire">
+        <source>Inventaire</source>
+        <target>Inventario</target>
+      </trans-unit>
+      <trans-unit id="n8OMIfw" resname="Sélectionnez l'action que vous souhaitez faire">
+        <source>Sélectionnez l'action que vous souhaitez faire</source>
+        <target>Seleccione la acción que quiera realizar</target>
+      </trans-unit>
+      <trans-unit id="APnFM0V" resname="Ajouter">
+        <source>Ajouter</source>
+        <target>Agregar</target>
+      </trans-unit>
+      <trans-unit id="QeIu2TN" resname="Retirer">
+        <source>Retirer</source>
+        <target>Retirar</target>
+      </trans-unit>
+      <trans-unit id="KSYuuFY" resname="Saisir une quantité">
+        <source>Saisir une quantité</source>
+        <target>Ingrese una cantidad</target>
+      </trans-unit>
+      <trans-unit id="0B5hQ6b" resname="Envoyez">
+        <source>Envoyez</source>
+        <target>Enviar</target>
+      </trans-unit>
+      <trans-unit id="tRSwr6o" resname="Aucun item dans l'inventaire">
+        <source>Aucun item dans l'inventaire</source>
+        <target>No hay artículos en el inventario</target>
+      </trans-unit>
+      <trans-unit id="5FRjt9W" resname="Banque">
+        <source>Banque</source>
+        <target>Banco</target>
+      </trans-unit>
+      <trans-unit id="7yNueum" resname="Aucun item en banque">
+        <source>Aucun item en banque</source>
+        <target>No hay objetos en el banco</target>
+      </trans-unit>
+      <trans-unit id="278dwz7" resname="Sac à dos">
+        <source>Sac à dos</source>
+        <target>Mochila</target>
+      </trans-unit>
+      <trans-unit id="gacdwzp" resname="Aucun item dans le sac à dos">
+        <source>Aucun item dans le sac à dos</source>
+        <target>No hay artículos en la mochila</target>
+      </trans-unit>
+      <trans-unit id="XzJcT6q" resname="Ajouter un item">
+        <source>Ajouter un item</source>
+        <target>Añadir un artículo</target>
+      </trans-unit>
+      <trans-unit id="JouWd7G" resname="Entrez l'id de l'item">
+        <source>Entrez l'id de l'item</source>
+        <target>Introduzca la identificación del artículo</target>
+      </trans-unit>
+      <trans-unit id="SQ9XzUH" resname="Votre catégorie à bien été enregistré.">
+        <source>Votre catégorie à bien été enregistré.</source>
+        <target>__Votre catégorie à bien été enregistré.</target>
+      </trans-unit>
+      <trans-unit id="JheThQm" resname="Ajouter un&#10;            item">
+        <source>Ajouter un
+            item</source>
+        <target>__Ajouter un
+            item</target>
+      </trans-unit>
+      <trans-unit id="dma9y65" resname="Sélectionnez une catégorie">
+        <source>Sélectionnez une catégorie</source>
+        <target>__Sélectionnez une catégorie</target>
+      </trans-unit>
+      <trans-unit id="wtO5Zrx" resname="Modifier une catégorie d'article">
+        <source>Modifier une catégorie d'article</source>
+        <target>__Modifier une catégorie d'article</target>
+      </trans-unit>
+      <trans-unit id="a3wiUW." resname="Nom de la catégorie">
+        <source>Nom de la catégorie</source>
+        <target>__Nom de la catégorie</target>
+      </trans-unit>
+      <trans-unit id="hacX94p" resname="Liste des catégories d'article">
+        <source>Liste des catégories d'article</source>
+        <target>__Liste des catégories d'article</target>
+      </trans-unit>
+      <trans-unit id="TjiXpWc" resname="Créer une catégorie d'article">
+        <source>Créer une catégorie d'article</source>
+        <target>__Créer une catégorie d'article</target>
+      </trans-unit>
+      <trans-unit id="8B.6aWR" resname="Créer une nouvelle&#10;            page">
+        <source>Créer une nouvelle
+            page</source>
+        <target>__Créer une nouvelle
+            page</target>
+      </trans-unit>
+      <trans-unit id=".fgNDjf" resname="Créer un item">
+        <source>Créer un item</source>
+        <target>__Créer un item</target>
+      </trans-unit>
+      <trans-unit id="7BkZ03h" resname="Liste des catégories">
+        <source>Liste des catégories</source>
+        <target>__Liste des catégories</target>
+      </trans-unit>
+      <trans-unit id="3Oy2Ql6" resname="Créer une catégorie">
+        <source>Créer une catégorie</source>
+        <target>__Créer une catégorie</target>
+      </trans-unit>
+      <trans-unit id="faEgt9H" resname="Liste des news">
+        <source>Liste des news</source>
+        <target>__Liste des news</target>
+      </trans-unit>
+      <trans-unit id="OEk7epw" resname="Liste des transactions">
+        <source>Liste des transactions</source>
+        <target>__Liste des transactions</target>
+      </trans-unit>
+      <trans-unit id="8MX92k1" resname="CPS">
+        <source>CPS</source>
+        <target>__CPS</target>
+      </trans-unit>
+      <trans-unit id="Y6B9jrX" resname="Voir tous">
+        <source>Voir tous</source>
+        <target>__Voir tous</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

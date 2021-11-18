@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Intersect CMS Unleashed
+ * 2.2 Update
+ * Last modify : 24/08/2021 at 20:21
+ * Author : XFallSeane
+ * Website : https://intersect.thomasfds.fr
+ */
+
 namespace App\Form;
 
 use App\Entity\CmsPages;
@@ -17,11 +25,11 @@ class CmsPagesType extends AbstractType
     {
         $builder
             ->add('category', ChoiceType::class, [
-                'choices' => ['Game' => 'game', 'Wiki' => "wiki"],
-                'attr' => ['class' => 'w-100']
+                'choices' => ['Game' => 'game', 'Wiki' => "wiki", "Legal" => "Legal"],
+                'attr' => ['class' => 'w-100 form-control']
             ])
             ->add('name', TextType::class, [
-                'attr' => ['class' => 'w-100']
+                'attr' => ['class' => 'w-100 form-control']
             ])
             ->add('content', TextareaType::class, [
                 'attr' => ['aria-hidden' => false],

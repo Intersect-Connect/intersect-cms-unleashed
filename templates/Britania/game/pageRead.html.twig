@@ -1,7 +1,7 @@
-{% extends "base.html.twig" %}
+{% extends settings.get("theme") ~'/base.html.twig' %}
 
 {% block title %}
-dd
+{{news.name}}
 {% endblock %}
 
 {% block body %}
@@ -17,16 +17,9 @@ dd
 </ul>
 
 <div id="news" class="read">
-    <article>
-        <p>
-
-            {{news.content|raw }}
-        </p>
-
+    <article class="p-3">
+        {{news.content|raw }}
     </article>
     <div class="clear"></div>
 </div>
-
-
-
 {% endblock %}

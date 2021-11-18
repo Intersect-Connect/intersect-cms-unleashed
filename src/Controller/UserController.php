@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Intersect CMS Unleashed
+ * 2.2 Update
+ * Last modify : 24/08/2021 at 20:21
+ * Author : XFallSeane
+ * Website : https://intersect.thomasfds.fr
+ */
+
 namespace App\Controller;
 
 use App\Entity\CmsPointsHistory;
@@ -18,13 +26,19 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
+/**
+ * @IsGranted("ROLE_USER")
+ */
 
 class UserController extends AbstractController
 {
     /**
      * @Route("/account", name="account")
      */
-    public function index(Api $api, Request $request, UserRepository $userRepo, TranslatorInterface $translator): Response
+    public function index(Api $api, Request $request, UserRepository $userRepo, TranslatorInterface $translator, CmsSettings $settings): Response
     {
         $data = [
             'page' => 0,
@@ -98,12 +112,23 @@ class UserController extends AbstractController
             }
         }
 
-        $classes = $api->getGameClass($data);
-        $players = $api->getCharacters($this->getUser()->getId());
+        $classes_array = $api->getGameClass($data);
+        $classes = [];
+
+        if (isset($classes_array['entries'])) {
+            $classes = $classes_array['entries'];
+        }
+
+        $players_array = $api->getCharacters($this->getUser()->getId());
+        $players = [];
+
+        if (!isset($players_array['error'])) {
+            $players = $players_array;
+        }
 
 
-        return $this->render('user/index.html.twig', [
-            'classes' => $classes['entries'],
+        return $this->render($settings->get('theme') . '/user/index.html.twig', [
+            'classes' => $classes,
             'players' => $players
         ]);
     }
@@ -153,15 +178,15 @@ class UserController extends AbstractController
                 }
             }
         }
-        return $this->render('user/credit.html.twig', [
+        return $this->render($settings->get('theme') . '/user/credit.html.twig', [
             'dedipass' => $api->getDedipassPublic()
         ]);
     }
 
     /**
-     * @Route("/account/history", name="account.history")
+     * @Route("/account/history", name="account.history",  requirements={"_locale": "en|fr"})
      */
-    public function history(Api $api, Request $request, UserRepository $userRepo, CmsShopHistoryRepository $shopHistory, TranslatorInterface $translator, CmsShopRepository $cmsShopRepo, CmsPointsHistoryRepository $pointsRepo): Response
+    public function history(Api $api, Request $request, UserRepository $userRepo, CmsShopHistoryRepository $shopHistory, TranslatorInterface $translator, CmsShopRepository $cmsShopRepo, CmsPointsHistoryRepository $pointsRepo, CmsSettings $settings): Response
     {
 
         $shop_history = $shopHistory->findBy(['userId' => $this->getUser()->getId()]);
@@ -194,7 +219,7 @@ class UserController extends AbstractController
 
 
 
-        return $this->render('user/history.html.twig', [
+        return $this->render($settings->get('theme') . '/user/history.html.twig', [
             'history' => $history
         ]);
     }

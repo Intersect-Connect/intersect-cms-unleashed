@@ -1,8 +1,18 @@
 <?php
 
+/**
+ * Intersect CMS Unleashed
+ * 2.2 Update
+ * Last modify : 24/08/2021 at 20:21
+ * Author : XFallSeane
+ * Website : https://intersect.thomasfds.fr
+ */
+
 namespace App\Form;
 
 use App\Entity\CmsNews;
+use App\Entity\CmsNewsCategory;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -16,7 +26,7 @@ class CmsNewsType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'attr' => ['class' => 'w-100']
+                'attr' => ['class' => 'form-control w-100']
             ])
             ->add('content', TextareaType::class, [
                 'attr' => ['aria-hidden' => false],
@@ -26,6 +36,11 @@ class CmsNewsType extends AbstractType
                 "data_class" => null,
                 'required' => false,
                  'mapped' => false,
+            ])
+            ->add('category', EntityType::class, [
+                'class' => CmsNewsCategory::class,
+                'choice_label' => 'name',
+                'attr' => ['class' => 'form-control']
             ])
         ;
     }

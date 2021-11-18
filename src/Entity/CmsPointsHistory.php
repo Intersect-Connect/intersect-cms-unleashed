@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Intersect CMS Unleashed
+ * 2.2 Update
+ * Last modify : 24/08/2021 at 20:21
+ * Author : XFallSeane
+ * Website : https://intersect.thomasfds.fr
+ */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -13,11 +21,9 @@ use Doctrine\ORM\Mapping as ORM;
 class CmsPointsHistory
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
     private $id;
 

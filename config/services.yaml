@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     images_articles: '%kernel.project_dir%/public/assets/general/news'
+    images_items: '%kernel.project_dir%/public/assets/general/items'
     dedipass.public_key: '%env(DEDIPASS_PUBLIC_KEY)%'
     dedipass.private_key: '%env(DEDIPASS_PRIVATE_KEY)%'
 

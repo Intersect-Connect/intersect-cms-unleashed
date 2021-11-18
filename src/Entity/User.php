@@ -1,7 +1,17 @@
 <?php
 
+/**
+ * Intersect CMS Unleashed
+ * 2.2 Update
+ * Last modify : 24/08/2021 at 20:21
+ * Author : XFallSeane
+ * Website : https://intersect.thomasfds.fr
+ */
+
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -17,10 +27,9 @@ class User implements UserInterface
 {
     /**
      * @var int
-     *
-     * @ORM\Column(name="webId", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
+     * @ORM\Column(name="webId", type="integer")
      */
     private $webid;
 
@@ -77,7 +86,6 @@ class User implements UserInterface
      * @ORM\Column(type="json")
      */
     private $roles = [];
-
 
 
     /**

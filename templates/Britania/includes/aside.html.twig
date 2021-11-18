@@ -1,13 +1,16 @@
-{% if serveur_online %}
+{% set status = api.ServeurStatut %}
+
+
+{% if status.success is defined and status.success %}
 <a href="{{path('game.players.liste.online')}}" class="butt serverOnline">
     <span class="illu"></span>
     {{'Etat du serveur'|trans}}
     <small>
-        {{'En ligne'|trans}} ({{players_count}} {{'joueurs'|trans}})
+        {{'En ligne'|trans}} ({{status.online}} {{'joueurs'|trans}})
     </small>
 </a>
 {% else %}
-<a href="{{path('game.players.liste.online')}}" class="butt serverOffline">
+    <a href="{{path('game.players.liste.online')}}" class="butt serverOffline">
     <span class="illu"></span>
     {{'Etat du serveur'|trans}}
     <small>
@@ -16,9 +19,10 @@
 </a>
 {% endif %}
 
+
 {% if app.user %}
 {% if is_granted('ROLE_ADMIN') %}
-<a href="/admin" class="butt ladder">
+<a href="{{path("admin")}}" class="butt ladder">
     <span class="illu"></span>
     {{"Administration"|trans}}
     <small>{{"Gérer le CMS"|trans}}</small>

@@ -1,132 +1,92 @@
 <?php
 
+/**
+ * Intersect CMS Unleashed
+ * 2.2 Update
+ * Last modify : 24/08/2021 at 20:21
+ * Author : XFallSeane
+ * Website : https://intersect.thomasfds.fr
+ */
+
 namespace App\Controller;
 
 use App\Settings\Api;
-use DateTime;
+use App\Settings\CmsSettings;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Filesystem\Filesystem;
-use Knp\Component\Pager\PaginatorInterface; // Nous appelons le bundle KNP Paginator
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 
 class GameController extends AbstractController
 {
     /**
-     * @Route("/joueurs/", name="game.players.liste")
+     * @Route("/players", name="game.players.liste",  requirements={"_locale": "en|fr"})
      */
-    public function listeJoueurs(Api $api, $page = 0, PaginatorInterface $paginator, Request $request): Response
+    public function listeJoueurs(Api $api, $page = 0, PaginatorInterface $paginator, Request $request, CmsSettings $settings): Response
     {
         $serveur_statut = $api->ServeurStatut();
-        $filesystem = new Filesystem();
 
-        if (!$filesystem->exists('../var/cache/game')) {
-            $filesystem->mkdir('../var/cache/game', 0644);
-        }
+        if ($serveur_statut['success']) {
 
+            $joueurs = $api->getAllPlayers(0);
 
 
-        $cachefile = '../var/cache/game/liste_joueurs.json';
-        $cachetime = 3600; // time to cache in seconds
-        $cacheDate = new DateTime();
-        // dd($filesystem->exists($cachefile) && filectime($cachefile) > (time() - $cachetime));
+            $total_joueurs = $joueurs['Total'];
+            $par_page = 30;
+            $total_page = floor($total_joueurs / $par_page);
 
-        if ($filesystem->exists($cachefile) && filectime($cachefile) > (time() - $cachetime)) {
-            $time_start = microtime(true);
 
-            $jsonfile = file_get_contents($cachefile);
+            $joueurs_liste = [];
 
-            $liste_joueur = json_decode($jsonfile)->joueurs;
-            $date = json_decode($jsonfile)->date->date;
 
-            $time_start = microtime(true);
+            for ($i = 0; $i <= $total_page; $i++) {
+                $joueurs = $api->getAllPlayers($i);
+
+                foreach ($joueurs['Values'] as $joueur) {
+
+                    if ($joueur['Level'] >= 1 && $joueur['Name'] != "Admin") {
+                        $joueurs_liste[] = ['user' => $joueur['UserId'], 'name' => $joueur['Name'], 'level' => $joueur['Level'], 'exp' => $joueur['Exp'], 'expNext' => $joueur['ExperienceToNextLevel']];
+                    }
+                }
+            }
 
 
             $joueurs = $paginator->paginate(
-                $liste_joueur, // Requête contenant les données à paginer (ici nos articles)
+                $joueurs_liste, // Requête contenant les données à paginer (ici nos articles)
                 $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
                 10 // Nombre de résultats par page
             );
 
-            return $this->render('game/players.html.twig', [
+
+            $response = new Response($this->renderView($settings->get('theme') . '/game/players.html.twig', [
                 'joueurs' => $joueurs,
-                'cacheDate' => $date,
-            ]);
+                'max' => $total_page,
+                'page_actuel' => $page
+            ]));
+
+            $response->setPublic();
+            $response->setSharedMaxAge(3600);
+            // $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
+
+            return $response;
+
         } else {
-            if ($serveur_statut['success']) {
-
-                $filesystem->remove($cachefile);
-
-
-                $joueurs = $api->getAllPlayers($page);
-                $total_joueurs = $joueurs['Total'];
-                $par_page = 30;
-                $total_page = round($total_joueurs / $par_page);
-
-                $joueurs_liste = [];
-
-
-                $time_start = microtime(true);
-
-
-                for ($i = 0; $i <= $total_page; $i++) {
-                    foreach ($joueurs['Values'] as $joueur) {
-
-                        if ($joueur['Level'] >= 1 && $joueur['Name'] != "Admin") {
-                            $joueurs_liste[] = ['user' => $joueur['UserId'], 'name' => $joueur['Name'], 'level' => $joueur['Level'], 'exp' => $joueur['Exp'], 'expNext' => $joueur['ExperienceToNextLevel']];
-                        }
-                    }
-                }
-
-                $data = ['joueurs' => $joueurs_liste, 'date' => new DateTime()];
-                $cache = fopen($cachefile, 'w');
-                fwrite($cache, json_encode($data));
-                fclose($cache);
-
-
-                $jsonfile = file_get_contents($cachefile);
-
-                $liste_joueur = json_decode($jsonfile)->joueurs;
-                $liste_joueur = (array)$liste_joueur;
-
-                foreach ($liste_joueur as $joueur) {
-                        $liste_joueur[] = $joueur;
-                }
-
-                $par_page = 30;
-                $total_page = count((array)$liste_joueur);
-                $date = json_decode($jsonfile)->date->date;
-
-                $joueurs = $paginator->paginate(
-                    $liste_joueur, // Requête contenant les données à paginer (ici nos articles)
-                    $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
-                    10 // Nombre de résultats par page
-                );
-
-
-                return $this->render('game/players.html.twig', [
-                    'joueurs' => $joueurs,
-                    'cacheDate' => $date,
-                    'max' => $total_page,
-                    'page_actuel' => $page
-                ]);
-            } else {
-                return $this->render('game/players.html.twig', [
-                    'serveur_statut' => false
-                ]);
-            }
+            return $this->render($settings->get('theme') . '/game/players.html.twig', [
+                'serveur_statut' => false
+            ]);
         }
     }
 
     /**
-     * @Route("/joueurs-connecte/", name="game.players.liste.online")
+     * @Route("/online-players", name="game.players.liste.online",  requirements={"_locale": "en|fr"})
      */
-    public function listeJoueursEnLigne(Api $api, $page = 0): Response
+    public function listeJoueursEnLigne(Api $api, $page = 0, CmsSettings $settings): Response
     {
         $serveur_statut = $api->ServeurStatut();
         if ($serveur_statut['success']) {
-            $joueurs = $api->onlinePlayers();
+            $joueurs = $api->onlinePlayers(0);
 
             $joueurs_liste = [];
 
@@ -134,71 +94,57 @@ class GameController extends AbstractController
                 $joueurs_liste[] = ['name' => $joueur['Name'], 'level' => $joueur['Level'], 'exp' => $joueur['Exp'], 'expNext' => $joueur['ExperienceToNextLevel']];
             }
 
-            return $this->render('game/online.html.twig', [
+            $response = new Response($this->renderView($settings->get('theme') . '/game/online.html.twig', [
                 'joueurs' => $joueurs_liste,
-            ]);
+            ]));
+
+            $response->setPublic();
+            $response->setSharedMaxAge(60);
+            $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
+
+            return $response;
+
         } else {
-            return $this->render('game/online.html.twig', [
+            return $this->render($settings->get('theme') . '/game/online.html.twig', [
                 'serveur_statut' => false
             ]);
         }
     }
 
     /**
-     * @Route("/classement-niveau/", name="game.rank.level")
+     * @Route("/rank/level", name="game.rank.level",  requirements={"_locale": "en|fr"})
      */
-    public function rankNiveau(Api $api): Response
+    public function rankNiveau(Api $api, CmsSettings $settings): Response
     {
-        $filesystem = new Filesystem();
+        $serveur_statut = $api->ServeurStatut();
+        if ($serveur_statut['success']) {
 
-        if (!$filesystem->exists('../var/cache/game')) {
-            $filesystem->mkdir('../var/cache/game', 0644);
-        }
 
-        $cachefile = '../var/cache/game/classement_general.json';
-        $cachetime = 3600; // time to cache in seconds
-        $cacheDate = new DateTime();
+            $joueurs = $api->getRank(0);
 
-        if ($filesystem->exists($cachefile) && (strtotime(date("F d Y H:i:s.", filectime($cachefile))) > (time() - $cachetime))) {
-            $liste_joueur = file_get_contents($cachefile);
+            $joueurs_liste = [];
 
-            $liste_joueur = json_decode($liste_joueur);
-            $date = $liste_joueur->date->date;
-            return $this->render('game/level_rank.html.twig', [
-                'joueurs' => $liste_joueur->joueurs,
-                'cacheDate' => $date
-            ]);
-        } else {
-            $serveur_statut = $api->ServeurStatut();
-            if ($serveur_statut['success']) {
-                if ($filesystem->exists($cachefile)) {
-                    $filesystem->remove($cachefile);
+            foreach ($joueurs as $joueur) {
+
+                if ($joueur['Name'] != "Admin" && $joueur['Level'] != "0") {
+                    $joueurs_liste[] = ['name' => $joueur['Name'], 'level' => $joueur['Level'], 'exp' => $joueur['Exp'], 'expNext' => $joueur['ExperienceToNextLevel']];
                 }
-                $cache = fopen($cachefile, 'w');
-
-                $joueurs = $api->getRank();
-
-                $joueurs_liste = [];
-
-                foreach ($joueurs as $joueur) {
-
-                    if ($joueur['Name'] != "Admin" && $joueur['Level'] != "1") {
-                        $joueurs_liste[] = ['name' => $joueur['Name'], 'level' => $joueur['Level'], 'exp' => $joueur['Exp'], 'expNext' => $joueur['ExperienceToNextLevel']];
-                    }
-                }
-
-                $data = ['joueurs' => $joueurs_liste, 'date' => new DateTime()];
-                fwrite($cache, json_encode($data));
-                fclose($cache);
-
-                return $this->render('game/level_rank.html.twig', [
-                    'joueurs' => $joueurs_liste,
-                ]);
-            } else {
-                return $this->render('game/level_rank.html.twig', [
-                    'serveur_statut' => false
-                ]);
             }
+
+            $response = new Response($this->renderView($settings->get('theme') . '/game/level_rank.html.twig', [
+                  'joueurs' => $joueurs_liste,
+            ]));
+
+            $response->setPublic();
+            $response->setSharedMaxAge(3600);
+            $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
+
+            return $response;
+            
+        } else {
+            return $this->render($settings->get('theme') . '/game/level_rank.html.twig', [
+                'serveur_statut' => false
+            ]);
         }
     }
 }

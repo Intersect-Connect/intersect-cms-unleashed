@@ -1,29 +1,98 @@
 <?php
 
+/**
+ * Intersect CMS Unleashed
+ * 2.2 Update
+ * Last modify : 24/08/2021 at 20:21
+ * Author : XFallSeane
+ * Website : https://intersect.thomasfds.fr
+ */
+
 namespace App\Controller\Admin;
 
 use App\Repository\CmsNewsRepository;
 use App\Repository\CmsSettingsRepository;
 use App\Repository\CmsShopRepository;
 use App\Settings\Api;
+use App\Settings\CmsSettings;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
+/**
+ * @IsGranted("ROLE_ADMIN")
+ */
 
 class AdminController extends AbstractController
 {
     /**
      * @Route("/admin", name="admin")
      */
-    public function index(Api $api, CmsShopRepository $shop, CmsNewsRepository $news): Response
+    public function index(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, CmsSettings $settings): Response
     {
-        return $this->render('admin/index.html.twig', [
-            'total_users' => $api->getAllUsers(0)['Total'],
-            'total_players' => $api->getAllPlayers(0)['Total'],
+        $total_users = null;
+        $total_players = null;
+        $moyenne_play = [];
+        $last_register = [];
+
+        if (isset($api->getAllUsers(0)['Total'])) {
+            $total_users = $api->getAllUsers(0);
+
+            $par_page = 30;
+            $total_page = floor($total_users['Total'] / $par_page);
+
+            for ($i = 0; $i <= $total_page; $i++) {
+                $users = $api->getAllUsers($i);
+                foreach ($users['Values'] as $user) {
+                    $last_register[] = ['id' => $user['Id'], 'username' => $user['Name'], 'date' => $user['RegistrationDate']];
+                    $moyenne_play[] = $user['PlayTimeSeconds'];
+                }
+            }
+        }
+
+        if ($last_register != null) {
+            usort($last_register, function ($a, $b) {
+                return $b['date'] > $a['date'];
+            });
+        }
+
+
+
+
+        if (isset($api->getAllPlayers(0)['Total'])) {
+            $total_players = $api->getAllPlayers(0)['Total'];
+        }
+
+        $server_request = $api->getServerInfo();
+        $server_info = [];
+
+        if (!isset($server_request['error'])) {
+            $server_info['uptime'] = $server_request['uptime'] / 1000;
+            $server_info['cps'] = $server_request['cps'];
+            $server_info['connectedClients'] = $server_request['connectedClients'];
+            $server_info['onlineCount'] = $server_request['onlineCount'];
+        } else {
+            $server_info = null;
+        }
+
+        //    $total_users['Total'] != null ? $total_users['Total'] : null;
+
+
+        return $this->render($settings->get('theme') . '/admin/index.html.twig', [
+            'total_users' => $total_users != null ? $total_users['Total'] : null,
+            'total_players' => $total_players,
             'total_shop' => count($shop->findAll()),
-            'total_news' => count($news->findAll())
+            'total_news' => count($news->findAll()),
+            'server_info' => $server_info,
+            'total_playTime' => array_sum($moyenne_play),
+            'moyenne_play' => array_sum($moyenne_play) > 0 ? array_sum($moyenne_play) / count($moyenne_play) : null,
+            'last_register' => $last_register,
+            'online_players' => $api->onlinePlayers(0)
         ]);
     }
 
@@ -31,7 +100,7 @@ class AdminController extends AbstractController
     /**
      * @Route("admin/settings", name="admin.settings")
      */
-    public function settings(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator): Response
+    public function settings(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, CmsSettings $settingCms): Response
     {
         if ($request->isMethod('POST')) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -52,6 +121,9 @@ class AdminController extends AbstractController
             $youtube_link = $request->request->get('youtube_link');
             $instagram_link = $request->request->get('instagram_link');
             $discord_link = $request->request->get('discord_link');
+            $theme = $request->request->get('theme');
+            $max_level = $request->request->get('max_level');
+            $tinymce_key = $request->request->get('tinymce_key');
 
 
             if (isset($api_password) && !empty($api_password)) {
@@ -166,26 +238,57 @@ class AdminController extends AbstractController
                 $entityManager->flush();
             }
 
+            if (isset($theme) && !empty($theme)) {
+                $param = $settings->findOneBy(['setting' => 'theme']);
+                $param->setDefaultValue($theme);
+                $entityManager->persist($param);
+                $entityManager->flush();
+            }
+
+            if (isset($max_level) && !empty($max_level)) {
+                $param = $settings->findOneBy(['setting' => 'max_level']);
+                $param->setDefaultValue($max_level);
+                $entityManager->persist($param);
+                $entityManager->flush();
+            }
+
+            if (isset($tinymce_key) && !empty($tinymce_key)) {
+                $param = $settings->findOneBy(['setting' => 'tinymce_key']);
+                $param->setDefaultValue($tinymce_key);
+                $entityManager->persist($param);
+                $entityManager->flush();
+            }
+
+
+
             $this->addFlash('success', $translator->trans('Vos paramètres ont bien été mis à jour.'));
             return $this->redirectToRoute('admin.settings');
         }
-        return $this->render('admin/cms_settings/index.html.twig', [
-            'params' => $settings->findAll()
+
+        $dir    = '../templates';
+        $folders = scandir($dir);
+        array_splice($folders, array_search('.', $folders), 1);
+        array_splice($folders, array_search('..', $folders), 1);
+
+        return $this->render($settingCms->get('theme') . '/admin/cms_settings/index.html.twig', [
+            'params' => $settings->findAll(),
+            'folders' => $folders
         ]);
     }
 
     /**
      * @Route("/admin/items/{page}", name="admin.items")
      */
-    public function items(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, $page = 0): Response
+    public function items(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, $page = 0, CmsSettings $settings): Response
     {
-        $total = $api->getAllItems($page)['total'];
-        $total_page = ceil($total / 30);
+        $items = $api->getAllItems($page);
+        $total = $items['total'];
+        $total_page = floor($total / 20);
 
 
-        return $this->render('admin/items_list/index.html.twig', [
+        return $this->render($settings->get('theme') . '/admin/items_list/index.html.twig', [
             'total_page' => $total_page,
-            'items' => $api->getAllItems($page)['entries'],
+            'items' => $items['entries'],
             'page_actuel' => $page
         ]);
     }
@@ -193,7 +296,7 @@ class AdminController extends AbstractController
     /**
      * @Route("admin/accounts/{page}", name="admin.account")
      */
-    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $page = 0): Response
+    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $page = 0, CmsSettings $setting): Response
     {
 
         if ($request->isMethod('POST')) {
@@ -250,7 +353,7 @@ class AdminController extends AbstractController
         $total_page = floor($total / 30);
 
 
-        return $this->render('admin/account/index.html.twig', [
+        return $this->render($setting->get('theme') . '/admin/account/index.html.twig', [
             'total_page' => $total_page,
             'items' => $users['Values'],
             'page_actuel' => $page
@@ -260,7 +363,7 @@ class AdminController extends AbstractController
     /**
      * @Route("admin/account/detail/{user}", name="admin.account.detail")
      */
-    public function accountDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $user): Response
+    public function accountDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $user, CmsSettings $setting): Response
     {
         if ($request->isMethod('POST')) {
             $user_id = $request->request->get('user_id');
@@ -311,10 +414,116 @@ class AdminController extends AbstractController
             }
         }
 
-        return $this->render('admin/account/detail.html.twig', [
+        // dd($api->getUser($user));
+
+
+        return $this->render($setting->get('theme') . '/admin/account/detail.html.twig', [
             'user' => $api->getUser($user),
             'characters' => $api->getCharacters($user),
             'maxCharacters' => $api->getServerConfig()['Player']['MaxCharacters']
+        ]);
+    }
+
+    /**
+     * @Route("admin/character/detail/{character}", name="admin.character.detail")
+     */
+    public function characterDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $character, CmsSettings $setting): Response
+    {
+        if ($request->isMethod('POST')) {
+            $id = $request->request->get('item');
+            $quantity = $request->request->get('quantity');
+            $action = $request->request->get('action');
+
+            if ($action == "give") {
+
+                $data = [
+                    'itemid' => $id,
+                    'quantity' => $quantity
+                ];
+                if ($api->giveItem($data, $character)) {
+                    $this->addFlash('success', $translator->trans('L\'opération s\'est bien passé.'));
+                    return $this->redirectToRoute('admin.character.detail', ['character' => $character]);
+                }
+            }
+
+            if ($action == "add") {
+                $data = [
+                    'itemid' => $id,
+                    'quantity' => $quantity
+                ];
+
+                if ($api->giveItem($data, $character)) {
+                    $this->addFlash('success', $translator->trans('L\'opération s\'est bien passé.'));
+                    return $this->redirectToRoute('admin.character.detail', ['character' => $character]);
+                }
+            }
+
+            if ($action == "del") {
+                $data = [
+                    'itemid' => $id,
+                    'quantity' => $quantity
+                ];
+
+                if ($api->takeItem($data, $character)) {
+                    $this->addFlash('success', $translator->trans('L\'opération s\'est bien passé.'));
+                    return $this->redirectToRoute('admin.character.detail', ['character' => $character]);
+                }
+            }
+        }
+
+        $inventory = $api->getInventory($character);
+        $inventory_list = [];
+
+        $bank = $api->getBank($character);
+        $bank_list = [];
+        $bag_list = [];
+
+        foreach ($inventory as $item) {
+            if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
+                $object = $api->getObjectDetail($item['ItemId']);
+                if ($item['BagId'] != null) {
+                    $bag_items = $api->getBag($item['BagId']);
+
+                    foreach ($bag_items['Slots'] as $item) {
+                        if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
+                            $object = $api->getObjectDetail($item['ItemId']);
+
+                            $bag_list[] = [
+                                'id' => $item['ItemId'],
+                                'name' => $object['Name'],
+                                'icon' => $object['Icon'],
+                                'quantity' => $item['Quantity']
+                            ];
+                        }
+                    }
+                }
+                $inventory_list[] = [
+                    'id' => $item['ItemId'],
+                    'name' => $object['Name'],
+                    'icon' => $object['Icon'],
+                    'quantity' => $item['Quantity']
+                ];
+            }
+        }
+
+        foreach ($bank as $item) {
+            if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
+                $object = $api->getObjectDetail($item['ItemId']);
+
+                $bank_list[] = [
+                    'id' => $item['ItemId'],
+                    'name' => $object['Name'],
+                    'icon' => $object['Icon'],
+                    'quantity' => $item['Quantity']
+                ];
+            }
+        }
+
+        return $this->render($setting->get('theme') . '/admin/account/character.html.twig', [
+            'player' => $api->getCharacter($character),
+            'inventory' => $inventory_list,
+            'bank' => $bank_list,
+            'bag' => $bag_list
         ]);
     }
 }

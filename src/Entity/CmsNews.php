@@ -1,234 +1,151 @@
 <?php
 
+/**
+ * Intersect CMS Unleashed
+ * 2.2 Update
+ * Last modify : 24/08/2021 at 20:21
+ * Author : XFallSeane
+ * Website : https://intersect.thomasfds.fr
+ */
+
 namespace App\Entity;
 
+use App\Repository\CmsNewsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CmsNews
- *
  * @ORM\Table(name="cms_news")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=CmsNewsRepository::class)
  */
 class CmsNews
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="text", length=65535, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $title;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="content", type="text", length=65535, nullable=false)
+     * @ORM\Column(type="text")
      */
     private $content;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date", type="date", nullable=false)
+     * @ORM\Column(type="datetime")
      */
     private $date;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="author", type="text", length=65535, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $author;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="img_url", type="text", length=65535, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
-    private $imgUrl;
+    private $img_url;
 
-        /**
-     * @var string
-     *
-     * @ORM\Column(name="slug", type="text", length=65535, nullable=false)
+    /**
+     * @ORM\Column(type="string", length=255)
      */
     private $slug;
 
-
-
     /**
-     * Get the value of imgUrl
-     *
-     * @return  string
-     */ 
-    public function getImgUrl()
+     * @ORM\ManyToOne(targetEntity=CmsNewsCategory::class, inversedBy="cmsNews")
+     */
+    private $category;
+
+    public function getId(): ?int
     {
-        return $this->imgUrl;
+        return $this->id;
     }
 
-    /**
-     * Set the value of imgUrl
-     *
-     * @param  string  $imgUrl
-     *
-     * @return  self
-     */ 
-    public function setImgUrl(string $imgUrl)
-    {
-        $this->imgUrl = $imgUrl;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of author
-     *
-     * @return  string
-     */ 
-    public function getAuthor()
-    {
-        return $this->author;
-    }
-
-    /**
-     * Set the value of author
-     *
-     * @param  string  $author
-     *
-     * @return  self
-     */ 
-    public function setAuthor(string $author)
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of date
-     *
-     * @return  \DateTime
-     */ 
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    /**
-     * Set the value of date
-     *
-     * @param  \DateTime  $date
-     *
-     * @return  self
-     */ 
-    public function setDate(\DateTime $date)
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of content
-     *
-     * @return  string
-     */ 
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
-     * Set the value of content
-     *
-     * @param  string  $content
-     *
-     * @return  self
-     */ 
-    public function setContent(string $content)
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of title
-     *
-     * @return  string
-     */ 
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * Set the value of title
-     *
-     * @param  string  $title
-     *
-     * @return  self
-     */ 
-    public function setTitle(string $title)
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * Get the value of id
-     *
-     * @return  int
-     */ 
-    public function getId()
+    public function getContent(): ?string
     {
-        return $this->id;
+        return $this->content;
     }
 
-    /**
-     * Set the value of id
-     *
-     * @param  int  $id
-     *
-     * @return  self
-     */ 
-    public function setId(int $id)
+    public function setContent(string $content): self
     {
-        $this->id = $id;
+        $this->content = $content;
 
         return $this;
     }
 
-    /**
-     * Get the value of slug
-     *
-     * @return  string
-     */ 
-    public function getSlug()
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?string
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(string $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getImgUrl(): ?string
+    {
+        return $this->img_url;
+    }
+
+    public function setImgUrl(string $img_url): self
+    {
+        $this->img_url = $img_url;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
 
-    /**
-     * Set the value of slug
-     *
-     * @param  string  $slug
-     *
-     * @return  self
-     */ 
-    public function setSlug(string $slug)
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getCategory(): ?CmsNewsCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?CmsNewsCategory $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
