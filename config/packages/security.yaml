@@ -18,6 +18,9 @@ security:
             anonymous: true
             lazy: true
             provider: app_user_provider
+            remember_me:
+                secret:   '%kernel.secret%' # required
+                lifetime: 15778800
             guard:
                 authenticators:
                     - App\Security\LoginAuthenticator
