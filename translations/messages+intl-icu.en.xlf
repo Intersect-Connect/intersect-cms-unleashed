@@ -297,11 +297,11 @@
       </trans-unit>
       <trans-unit id="rNQhlOq" resname="login_panel_login">
         <source>login_panel_login</source>
-        <target>login_panel_login</target>
+        <target>Login</target>
       </trans-unit>
       <trans-unit id="rucs5BG" resname="login_panel_register">
         <source>login_panel_register</source>
-        <target>login_panel_register</target>
+        <target>Register</target>
       </trans-unit>
       <trans-unit id="TqFAWIF" resname="home">
         <source>home</source>
@@ -309,7 +309,7 @@
       </trans-unit>
       <trans-unit id="QsGlOHv" resname="game_title">
         <source>game_title</source>
-        <target>game_title</target>
+        <target>Game Title</target>
       </trans-unit>
       <trans-unit id="7OZsK72" resname="all_rights_reserved">
         <source>all_rights_reserved</source>

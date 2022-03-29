@@ -301,11 +301,11 @@
       </trans-unit>
       <trans-unit id="rNQhlOq" resname="login_panel_login">
         <source>login_panel_login</source>
-        <target>login_panel_login</target>
+        <target>Connexion</target>
       </trans-unit>
       <trans-unit id="rucs5BG" resname="login_panel_register">
         <source>login_panel_register</source>
-        <target>login_panel_register</target>
+        <target>Inscription</target>
       </trans-unit>
       <trans-unit id="TqFAWIF" resname="home">
         <source>home</source>
@@ -349,7 +349,7 @@
       </trans-unit>
       <trans-unit id=".oJC5ub" resname="game_money">
         <source>game_money</source>
-        <target>game_money</target>
+        <target>Argent du jeu</target>
       </trans-unit>
       <trans-unit id="uTpoAZ4" resname="Vendu par">
         <source>Vendu par</source>
