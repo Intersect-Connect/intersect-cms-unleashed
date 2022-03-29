@@ -529,6 +529,50 @@ class Api
         }
     }
 
+
+    /**
+     * Get all guilds of the game
+     */
+    public function getAllGuilds($page = 0)
+    {
+        $guildsLists = [];
+
+        $guilds = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/');
+        if (isset($guilds['Message']) && $guilds['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $guilds = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/');
+        }
+
+        foreach($guilds["Values"] as $guild){
+            $guildsLists[] = $this->getGuild($guild["Key"]["Id"]);
+        }
+
+        return ["Total" => $guilds["Total"], "Values" => $guildsLists];
+    }
+
+    public function getGuild($id){
+        $guild = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/'.$id);
+        if (isset($guilds['Message']) && $guilds['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $guild = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/'.$id);
+        }
+
+        return [
+            "guildInfo" => $guild,
+            "members" => $this->getGuildMember($guild["Id"])
+        ];
+    }
+
+    public function getGuildMember($id){
+        $guildMember = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/'.$id.'/members?pageSize=100');
+        if (isset($guildMember['Message']) && $guildMember['Message'] == "Authorization has been denied for this request.") {
+            $this->setToken();
+            $guildMember = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/'.$id.'/members?pageSize=100');
+        }
+
+        return $guildMember["Values"];
+    }
+
     /**
      * Vérifie si l'inventaire n'est pas pleins
      */
