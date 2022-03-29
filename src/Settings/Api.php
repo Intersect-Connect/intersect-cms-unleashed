@@ -214,6 +214,117 @@ class Api
         return $user;
     }
 
+
+    public function multipleGetUsers()
+    {
+        $all_players = $this->getAllUsers(0);
+        $total = $all_players['Total'];
+        $total_page = floor($total / 100);
+
+        if ($total_page == 0) {
+            return $this->getAllUsers()["Values"];
+        } else {
+            $nodes = [];
+            $results =  [];
+            for ($i = 0; $i < $total_page; $i++) {
+                $nodes[] = $this->getServer() . '/api/v1/users?page=' . $i . '&pageSize=100';
+            }
+
+            $node_count = count($nodes);
+
+            $curl_arr = array();
+            $master = curl_multi_init();
+
+            for ($i = 0; $i < $node_count; $i++) {
+                $url = $nodes[$i];
+                $curl_arr[$i] = curl_init($url);
+                curl_setopt_array($curl_arr[$i], array(
+                    CURLOPT_POST => false,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_CONNECTTIMEOUT => 0,
+                    CURLOPT_TIMEOUT_MS => 0,
+                    CURLOPT_HTTPHEADER => array(
+                        'authorization:Bearer ' . $this->getToken(), // "authorization:Bearer", et non pas "authorization: Bearer"
+                        'Content-Type:application/json' // "Content-Type:application/json", et non pas "Content-Type: application/json"
+                    ),
+                ));
+                curl_multi_add_handle($master, $curl_arr[$i]);
+            }
+
+            do {
+                curl_multi_exec($master, $running);
+            } while ($running > 0);
+
+
+            for ($i = 0; $i < $node_count; $i++) {
+                $results[] = json_decode(curl_multi_getcontent($curl_arr[$i]), true);
+            }
+
+            if (isset($results[0]['Message'])) {
+                $this->setToken();
+                $all_players = $this->getAllUsers(0);
+                $total = $all_players['Total'];
+                $total_page = floor($total / 100);
+                $results =  [];
+
+
+                $nodes = [];
+
+                for ($i = 0; $i < $total_page; $i++) {
+                    $nodes[] = $this->getServer() . '/api/v1/users?page=' . $i . '&pageSize=100';
+                }
+
+                $node_count = count($nodes);
+
+                $curl_arr = array();
+                $master = curl_multi_init();
+
+                for ($i = 0; $i < $node_count; $i++) {
+                    $url = $nodes[$i];
+                    $curl_arr[$i] = curl_init($url);
+                    curl_setopt_array($curl_arr[$i], array(
+                        CURLOPT_POST => false,
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_CONNECTTIMEOUT => 0,
+                        CURLOPT_TIMEOUT_MS => 0,
+                        CURLOPT_HTTPHEADER => array(
+                            'authorization:Bearer ' . $this->getToken(), // "authorization:Bearer", et non pas "authorization: Bearer"
+                            'Content-Type:application/json' // "Content-Type:application/json", et non pas "Content-Type: application/json"
+                        ),
+                    ));
+                    curl_multi_add_handle($master, $curl_arr[$i]);
+                }
+
+                do {
+                    curl_multi_exec($master, $running);
+                } while ($running > 0);
+
+
+                for ($i = 0; $i < $node_count; $i++) {
+                    $results[] = json_decode(curl_multi_getcontent($curl_arr[$i]), true);
+                }
+                $allPlayers = [];
+
+                foreach ($results as $key => $item) {
+                    for ($i = 0; $i < 100; $i++) {
+                        $allPlayers[] = $item['Values'][$i];
+                    }
+                }
+
+                return $allPlayers;
+            } else {
+                $allPlayers = [];
+
+                foreach ($results as $key => $item) {
+                    for ($i = 0; $i < 100; $i++) {
+                        $allPlayers[] = $item['Values'][$i];
+                    }
+                }
+                return $allPlayers;
+            }
+        }
+    }
+
     /***
      * Permet de changer l'email d'un compte
      */
@@ -304,6 +415,118 @@ class Api
             $joueurs = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players?page=' . $page . '&pageSize=30');
         }
         return $joueurs;
+    }
+
+    /**
+     * Get multiple players at once
+     */
+    public function multipleGetPlayers()
+    {
+        $all_players = $this->getAllPlayers(0);
+        $total = $all_players['Total'];
+        $total_page = floor($total / 100);
+        $results = [];
+        $nodes = [];
+
+        if ($total_page == 0) {
+            return $this->getAllPlayers(0)["Values"];
+        } else {
+            for ($i = 0; $i < $total_page; $i++) {
+                $nodes[] = $this->getServer() . '/api/v1/players?page=' . $i . '&pageSize=100';
+            }
+            $node_count = count($nodes);
+            $curl_arr = array();
+            $master = curl_multi_init();
+
+            for ($i = 0; $i < $node_count; $i++) {
+                $url = $nodes[$i];
+                $curl_arr[$i] = curl_init($url);
+                curl_setopt_array($curl_arr[$i], array(
+                    CURLOPT_POST => false,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_CONNECTTIMEOUT => 0,
+                    CURLOPT_TIMEOUT_MS => 0,
+                    CURLOPT_HTTPHEADER => array(
+                        'authorization:Bearer ' . $this->getToken(), // "authorization:Bearer", et non pas "authorization: Bearer"
+                        'Content-Type:application/json' // "Content-Type:application/json", et non pas "Content-Type: application/json"
+                    ),
+                ));
+                curl_multi_add_handle($master, $curl_arr[$i]);
+            }
+
+            do {
+                curl_multi_exec($master, $running);
+            } while ($running > 0);
+
+
+            for ($i = 0; $i < $node_count; $i++) {
+                $results[] = json_decode(curl_multi_getcontent($curl_arr[$i]), true);
+            }
+
+            if (isset($results[0]['Message'])) {
+                $this->setToken();
+                $all_players = $this->getAllPlayers(0);
+                $total = $all_players['Total'];
+                $total_page = floor($total / 100);
+
+
+                $nodes = [];
+
+                for ($i = 0; $i < $total_page; $i++) {
+                    $nodes[] = $this->getServer() . '/api/v1/players?page=' . $i . '&pageSize=100';
+                }
+
+                $node_count = count($nodes);
+
+                $curl_arr = array();
+                $master = curl_multi_init();
+
+                for ($i = 0; $i < $node_count; $i++) {
+                    $url = $nodes[$i];
+                    $curl_arr[$i] = curl_init($url);
+                    curl_setopt_array($curl_arr[$i], array(
+                        CURLOPT_POST => false,
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_CONNECTTIMEOUT => 0,
+                        CURLOPT_TIMEOUT_MS => 0,
+                        CURLOPT_HTTPHEADER => array(
+                            'authorization:Bearer ' . $this->getToken(), // "authorization:Bearer", et non pas "authorization: Bearer"
+                            'Content-Type:application/json' // "Content-Type:application/json", et non pas "Content-Type: application/json"
+                        ),
+                    ));
+                    curl_multi_add_handle($master, $curl_arr[$i]);
+                }
+
+                do {
+                    curl_multi_exec($master, $running);
+                } while ($running > 0);
+
+
+                for ($i = 0; $i < $node_count; $i++) {
+                    $results[] = json_decode(curl_multi_getcontent($curl_arr[$i]), true);
+                }
+                $allPlayers = [];
+
+                foreach ($results as $key => $item) {
+                    for ($i = 0; $i < 100; $i++) {
+                        $allPlayers[] = $item['Values'][$i];
+                    }
+                }
+
+                return $allPlayers;
+            } else {
+
+                $allPlayers = [];
+
+                foreach ($results as $key => $item) {
+
+                    for ($i = 0; $i < 100; $i++) {
+                        $allPlayers[] = $item['Values'][$i];
+                    }
+                }
+                return $allPlayers;
+            }
+        }
     }
 
     /**
@@ -426,10 +649,10 @@ class Api
 
     public function getRank($page)
     {
-        $joueurs = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/rank?page='.$page.'&pageSize=25&sortDirection=Descending');
+        $joueurs = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/rank?page=' . $page . '&pageSize=25&sortDirection=Descending');
         if (isset($joueurs['Message']) && $joueurs['Message'] == "Authorization has been denied for this request.") {
             $this->setToken();
-           $joueurs = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/rank?page='.$page.'&pageSize=25&sortDirection=Descending');
+            $joueurs = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/rank?page=' . $page . '&pageSize=25&sortDirection=Descending');
         }
         return $joueurs['Values'];
     }

@@ -18,60 +18,42 @@ use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class GameController extends AbstractController
 {
     /**
      * @Route("/players", name="game.players.liste",  requirements={"_locale": "en|fr"})
      */
-    public function listeJoueurs(Api $api, $page = 0, PaginatorInterface $paginator, Request $request, CmsSettings $settings): Response
+    public function listeJoueurs(Api $api, $page = 0, PaginatorInterface $paginator, Request $request, CmsSettings $settings, CacheInterface $cache): Response
     {
         $serveur_statut = $api->ServeurStatut();
 
         if ($serveur_statut['success']) {
 
-            $joueurs = $api->getAllPlayers(0);
+            $players = $cache->get('players', function (ItemInterface $item) use ($api, $paginator, $request) {
+                $item->expiresAfter(86400);
+                $playersRequests = $api->multipleGetPlayers();
+                $players_lists = [];
 
-
-            $total_joueurs = $joueurs['Total'];
-            $par_page = 30;
-            $total_page = floor($total_joueurs / $par_page);
-
-
-            $joueurs_liste = [];
-
-
-            for ($i = 0; $i <= $total_page; $i++) {
-                $joueurs = $api->getAllPlayers($i);
-
-                foreach ($joueurs['Values'] as $joueur) {
-
-                    if ($joueur['Level'] >= 1 && $joueur['Name'] != "Admin") {
-                        $joueurs_liste[] = ['user' => $joueur['UserId'], 'name' => $joueur['Name'], 'level' => $joueur['Level'], 'exp' => $joueur['Exp'], 'expNext' => $joueur['ExperienceToNextLevel']];
+                foreach ($playersRequests as $player) {
+                    if ($player['Level'] >= 1 && $player['Name'] != "Admin") {
+                        $players_lists[] = ['user' => $player['UserId'], 'name' => $player['Name'], 'level' => $player['Level'], 'exp' => $player['Exp'], 'expNext' => $player['ExperienceToNextLevel']];
                     }
                 }
-            }
+                return $players_lists;
+            });
 
-
-            $joueurs = $paginator->paginate(
-                $joueurs_liste, // Requête contenant les données à paginer (ici nos articles)
+            $playersArray = $paginator->paginate(
+                $players, // Requête contenant les données à paginer (ici nos articles)
                 $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
                 10 // Nombre de résultats par page
             );
 
-
-            $response = new Response($this->renderView($settings->get('theme') . '/game/players.html.twig', [
-                'joueurs' => $joueurs,
-                'max' => $total_page,
-                'page_actuel' => $page
-            ]));
-
-            $response->setPublic();
-            $response->setSharedMaxAge(3600);
-            // $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
-
-            return $response;
-
+            return $this->render($settings->get('theme') . '/game/players.html.twig', [
+                'players' => $playersArray
+            ]);
         } else {
             return $this->render($settings->get('theme') . '/game/players.html.twig', [
                 'serveur_statut' => false
@@ -103,7 +85,6 @@ class GameController extends AbstractController
             $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
 
             return $response;
-
         } else {
             return $this->render($settings->get('theme') . '/game/online.html.twig', [
                 'serveur_statut' => false
@@ -114,33 +95,30 @@ class GameController extends AbstractController
     /**
      * @Route("/rank/level", name="game.rank.level",  requirements={"_locale": "en|fr"})
      */
-    public function rankNiveau(Api $api, CmsSettings $settings): Response
+    public function rankNiveau(Api $api, CmsSettings $settings, CacheInterface $cache, PaginatorInterface $paginator, Request $request): Response
     {
         $serveur_statut = $api->ServeurStatut();
         if ($serveur_statut['success']) {
 
+            $players = $cache->get('players', function (ItemInterface $item) use ($api, $paginator, $request) {
+                $item->expiresAfter(86400);
+                $rankRequests = $api->getRank(0);
 
-            $joueurs = $api->getRank(0);
+                $players_lists = [];
 
-            $joueurs_liste = [];
+                foreach ($rankRequests as $player) {
 
-            foreach ($joueurs as $joueur) {
-
-                if ($joueur['Name'] != "Admin" && $joueur['Level'] != "0") {
-                    $joueurs_liste[] = ['name' => $joueur['Name'], 'level' => $joueur['Level'], 'exp' => $joueur['Exp'], 'expNext' => $joueur['ExperienceToNextLevel']];
+                    if ($player['Name'] != "Admin" && $player['Level'] != "0") {
+                        $players_lists[] = ['name' => $player['Name'], 'level' => $player['Level'], 'exp' => $player['Exp'], 'expNext' => $player['ExperienceToNextLevel']];
+                    }
                 }
-            }
 
-            $response = new Response($this->renderView($settings->get('theme') . '/game/level_rank.html.twig', [
-                  'joueurs' => $joueurs_liste,
-            ]));
+                return $players_lists;
+            });
 
-            $response->setPublic();
-            $response->setSharedMaxAge(3600);
-            $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
-
-            return $response;
-            
+            return $this->render($settings->get('theme') . '/game/level_rank.html.twig', [
+                'players' => $players
+            ]);
         } else {
             return $this->render($settings->get('theme') . '/game/level_rank.html.twig', [
                 'serveur_statut' => false

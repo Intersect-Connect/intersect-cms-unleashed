@@ -23,6 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @IsGranted("ROLE_ADMIN")
@@ -269,10 +270,41 @@ class AdminController extends AbstractController
         $folders = scandir($dir);
         array_splice($folders, array_search('.', $folders), 1);
         array_splice($folders, array_search('..', $folders), 1);
+        $settingsCat = [
+            "website" => [
+                "base_url",
+                "credit_dedipass_private_key",
+                "credit_dedipass_public_key",
+                "current_lang",
+                "game_title",
+                "seo_description",
+                "theme",
+                "use_custom_game_pages",
+                "use_nav_community",
+                "use_right_community_button",
+                "use_wiki",
+                "tinymce_key",
+                "max_level"
+            ],
+            "api" => [
+                "api_username",
+                "api_password",
+                "api_server"
+            ],
+            "social" => [
+                "facebook_link",
+                "twitter_link",
+                "youtube_link",
+                "instagram_link",
+                "discord_link"
+            ]
+        ];
+
 
         return $this->render($settingCms->get('theme') . '/admin/cms_settings/index.html.twig', [
             'params' => $settings->findAll(),
-            'folders' => $folders
+            'folders' => $folders,
+            "settingsCat" => $settingsCat
         ]);
     }
 
@@ -296,7 +328,7 @@ class AdminController extends AbstractController
     /**
      * @Route("admin/accounts/{page}", name="admin.account")
      */
-    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $page = 0, CmsSettings $setting): Response
+    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $page = 0, CmsSettings $setting, PaginatorInterface $paginator): Response
     {
 
         if ($request->isMethod('POST')) {
@@ -352,10 +384,16 @@ class AdminController extends AbstractController
         $total = $users['Total'];
         $total_page = floor($total / 30);
 
+        $users = $paginator->paginate(
+            $api->multipleGetUsers(), // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            10 // Nombre de résultats par page
+        );
+
 
         return $this->render($setting->get('theme') . '/admin/account/index.html.twig', [
             'total_page' => $total_page,
-            'items' => $users['Values'],
+            'items' => $users,
             'page_actuel' => $page
         ]);
     }
