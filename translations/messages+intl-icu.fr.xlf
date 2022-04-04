@@ -979,6 +979,42 @@
         <source>Liste des Joueurs connectés</source>
         <target>Liste des Joueurs connectés</target>
       </trans-unit>
+      <trans-unit id="bcHVezG" resname="Information sur la guilde">
+        <source>Information sur la guilde</source>
+        <target>Information sur la guilde</target>
+      </trans-unit>
+      <trans-unit id=".0H5Mku" resname="Nom de la guilde">
+        <source>Nom de la guilde</source>
+        <target>Nom de la guilde</target>
+      </trans-unit>
+      <trans-unit id="9WQEbKT" resname="Date de fondation">
+        <source>Date de fondation</source>
+        <target>Date de fondation</target>
+      </trans-unit>
+      <trans-unit id="s.5yu0H" resname="Nombre de membres">
+        <source>Nombre de membres</source>
+        <target>Nombre de membres</target>
+      </trans-unit>
+      <trans-unit id="fYusDuF" resname="Liste des membres de la guilde">
+        <source>Liste des membres de la guilde</source>
+        <target>Liste des membres de la guilde</target>
+      </trans-unit>
+      <trans-unit id="_.bE_L2" resname="Voir le personnage">
+        <source>Voir le personnage</source>
+        <target>Voir le personnage</target>
+      </trans-unit>
+      <trans-unit id="WQr2_Vi" resname="Liste des guildes">
+        <source>Liste des guildes</source>
+        <target>Liste des guildes</target>
+      </trans-unit>
+      <trans-unit id="b.XH5sz" resname="Voir la guilde">
+        <source>Voir la guilde</source>
+        <target>Voir la guilde</target>
+      </trans-unit>
+      <trans-unit id="qlKx9wS" resname="Membres">
+        <source>Membres</source>
+        <target>Membres</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

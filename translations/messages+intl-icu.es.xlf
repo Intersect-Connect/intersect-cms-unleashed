@@ -894,67 +894,111 @@
       </trans-unit>
       <trans-unit id="SQ9XzUH" resname="Votre catégorie à bien été enregistré.">
         <source>Votre catégorie à bien été enregistré.</source>
-        <target>__Votre catégorie à bien été enregistré.</target>
+        <target>Tu categoría ha sido guardada.</target>
       </trans-unit>
       <trans-unit id="JheThQm" resname="Ajouter un&#10;            item">
         <source>Ajouter un
             item</source>
-        <target>__Ajouter un
-            item</target>
+        <target>Agrega uno
+             ít</target>
       </trans-unit>
       <trans-unit id="dma9y65" resname="Sélectionnez une catégorie">
         <source>Sélectionnez une catégorie</source>
-        <target>__Sélectionnez une catégorie</target>
+        <target>Seleccione una categoría</target>
       </trans-unit>
       <trans-unit id="wtO5Zrx" resname="Modifier une catégorie d'article">
         <source>Modifier une catégorie d'article</source>
-        <target>__Modifier une catégorie d'article</target>
+        <target>Editar una categoría de artículos</target>
       </trans-unit>
       <trans-unit id="a3wiUW." resname="Nom de la catégorie">
         <source>Nom de la catégorie</source>
-        <target>__Nom de la catégorie</target>
+        <target>Apellido de la categoría</target>
       </trans-unit>
       <trans-unit id="hacX94p" resname="Liste des catégories d'article">
         <source>Liste des catégories d'article</source>
-        <target>__Liste des catégories d'article</target>
+        <target>Lista de categorías de artículos</target>
       </trans-unit>
       <trans-unit id="TjiXpWc" resname="Créer une catégorie d'article">
         <source>Créer une catégorie d'article</source>
-        <target>__Créer une catégorie d'article</target>
+        <target>Crear una categoría de artículo</target>
       </trans-unit>
       <trans-unit id="8B.6aWR" resname="Créer une nouvelle&#10;            page">
         <source>Créer une nouvelle
             page</source>
-        <target>__Créer une nouvelle
-            page</target>
+        <target>Crear un nuevo
+             página</target>
       </trans-unit>
       <trans-unit id=".fgNDjf" resname="Créer un item">
         <source>Créer un item</source>
-        <target>__Créer un item</target>
+        <target>Crear un elemento</target>
       </trans-unit>
       <trans-unit id="7BkZ03h" resname="Liste des catégories">
         <source>Liste des catégories</source>
-        <target>__Liste des catégories</target>
+        <target>Lista de categorías</target>
       </trans-unit>
       <trans-unit id="3Oy2Ql6" resname="Créer une catégorie">
         <source>Créer une catégorie</source>
-        <target>__Créer une catégorie</target>
+        <target>Crear una categoría</target>
       </trans-unit>
       <trans-unit id="faEgt9H" resname="Liste des news">
         <source>Liste des news</source>
-        <target>__Liste des news</target>
+        <target>Lista de novedades</target>
       </trans-unit>
       <trans-unit id="OEk7epw" resname="Liste des transactions">
         <source>Liste des transactions</source>
-        <target>__Liste des transactions</target>
+        <target>Lista de transacciones</target>
       </trans-unit>
       <trans-unit id="8MX92k1" resname="CPS">
         <source>CPS</source>
-        <target>__CPS</target>
+        <target>CPS</target>
       </trans-unit>
       <trans-unit id="Y6B9jrX" resname="Voir tous">
         <source>Voir tous</source>
-        <target>__Voir tous</target>
+        <target>Ver todo</target>
+      </trans-unit>
+      <trans-unit id="bcHVezG" resname="Information sur la guilde">
+        <source>Information sur la guilde</source>
+        <target>Información del gremio</target>
+      </trans-unit>
+      <trans-unit id=".0H5Mku" resname="Nom de la guilde">
+        <source>Nom de la guilde</source>
+        <target>Apellido del gremio</target>
+      </trans-unit>
+      <trans-unit id="9WQEbKT" resname="Date de fondation">
+        <source>Date de fondation</source>
+        <target>Fecha de fundación</target>
+      </trans-unit>
+      <trans-unit id="s.5yu0H" resname="Nombre de membres">
+        <source>Nombre de membres</source>
+        <target>Número de miembros</target>
+      </trans-unit>
+      <trans-unit id="fYusDuF" resname="Liste des membres de la guilde">
+        <source>Liste des membres de la guilde</source>
+        <target>Lista de miembros del gremio</target>
+      </trans-unit>
+      <trans-unit id="_.bE_L2" resname="Voir le personnage">
+        <source>Voir le personnage</source>
+        <target>Ver el personaje</target>
+      </trans-unit>
+      <trans-unit id="WQr2_Vi" resname="Liste des guildes">
+        <source>Liste des guildes</source>
+        <target>Lista de gremios</target>
+      </trans-unit>
+      <trans-unit id="b.XH5sz" resname="Voir la guilde">
+        <source>Voir la guilde</source>
+        <target>Ver el gremio</target>
+      </trans-unit>
+      <trans-unit id="I00mM4O" resname="Liste des Joueurs connectés">
+        <source>Liste des Joueurs connectés</source>
+        <target>Lista de jugadores conectados</target>
+      </trans-unit>
+      <trans-unit id="qlKx9wS" resname="Membres">
+        <source>Membres</source>
+        <target>Miembros</target>
+      </trans-unit>
+      <trans-unit id="akscyP2" resname="Voir tout">
+        <source>Voir tout</source>
+        <target>Ver todo</target>
       </trans-unit>
     </body>
   </file>

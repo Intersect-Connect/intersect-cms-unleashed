@@ -895,7 +895,7 @@
       </trans-unit>
       <trans-unit id="SQ9XzUH" resname="Votre catégorie à bien été enregistré.">
         <source>Votre catégorie à bien été enregistré.</source>
-        <target>__Votre catégorie à bien été enregistré.</target>
+        <target>Your category has been saved.</target>
       </trans-unit>
       <trans-unit id="JheThQm" resname="Ajouter un&#10;            item">
         <source>Ajouter un
@@ -908,7 +908,7 @@
       </trans-unit>
       <trans-unit id="wtO5Zrx" resname="Modifier une catégorie d'article">
         <source>Modifier une catégorie d'article</source>
-        <target>_Modify a category</target>
+        <target>Modify a category</target>
       </trans-unit>
       <trans-unit id="a3wiUW." resname="Nom de la catégorie">
         <source>Nom de la catégorie</source>
@@ -958,6 +958,42 @@
       <trans-unit id="I00mM4O" resname="Liste des Joueurs connectés">
         <source>Liste des Joueurs connectés</source>
         <target>Online Players List</target>
+      </trans-unit>
+      <trans-unit id="bcHVezG" resname="Information sur la guilde">
+        <source>Information sur la guilde</source>
+        <target>Guild Information</target>
+      </trans-unit>
+      <trans-unit id=".0H5Mku" resname="Nom de la guilde">
+        <source>Nom de la guilde</source>
+        <target>Guild Name</target>
+      </trans-unit>
+      <trans-unit id="9WQEbKT" resname="Date de fondation">
+        <source>Date de fondation</source>
+        <target>Founding date</target>
+      </trans-unit>
+      <trans-unit id="s.5yu0H" resname="Nombre de membres">
+        <source>Nombre de membres</source>
+        <target>Number of members</target>
+      </trans-unit>
+      <trans-unit id="fYusDuF" resname="Liste des membres de la guilde">
+        <source>Liste des membres de la guilde</source>
+        <target>List of guild members</target>
+      </trans-unit>
+      <trans-unit id="_.bE_L2" resname="Voir le personnage">
+        <source>Voir le personnage</source>
+        <target>See the character</target>
+      </trans-unit>
+      <trans-unit id="WQr2_Vi" resname="Liste des guildes">
+        <source>Liste des guildes</source>
+        <target>List of guilds</target>
+      </trans-unit>
+      <trans-unit id="b.XH5sz" resname="Voir la guilde">
+        <source>Voir la guilde</source>
+        <target>See the guild</target>
+      </trans-unit>
+      <trans-unit id="qlKx9wS" resname="Membres">
+        <source>Membres</source>
+        <target>Members</target>
       </trans-unit>
     </body>
   </file>

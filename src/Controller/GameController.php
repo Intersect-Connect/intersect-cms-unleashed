@@ -100,7 +100,7 @@ class GameController extends AbstractController
         $serveur_statut = $api->ServeurStatut();
         if ($serveur_statut['success']) {
 
-            $players = $cache->get('players', function (ItemInterface $item) use ($api, $paginator, $request) {
+            $players = $cache->get('ranked_players', function (ItemInterface $item) use ($api, $paginator, $request) {
                 $item->expiresAfter(86400);
                 $rankRequests = $api->getRank(0);
 

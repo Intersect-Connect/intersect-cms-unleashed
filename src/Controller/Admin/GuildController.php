@@ -3,7 +3,7 @@
 /**
  * Intersect CMS Unleashed
  * 2.3 Update
- * Last modify : 29/03/2022 at 13:23
+ * Last modify : 04/04/2022 at 11:28
  * Author : XFallSeane
  * Website : https://intersect.thomasfds.fr
  */
@@ -12,6 +12,8 @@ namespace App\Controller\Admin;
 
 use App\Settings\Api;
 use App\Settings\CmsSettings;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,11 +25,16 @@ class GuildController extends AbstractController
 {
     private $settingsCms;
     private $api;
+    private $cache;
+    private $paginator;
+    
 
-    public function __construct(CmsSettings $settingCms, Api $api)
+    public function __construct(CmsSettings $settingCms, Api $api, CacheInterface $cache, PaginatorInterface $paginator)
     {
         $this->settingsCms = $settingCms;
         $this->api = $api;
+        $this->cache = $cache;
+        $this->paginator = $paginator;
     }
 
 
