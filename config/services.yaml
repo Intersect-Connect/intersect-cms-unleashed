@@ -8,6 +8,7 @@ parameters:
     images_items: '%kernel.project_dir%/public/assets/general/items'
     dedipass.public_key: '%env(DEDIPASS_PUBLIC_KEY)%'
     dedipass.private_key: '%env(DEDIPASS_PRIVATE_KEY)%'
+    version: '%kernel.project_dir%/config/version.json'
 
 
 services:

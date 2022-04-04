@@ -83,7 +83,7 @@ class AccountController extends AbstractController
         );
 
 
-        return $this->render($setting->get('theme') . '/admin/account/index.html.twig', [
+        return $this->render('AdminPanel/account/index.html.twig', [
             'total_page' => $total_page,
             'items' => $users,
             'page_actuel' => $page
@@ -147,7 +147,7 @@ class AccountController extends AbstractController
         // dd($api->getUser($user));
 
 
-        return $this->render($setting->get('theme') . '/admin/account/detail.html.twig', [
+        return $this->render('AdminPanel/account/detail.html.twig', [
             'user' => $api->getUser($user),
             'characters' => $api->getCharacters($user),
             'maxCharacters' => $api->getServerConfig()['Player']['MaxCharacters']

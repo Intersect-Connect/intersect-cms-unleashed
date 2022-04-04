@@ -1,0 +1,50 @@
+{% extends 'AdminPanel/base.html.twig' %}
+
+{% block title %}{{"Liste des articles de la boutique VIP"|trans}}{% endblock %}
+
+{% block body %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">{{'Liste des articles de la boutique VIP'|trans}}</h6>
+    </div>
+    <div class="card-body">
+        <a class="btn btn-sm btn-primary mb-3" href="{{ path('cms_shop_new') }}">{{'Créer un item'|trans}}</a>
+
+        <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>{{"ID de l'item"|trans}}</th>
+                    <th>{{"Nom "|trans}}</th>
+                    <th>{{"Prix"|trans}}</th>
+                    <th>{{"Promotion"|trans}}</th>
+                    <th>{{"Visible"|trans}}</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cms_shop in cms_shops %}
+                <tr>
+                    <td>{{ cms_shop.id }}</td>
+                    <td>{{ cms_shop.idItem }}</td>
+                    <td>{{ cms_shop.name }}</td>
+                    <td>{{ cms_shop.price }}</td>
+                    <td>{{ cms_shop.promotion }}%</td>
+                    <td>{{ cms_shop.visible }}</td>
+                    <td>
+                        <a href="{{ path('cms_shop_edit', {'id': cms_shop.id}) }}">{{"Modifier"|trans}}</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="9">no records found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
