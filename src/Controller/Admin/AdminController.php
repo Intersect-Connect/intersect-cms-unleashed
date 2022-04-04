@@ -2,8 +2,8 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.2 Update
- * Last modify : 24/08/2021 at 20:21
+ * 2.3 Update
+ * Last modify : 29/03/2022 at 13:23
  * Author : XFallSeane
  * Website : https://intersect.thomasfds.fr
  */
@@ -23,6 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @IsGranted("ROLE_ADMIN")
@@ -269,10 +270,41 @@ class AdminController extends AbstractController
         $folders = scandir($dir);
         array_splice($folders, array_search('.', $folders), 1);
         array_splice($folders, array_search('..', $folders), 1);
+        $settingsCat = [
+            "website" => [
+                "base_url",
+                "credit_dedipass_private_key",
+                "credit_dedipass_public_key",
+                "current_lang",
+                "game_title",
+                "seo_description",
+                "theme",
+                "use_custom_game_pages",
+                "use_nav_community",
+                "use_right_community_button",
+                "use_wiki",
+                "tinymce_key",
+                "max_level"
+            ],
+            "api" => [
+                "api_username",
+                "api_password",
+                "api_server"
+            ],
+            "social" => [
+                "facebook_link",
+                "twitter_link",
+                "youtube_link",
+                "instagram_link",
+                "discord_link"
+            ]
+        ];
+
 
         return $this->render($settingCms->get('theme') . '/admin/cms_settings/index.html.twig', [
             'params' => $settings->findAll(),
-            'folders' => $folders
+            'folders' => $folders,
+            "settingsCat" => $settingsCat
         ]);
     }
 
@@ -290,240 +322,6 @@ class AdminController extends AbstractController
             'total_page' => $total_page,
             'items' => $items['entries'],
             'page_actuel' => $page
-        ]);
-    }
-
-    /**
-     * @Route("admin/accounts/{page}", name="admin.account")
-     */
-    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $page = 0, CmsSettings $setting): Response
-    {
-
-        if ($request->isMethod('POST')) {
-            $user_id = $request->request->get('user_id');
-            $username = $request->request->get('username');
-            $ban = $request->request->get('ban');
-            $unban = $request->request->get('unban');
-            $mute = $request->request->get('mute');
-            $unmute = $request->request->get('unmute');
-
-            if (isset($ban) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->banAccount($user_id, $username, 5, $this->getUser()->getUsername())) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été banni.'));
-                    return $this->redirectToRoute('admin.account', ['page' => 0]);
-                } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
-                    return $this->redirectToRoute('admin.account', ['page' => 0]);
-                }
-            }
-
-            if (isset($unban) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->unBanAccount($user_id, $username)) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été débanni.'));
-                    return $this->redirectToRoute('admin.account', ['page' => 0]);
-                } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
-                    return $this->redirectToRoute('admin.account', ['page' => 0]);
-                }
-            }
-
-            if (isset($mute) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->MuteAccount($user_id, $username, 5, $this->getUser()->getUsername())) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été mute.'));
-                    return $this->redirectToRoute('admin.account', ['page' => 0]);
-                } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
-                    return $this->redirectToRoute('admin.account', ['page' => 0]);
-                }
-            }
-
-            if (isset($unmute) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->unMuteAccount($user_id, $username)) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été unmuted.'));
-                    return $this->redirectToRoute('admin.account', ['page' => 0]);
-                } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
-                    return $this->redirectToRoute('admin.account', ['page' => 0]);
-                }
-            }
-        }
-
-        $users = $api->getAllUsers($page);
-        $total = $users['Total'];
-        $total_page = floor($total / 30);
-
-
-        return $this->render($setting->get('theme') . '/admin/account/index.html.twig', [
-            'total_page' => $total_page,
-            'items' => $users['Values'],
-            'page_actuel' => $page
-        ]);
-    }
-
-    /**
-     * @Route("admin/account/detail/{user}", name="admin.account.detail")
-     */
-    public function accountDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $user, CmsSettings $setting): Response
-    {
-        if ($request->isMethod('POST')) {
-            $user_id = $request->request->get('user_id');
-            $username = $request->request->get('username');
-            $ban = $request->request->get('ban');
-            $unban = $request->request->get('unban');
-            $mute = $request->request->get('mute');
-            $unmute = $request->request->get('unmute');
-
-            if (isset($ban) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->banAccount($user_id, $username, 5, $this->getUser()->getUsername())) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été banni.'));
-                    return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
-                } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
-                    return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
-                }
-            }
-
-            if (isset($unban) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->unBanAccount($user_id, $username)) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été débanni.'));
-                    return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
-                } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
-                    return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
-                }
-            }
-
-            if (isset($mute) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->MuteAccount($user_id, $username, 5, $this->getUser()->getUsername())) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été mute.'));
-                    return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
-                } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
-                    return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
-                }
-            }
-
-            if (isset($unmute) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->unMuteAccount($user_id, $username)) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été unmuted.'));
-                    return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
-                } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
-                    return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
-                }
-            }
-        }
-
-        // dd($api->getUser($user));
-
-
-        return $this->render($setting->get('theme') . '/admin/account/detail.html.twig', [
-            'user' => $api->getUser($user),
-            'characters' => $api->getCharacters($user),
-            'maxCharacters' => $api->getServerConfig()['Player']['MaxCharacters']
-        ]);
-    }
-
-    /**
-     * @Route("admin/character/detail/{character}", name="admin.character.detail")
-     */
-    public function characterDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $character, CmsSettings $setting): Response
-    {
-        if ($request->isMethod('POST')) {
-            $id = $request->request->get('item');
-            $quantity = $request->request->get('quantity');
-            $action = $request->request->get('action');
-
-            if ($action == "give") {
-
-                $data = [
-                    'itemid' => $id,
-                    'quantity' => $quantity
-                ];
-                if ($api->giveItem($data, $character)) {
-                    $this->addFlash('success', $translator->trans('L\'opération s\'est bien passé.'));
-                    return $this->redirectToRoute('admin.character.detail', ['character' => $character]);
-                }
-            }
-
-            if ($action == "add") {
-                $data = [
-                    'itemid' => $id,
-                    'quantity' => $quantity
-                ];
-
-                if ($api->giveItem($data, $character)) {
-                    $this->addFlash('success', $translator->trans('L\'opération s\'est bien passé.'));
-                    return $this->redirectToRoute('admin.character.detail', ['character' => $character]);
-                }
-            }
-
-            if ($action == "del") {
-                $data = [
-                    'itemid' => $id,
-                    'quantity' => $quantity
-                ];
-
-                if ($api->takeItem($data, $character)) {
-                    $this->addFlash('success', $translator->trans('L\'opération s\'est bien passé.'));
-                    return $this->redirectToRoute('admin.character.detail', ['character' => $character]);
-                }
-            }
-        }
-
-        $inventory = $api->getInventory($character);
-        $inventory_list = [];
-
-        $bank = $api->getBank($character);
-        $bank_list = [];
-        $bag_list = [];
-
-        foreach ($inventory as $item) {
-            if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
-                $object = $api->getObjectDetail($item['ItemId']);
-                if ($item['BagId'] != null) {
-                    $bag_items = $api->getBag($item['BagId']);
-
-                    foreach ($bag_items['Slots'] as $item) {
-                        if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
-                            $object = $api->getObjectDetail($item['ItemId']);
-
-                            $bag_list[] = [
-                                'id' => $item['ItemId'],
-                                'name' => $object['Name'],
-                                'icon' => $object['Icon'],
-                                'quantity' => $item['Quantity']
-                            ];
-                        }
-                    }
-                }
-                $inventory_list[] = [
-                    'id' => $item['ItemId'],
-                    'name' => $object['Name'],
-                    'icon' => $object['Icon'],
-                    'quantity' => $item['Quantity']
-                ];
-            }
-        }
-
-        foreach ($bank as $item) {
-            if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
-                $object = $api->getObjectDetail($item['ItemId']);
-
-                $bank_list[] = [
-                    'id' => $item['ItemId'],
-                    'name' => $object['Name'],
-                    'icon' => $object['Icon'],
-                    'quantity' => $item['Quantity']
-                ];
-            }
-        }
-
-        return $this->render($setting->get('theme') . '/admin/account/character.html.twig', [
-            'player' => $api->getCharacter($character),
-            'inventory' => $inventory_list,
-            'bank' => $bank_list,
-            'bag' => $bag_list
         ]);
     }
 }

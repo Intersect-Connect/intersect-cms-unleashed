@@ -90,7 +90,9 @@
 							<li>
 								<a href="{{ path('game.players.liste.online') }}">{{ 'Joueurs connecté'|trans }}</a>
 							</li>
-
+							<li>
+								<a href="{{ path('guilds') }}">{{ 'Liste des guildes'|trans }}</a>
+							</li>
 						</ul>
 					</li>
 					<li class="sub">
@@ -185,10 +187,10 @@
 				</a>
 
 				{% if not app.user %}
-				<a href="{{ path('app_login') }}" class="link" title=" {{ 'login_panel_login'|trans }}">
+				<a href="{{ path('app_login') }}" class="link" title="{{'login_panel_login'|trans }}">
 					<div class="ico_lock"></div>
 				</a>
-				<a href="{{ path('app_register') }}" class="link" title=" {{ 'login_panel_register'|trans }}">
+				<a href="{{ path('app_register') }}" class="link" title="{{ 'login_panel_register'|trans }}">
 					<div class="ico_user-plus"></div>
 				</a>
 				{% endif %}

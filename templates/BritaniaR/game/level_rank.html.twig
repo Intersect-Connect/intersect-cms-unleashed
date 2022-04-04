@@ -12,7 +12,7 @@
 </ul>
 
 <div id="middle" class="p-0">
-    {% if joueurs is defined and joueurs|length >= 1 %}
+    {% if players is defined and players|length >= 1 %}
     <div class="table-responsive">
         <table class="table table-hover text-center" data-toggle="table" data-search="true" data-pagination="true"
             data-page-size="100" data-smart-display="false" data-mobile-responsive="true">
@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for player in joueurs %}
+                {% for player in players %}
                 <tr>
                     <td class="text-center">
                         <span class="rang">{{ loop.index }}</span>

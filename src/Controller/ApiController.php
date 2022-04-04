@@ -2,100 +2,69 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.2 Update
- * Last modify : 24/08/2021 at 20:21
+ * 2.3 Update
+ * Last modify : 04/04/2022 at 12:03
  * Author : XFallSeane
  * Website : https://intersect.thomasfds.fr
  */
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Settings\Api;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Services\ApiManager;
+use App\Settings\CmsSettings;
+use App\Repository\CmsNewsRepository;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * @Route("/api/v1")
+ */
 class ApiController extends AbstractController
 {
-    /**
-     * @Route("/api", name="api")
-     */
-    public function index(): Response
+    private $apiManager;
+    private $setting;
+    private $router;
+
+
+    public function __construct(ApiManager $apiManager, CmsSettings $setting, UrlGeneratorInterface $router)
     {
-        return $this->render('api/index.html.twig', [
-            'controller_name' => 'ApiController',
-        ]);
+        $this->apiManager = $apiManager;
+        $this->setting = $setting;
+        $this->router = $router;
     }
 
-
     /**
-     * @Route("/api/discord/register", name="api.discord.register")
+     * @Route("/news", name="api.news", methods={"GET"})
      */
-    public function discordRegister(Request $request, Api $api, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function index(CmsNewsRepository $newsRepo, Request $request): Response
     {
-        if ($request->isMethod('POST')) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $username = $request->request->get('username');
-            $password = $request->request->get('plainPassword');
-            $email = $request->request->get('email');
+        $news = $newsRepo->findAll();
 
-            if (
-                isset($username) && !empty($username) &&
-                isset($password) && !empty($password) &&
-                isset($email) && !empty($email)
-            ) {
-                $user_infos = $api->getUser($username);
+        if ($news) {
+            $newsList = [];
 
-                // return new JsonResponse([$user_infos]);
-
-
-                if (isset($user_infos['Message']) && $user_infos['Message'] == "No user with name '" . $username . "'.") {
-                    $userData = array(
-                        'username' => $username,
-                        'password' => hash('sha256', $password),
-                        'email' => $email
-                    );
-
-                    $register = $api->registerUser($userData);
-
-                    if (isset($register['Username']) && $register['Username'] == $username) {
-                        $user_infos = $api->getUser($username);
-
-                        $user = new User();
-
-                        // encode the plain password
-                        $user->setPassword(
-                            $passwordEncoder->encodePassword(
-                                $user,
-                                $password
-                            )
-                        );
-                        $user->setEmail($email);
-
-                        $user->setUsername($username);
-                        $user->setId($user_infos['Id']);
-                        $user->setPoints(0);
-
-                        $entityManager = $this->getDoctrine()->getManager();
-                        $entityManager->persist($user);
-                        $entityManager->flush();
-
-                        return new JsonResponse(['success' => true, 'message' => 'Inscription ok.']);
-                    } else {
-                        return new JsonResponse(['success' => false, 'message' => 'Debug1']);
-                    }
-                } else {
-                    return new JsonResponse(['success' => false, 'message' => 'Debug2']);
-                }
-            } else {
-                return new JsonResponse(['success' => false, 'message' => 'Champ manquant']);
+            foreach ($news as $key => $news) {
+                $newsList[] = [
+                    "id" => $news->getId(),
+                    "image" => $request->getSchemeAndHttpHost() . "/assets/general/news/" .  $news->getImgUrl(),
+                    "title" => $news->getTitle(),
+                    "link" => $this->router->generate("news.read", ["id" => $news->getId(), "slug" => $news->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
+                ];
             }
+
+            return $this->apiManager->generateResponse([
+                "success" => true,
+                "data" => $newsList
+            ]);
         } else {
-            return new JsonResponse(['success' => false, 'message' => 'Bad Request']);
+            return $this->apiManager->generateResponse([
+                "success" => false,
+                "data" => null
+            ]);
         }
     }
 }

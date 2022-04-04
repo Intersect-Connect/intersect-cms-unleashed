@@ -89,7 +89,10 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <nav aria-label="Pagination de la liste des joueurs">
+            <div class="bg-white p-3">
+                {{ knp_pagination_render(items) }}
+            </div>
+            <nav aria-label="Pagination de la liste des joueurs" class="d-none">
                 <ul class="pagination p-3 overflow-auto">
                     {% for i in 0..total_page %}
                     <li class="page-item  {% if page_actuel == i %}active{% endif %}">
