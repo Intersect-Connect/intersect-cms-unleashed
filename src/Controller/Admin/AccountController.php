@@ -144,9 +144,6 @@ class AccountController extends AbstractController
             }
         }
 
-        // dd($api->getUser($user));
-
-
         return $this->render('AdminPanel/account/detail.html.twig', [
             'user' => $api->getUser($user),
             'characters' => $api->getCharacters($user),

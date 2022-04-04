@@ -9,6 +9,7 @@ parameters:
     dedipass.public_key: '%env(DEDIPASS_PUBLIC_KEY)%'
     dedipass.private_key: '%env(DEDIPASS_PRIVATE_KEY)%'
     version: '%kernel.project_dir%/config/version.json'
+    update: '%kernel.project_dir%/'
 
 
 services:
