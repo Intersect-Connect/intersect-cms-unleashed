@@ -5,7 +5,9 @@ namespace App\Controller\Admin;
 use App\Settings\Api;
 use App\Settings\CmsSettings;
 use App\Repository\CmsSettingsRepository;
+use Symfony\Contracts\Cache\ItemInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,10 +19,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class AccountController extends AbstractController
 {
+
+    private $settings;
+    private $api;
+    private $cache;
+    private $paginator;
+    
+
+    public function __construct(CmsSettings $setting, Api $api, CacheInterface $cache, PaginatorInterface $paginator)
+    {
+        $this->settings = $setting;
+        $this->api = $api;
+        $this->cache = $cache;
+        $this->paginator = $paginator;
+    }
+
+
     /**
-     * @Route("/{page}", name="admin.account")
+     * @Route("/", name="admin.account")
      */
-    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $page = 0, CmsSettings $setting, PaginatorInterface $paginator): Response
+    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, PaginatorInterface $paginator): Response
     {
 
         if ($request->isMethod('POST')) {
@@ -72,21 +90,20 @@ class AccountController extends AbstractController
             }
         }
 
-        $users = $api->getAllUsers($page);
-        $total = $users['Total'];
-        $total_page = floor($total / 30);
+        $usersRequest = $this->cache->get('accounts', function (ItemInterface $item)  {
+            return $this->api->multipleGetUsers();
+        });
+       
 
         $users = $paginator->paginate(
-            $api->multipleGetUsers(), // Requête contenant les données à paginer (ici nos articles)
+            $usersRequest, // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
-            10 // Nombre de résultats par page
+            30 // Nombre de résultats par page
         );
 
 
         return $this->render('AdminPanel/account/index.html.twig', [
-            'total_page' => $total_page,
             'items' => $users,
-            'page_actuel' => $page
         ]);
     }
 

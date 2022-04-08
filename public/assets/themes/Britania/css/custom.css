@@ -1,3 +1,36 @@
+body {
+  padding-top: 15rem;
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  body {
+    padding-top: 25rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  body {
+    padding-top: 25rem;
+  }
+}
+
+body #logo {
+  top: -8.5rem;
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  body #logo {
+    top: -17.5rem;
+    left: 5rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  body #logo {
+    top: -15.5rem;
+  }
+}
+
 .icons {
   text-align: center;
   vertical-align: bottom;
@@ -148,6 +181,22 @@ article div.footer {
   width: 100%;
 }
 
+main #content {
+  width: 100%;
+}
+
+@media (min-width: 1200px) {
+  main #content {
+    width: calc(100% - 250px);
+  }
+}
+
+@media (min-width: 1400px) {
+  main #content {
+    width: calc(100% - 250px);
+  }
+}
+
 main article.card {
   width: 100% !important;
 }
@@ -164,20 +213,35 @@ main article.card .card-header h2 {
   font-size: 20px;
   line-height: 22px;
   padding: 15px;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(15%, #202c24), to(rgba(0, 0, 0, 0)));
   background: linear-gradient(to top, #202c24 15%, rgba(0, 0, 0, 0));
   color: white;
   left: 0;
-  bottom: 30px !important;
 }
 
 main article.card .card-footer {
   background: #d4d4d4 !important;
 }
 
+main aside {
+  top: 0px;
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  main aside {
+    position: relative;
+    top: 0px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 1200px) {
+  main aside {
+    top: 0px;
+  }
+}
+
 .search {
-  -webkit-box-shadow: none !important;
-          box-shadow: none !important;
+  box-shadow: none !important;
   padding: 0.5rem !important;
 }
 
@@ -214,6 +278,23 @@ footer a {
   font-size: calc(1.3rem + .6vw) !important;
 }
 
+#news.read ul {
+  padding-left: 32px !important;
+}
+
+#news.read ul li {
+  list-style: square;
+}
+
+#news.read ol {
+  list-style: auto;
+  padding-left: 32px;
+}
+
+#news.read em {
+  font-style: italic;
+}
+
 .slot {
   padding: 8px;
   border: 1px solid;
@@ -235,4 +316,3 @@ footer a {
   color: white;
   opacity: 1;
 }
-/*# sourceMappingURL=custom.css.map */

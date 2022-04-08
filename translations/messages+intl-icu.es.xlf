@@ -1000,6 +1000,30 @@
         <source>Voir tout</source>
         <target>Ver todo</target>
       </trans-unit>
+      <trans-unit id="ZyFT62v" resname="A propos">
+        <source>A propos</source>
+        <target>__A propos</target>
+      </trans-unit>
+      <trans-unit id="ZcF5bqu" resname="Mise à jour">
+        <source>Mise à jour</source>
+        <target>__Mise à jour</target>
+      </trans-unit>
+      <trans-unit id="AV6.etg" resname="Version actuel">
+        <source>Version actuel</source>
+        <target>__Version actuel</target>
+      </trans-unit>
+      <trans-unit id="yoXHVt1" resname="Vérifiez les mises à jours">
+        <source>Vérifiez les mises à jours</source>
+        <target>__Vérifiez les mises à jours</target>
+      </trans-unit>
+      <trans-unit id="cN.ZcmM" resname="Télécharger la mise à jour">
+        <source>Télécharger la mise à jour</source>
+        <target>__Télécharger la mise à jour</target>
+      </trans-unit>
+      <trans-unit id="UsBsDUA" resname="Message du développeur">
+        <source>Message du développeur</source>
+        <target>__Message du développeur</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

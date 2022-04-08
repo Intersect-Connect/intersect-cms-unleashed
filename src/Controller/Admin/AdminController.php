@@ -10,20 +10,22 @@
 
 namespace App\Controller\Admin;
 
-use App\Repository\CmsNewsRepository;
-use App\Repository\CmsSettingsRepository;
-use App\Repository\CmsShopRepository;
+use DateTime;
 use App\Settings\Api;
 use App\Settings\CmsSettings;
-use DateTime;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\CmsNewsRepository;
+use App\Repository\CmsShopRepository;
+use App\Repository\CmsSettingsRepository;
+use Symfony\Contracts\Cache\ItemInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @IsGranted("ROLE_ADMIN")
@@ -31,30 +33,51 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class AdminController extends AbstractController
 {
+
+    private $settings;
+    private $api;
+    private $cache;
+    private $paginator;
+    
+
+    public function __construct(CmsSettings $setting, Api $api, CacheInterface $cache, PaginatorInterface $paginator)
+    {
+        $this->settings = $setting;
+        $this->api = $api;
+        $this->cache = $cache;
+        $this->paginator = $paginator;
+    }
+    
     /**
      * @Route("/admin", name="admin")
      */
-    public function index(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, CmsSettings $settings): Response
+    public function index(CmsShopRepository $shop, CmsNewsRepository $news): Response
     {
-        $total_users = null;
-        $total_players = null;
+        ## Get All list of accounts
+        $usersRequest = $this->cache->get('accounts', function (ItemInterface $item)  {
+            return $this->api->multipleGetUsers();
+        });
+        ## Get All list of charatcers
+        $playersRequest = $this->cache->get('characters', function (ItemInterface $item)  {
+            return $this->api->multipleGetPlayers();
+        });
+        ## Get Server data
+        $server_request = $this->cache->get('serverInfo', function (ItemInterface $item)  {
+            return $this->api->getServerInfo();
+        });
+        ## Count all accounts on game database
+        $total_users = count($usersRequest);
+        ## Count all charatcers on game database
+        $total_players = count($playersRequest);
         $moyenne_play = [];
         $last_register = [];
+        $server_info = [];
 
-        if (isset($api->getAllUsers(0)['Total'])) {
-            $total_users = $api->getAllUsers(0);
-
-            $par_page = 30;
-            $total_page = floor($total_users['Total'] / $par_page);
-
-            for ($i = 0; $i <= $total_page; $i++) {
-                $users = $api->getAllUsers($i);
-                foreach ($users['Values'] as $user) {
-                    $last_register[] = ['id' => $user['Id'], 'username' => $user['Name'], 'date' => $user['RegistrationDate']];
-                    $moyenne_play[] = $user['PlayTimeSeconds'];
-                }
-            }
+        foreach ($usersRequest as $user) {
+            $last_register[] = ['id' => $user['Id'], 'username' => $user['Name'], 'date' => $user['RegistrationDate']];
+            $moyenne_play[] = $user['PlayTimeSeconds'];
         }
+
 
         if ($last_register != null) {
             usort($last_register, function ($a, $b) {
@@ -63,29 +86,21 @@ class AdminController extends AbstractController
         }
 
 
-
-
-        if (isset($api->getAllPlayers(0)['Total'])) {
-            $total_players = $api->getAllPlayers(0)['Total'];
-        }
-
-        $server_request = $api->getServerInfo();
-        $server_info = [];
-
         if (!isset($server_request['error'])) {
             $server_info['uptime'] = $server_request['uptime'] / 1000;
             $server_info['cps'] = $server_request['cps'];
             $server_info['connectedClients'] = $server_request['connectedClients'];
             $server_info['onlineCount'] = $server_request['onlineCount'];
         } else {
-            $server_info = null;
+            $server_info['uptime'] = "Error";
+            $server_info['cps'] = "Error";
+            $server_info['connectedClients'] = "Error";
+            $server_info['onlineCount'] = "Error";
         }
-
-        //    $total_users['Total'] != null ? $total_users['Total'] : null;
 
 
         return $this->render('AdminPanel/index.html.twig', [
-            'total_users' => $total_users != null ? $total_users['Total'] : null,
+            'total_users' => $total_users != null ? $total_users : 0,
             'total_players' => $total_players,
             'total_shop' => count($shop->findAll()),
             'total_news' => count($news->findAll()),
@@ -93,7 +108,7 @@ class AdminController extends AbstractController
             'total_playTime' => array_sum($moyenne_play),
             'moyenne_play' => array_sum($moyenne_play) > 0 ? array_sum($moyenne_play) / count($moyenne_play) : null,
             'last_register' => $last_register,
-            'online_players' => $api->onlinePlayers(0)
+            'online_players' => $this->api->onlinePlayers(0)
         ]);
     }
 
@@ -101,7 +116,7 @@ class AdminController extends AbstractController
     /**
      * @Route("admin/settings", name="admin.settings")
      */
-    public function settings(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, CmsSettings $settingCms): Response
+    public function settings(CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator): Response
     {
         if ($request->isMethod('POST')) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -311,9 +326,9 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/items/{page}", name="admin.items")
      */
-    public function items(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, $page = 0, CmsSettings $settings): Response
+    public function items($page = 0): Response
     {
-        $items = $api->getAllItems($page);
+        $items = $this->api->getAllItems($page);
         $total = $items['total'];
         $total_page = floor($total / 20);
 

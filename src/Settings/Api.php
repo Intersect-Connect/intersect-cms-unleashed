@@ -507,9 +507,11 @@ class Api
                 }
                 $allPlayers = [];
 
-                foreach ($results as $key => $item) {
-                    for ($i = 0; $i < 100; $i++) {
-                        $allPlayers[] = $item['Values'][$i];
+                if($results){
+                    foreach ($results as $key => $item) {
+                        for ($i = 0; $i < 100; $i++) {
+                            $allPlayers[] = $item['Values'][$i];
+                        }
                     }
                 }
 

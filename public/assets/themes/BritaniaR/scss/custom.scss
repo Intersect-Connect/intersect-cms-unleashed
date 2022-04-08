@@ -1,3 +1,28 @@
+body {
+  padding-top: 15rem;
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    padding-top: 25rem;
+  }
+
+  @media (min-width:1200px) {
+    padding-top: 25rem;
+  }
+
+  #logo {
+    top: -8.5rem;
+
+    @media (min-width: 768px) and (max-width: 991.98px) {
+      top: -17.5rem;
+      left: 5rem;
+    }
+
+    @media (min-width:1200px) {
+      top: -15.5rem;
+    }
+  }
+}
+
 .icons {
   text-align: center;
   vertical-align: bottom;
@@ -167,6 +192,15 @@ article {
 // Custom article
 
 main {
+
+  @media (min-width: 1200px){
+    width:80%;
+  }
+
+  @media (min-width: 1400px){
+    width:100%;
+  }
+
   article {
     &.card {
       width: 100% !important;
@@ -193,6 +227,20 @@ main {
       .card-footer {
         background: #d4d4d4 !important;
       }
+    }
+  }
+
+  aside {
+    top: 0px;
+
+    @media (min-width: 768px) and (max-width: 991.98px) {
+      position: relative;
+      top: 0px;
+      width: 100%;
+    }
+
+    @media (min-width: 1200px){
+      top:70px;
     }
   }
 }
@@ -240,6 +288,25 @@ footer a {
   h3 {
     font-size: calc(1.3rem + .6vw) !important;
   }
+
+  ul {
+    padding-left: 32px !important;
+
+    li {
+      list-style: square;
+
+    }
+  }
+
+  ol {
+    list-style: auto;
+    padding-left: 32px;
+  }
+
+  em {
+    font-style: italic;
+  }
+
 }
 
 .slot {
@@ -249,17 +316,17 @@ footer a {
   margin-bottom: 1rem;
 }
 
-.category_tag{
-padding: 0.2rem;
-    position: absolute;
-    top: 0;
-    z-index: 1;
-    min-width: 100px;
-    color: white;
-    max-width: 300px;
+.category_tag {
+  padding: 0.2rem;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  min-width: 100px;
+  color: white;
+  max-width: 300px;
 
-    span{
-      color:white;
-      opacity: 1;
-    }
+  span {
+    color: white;
+    opacity: 1;
+  }
 }

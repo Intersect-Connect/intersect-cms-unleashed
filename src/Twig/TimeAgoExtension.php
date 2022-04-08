@@ -17,7 +17,7 @@ use Twig\TwigFilter;
 
 class TimeAgoExtension extends AbstractExtension
 {
-        private $request;
+    private $request;
 
     public function __construct(RequestStack $requestStack)
     {
@@ -34,24 +34,28 @@ class TimeAgoExtension extends AbstractExtension
 
     public function timeAgo($seconds)
     {
-        $request = $this->request->getCurrentRequest();
-        $locale = $request->getLocale();
-        $seck = round($seconds);
-        $dtF = new \DateTime('@0');
-        $dtT = new \DateTime("@$seck");
+        if ($seconds != "Error") {
+            $request = $this->request->getCurrentRequest();
+            $locale = $request->getLocale();
+            $seck = round($seconds);
+            $dtF = new \DateTime('@0');
+            $dtT = new \DateTime("@$seck");
 
-        switch ($locale) {
-            case "fr":
-                return $dtF->diff($dtT)->format('%a jour(s), %h heure(s), %i minute(s), %s seconde(s)');
-                break;
-            case "en":
-                return $dtF->diff($dtT)->format('%a day(s), %h hour(s), %i minute(s), %s second(s)');
-                break;
-            case "es":
-                return $dtF->diff($dtT)->format('%a dia(s), %h hora(s), %i minuto(s), %s segundo(s)');
-                break;
+            switch ($locale) {
+                case "fr":
+                    return $dtF->diff($dtT)->format('%a jour(s), %h heure(s), %i minute(s), %s seconde(s)');
+                    break;
+                case "en":
+                    return $dtF->diff($dtT)->format('%a day(s), %h hour(s), %i minute(s), %s second(s)');
+                    break;
+                case "es":
+                    return $dtF->diff($dtT)->format('%a dia(s), %h hora(s), %i minuto(s), %s segundo(s)');
+                    break;
                 default:
-        return $dtF->diff($dtT)->format('%a day(s), %h hour(s), %i minute(s), %s second(s)');
+                    return $dtF->diff($dtT)->format('%a day(s), %h hour(s), %i minute(s), %s second(s)');
+            }
+        }else{
+            return $seconds;
         }
     }
 }
