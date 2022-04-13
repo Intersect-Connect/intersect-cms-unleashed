@@ -18,6 +18,12 @@
             <span>Dashboard</span></a>
     </li>
 
+    <li class="nav-item">
+        <a href="{{path("about.home")}}" class="nav-link">
+            <span>{{"A propos et mise à jour"|trans}}</span>
+        </a>
+    </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider">
 
@@ -41,6 +47,13 @@
                 <a class="collapse-item" href="{{path('cms_news_new')}}">{{"Créer un article"|trans}}</a>
             </div>
         </div>
+    </li>
+
+    <li class="nav-item">
+        <a href="{{path("admin.medias.home")}}" class="nav-link">
+            <i class="fas fa-photo-video"></i>
+            <span>{{"Gérer les médias"|trans}}</span>
+        </a>
     </li>
 
     <li class="nav-item">

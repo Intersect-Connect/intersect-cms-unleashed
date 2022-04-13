@@ -4,6 +4,11 @@
 	{{"A propos"|trans}}
 {% endblock %}
 
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
+{% endblock %}
+
+
 {% block body %}
 	<div class="card shadow mb-4">
 		<div class="card-header py-3">
@@ -61,5 +66,6 @@
 {% endblock %}
 
 {% block javascripts %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js" defer></script>
 	<script src="{{asset("assets/admin/js/update.js")}}" defer></script>
 {% endblock %}

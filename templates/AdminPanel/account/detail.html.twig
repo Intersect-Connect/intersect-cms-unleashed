@@ -1,13 +1,13 @@
 {% extends 'AdminPanel/base.html.twig' %}
 
-{% block title %}{{"Détail du compte"|trans}} {{user.Name}}{% endblock %}
+{% block title %}{{"Détail du compte"|trans}} {{user.game.Name}}{% endblock %}
 
 {% block body %}
 
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">{{"Détail du compte"|trans}} {{user.Name}}</h6>
+        <h6 class="m-0 font-weight-bold text-primary">{{"Détail du compte"|trans}} {{user.game.Name}}</h6>
     </div>
     <div class="card-body border-0">
 
@@ -33,56 +33,89 @@
                     </h1>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                            Id : {{user.Id}}
+                            Id : {{user.game.Id}}
                         </li>
 
                         <li class="list-group-item">
-                            {{"Nom du compte"|trans}} : {{user.Name}}
+                            {{"Nom du compte"|trans}} : {{user.game.Name}}
                         </li>
 
                         <li class="list-group-item">
-                            {{"Email du compte"|trans}} : {{user.Email}}
+                            {{"Email du compte"|trans}} : {{user.game.Email}}
                         </li>
 
 
-                        {% if user.PlayTimeSeconds is defined and user.PlayTimeSeconds is not null %}
+                        {% if user.game.PlayTimeSeconds is defined and user.game.PlayTimeSeconds is not null %}
                         <li class="list-group-item">
-                            {{"Temps de jeu"|trans}} : ~ {{user.PlayTimeSeconds|ago}}
+                            {{"Temps de jeu"|trans}} : ~ {{user.game.PlayTimeSeconds|ago}}
                         </li>
                         {% endif %}
 
 
-                        {% if user.RegistrationDate is defined and user.RegistrationDate is not null %}
+                        {% if user.game.RegistrationDate is defined and user.game.RegistrationDate is not null %}
                         <li class="list-group-item">
-                            {{"Date d'inscription"}} : {{user.RegistrationDate|date('d/m/Y')}}
+                            {{"Date d'inscription"}} : {{user.game.RegistrationDate|date('d/m/Y')}}
                         </li>
                         {% endif %}
 
 
                         <li class="list-group-item">
                             {{"Status"|trans}} :
-                            {% if user.IsBanned %}
+                            {% if user.game.IsBanned %}
                             <span class="badge bg-danger">{{"Banni"|trans}}</span>
                             {% else %}
-                            {% if user.IsMuted %}
+                            {% if user.game.IsMuted %}
                             <span class="badge bg-danger">{{"En sourdine"|trans}}</span>
                             {% else %}
                             <span class="badge bg-success">{{"Normal"|trans}}</span>
                             {% endif %}
                             {% endif %}
                         </li>
+
+                        <li class="list-group-item">
+                            {{"Nombre de points"}} : {{user.web.points}} 
+                        </li>
                     </ul>
 
+                    <button class="btn btn-sm btn-primary btn-block mb-3" data-toggle="modal" data-target="#givePoint">Add points</button>
+
+                    {# Give points to players #}
+                    <form action="{{path("admin.account.add.point")}}" method="POST">
+                        <div class="modal fade" id="givePoint" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">
+                                        Give point to {{user.game.Name}}
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="number" id="points" name="points" min="1" max="10000" class="form-control">
+                                    <input type="hidden" name="user" value="{{user.game.Id}}">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Add</button>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
                     <form method="POST">
-                        <input type="hidden" name="user_id" value="{{user.Id}}">
-                        <input type="hidden" name="username" value="{{user.Name}}">
-                        {% if user.IsBanned %}
+                        <input type="hidden" name="user_id" value="{{user.game.Id}}">
+                        <input type="hidden" name="username" value="{{user.game.Name}}">
+                        {% if user.game.IsBanned %}
                         <button name="unban" type="submit" class="btn btn-info btn-sm btn-block">unBan</button>
                         {% else %}
                         <button name="ban" type="submit" class="btn btn-danger btn-sm btn-block">Ban</button>
                         {% endif %}
 
-                        {% if user.IsMuted %}
+                        {% if user.game.IsMuted %}
                         <button name="unmute" type="submit" class="btn btn-info btn-sm btn-block">unMute</button>
                         {% else %}
                         <button name="mute" type="submit" class="btn btn-danger btn-sm btn-block">Mute</button>

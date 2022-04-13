@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Intersect CMS Unleashed
+ * 2.4 Update
+ * Last modify : 11/04/2022 at 10:47
+ * Author : XFallSeane
+ * Website : https://intersect.thomasfds.fr
+ */
+
 namespace App\Controller\Admin;
 
 use ZipArchive;
@@ -17,8 +25,7 @@ class AboutController extends AbstractController
      */
     public function index(): Response
     {
-        $getLocalVersion = file_get_contents($this->getParameter('version'));
-        $versionLocal = json_decode($getLocalVersion)->version;
+        $versionLocal = $this->getParameter("version");
 
         $getOnlineVersion = file_get_contents("https://www.dropbox.com/s/tcyg3mi6i74jgkl/update.json?dl=1");
         $versionOnline = json_decode($getOnlineVersion);
@@ -33,8 +40,6 @@ class AboutController extends AbstractController
             }
         }
 
-
-
         return $this->render('AdminPanel/about/index.html.twig', [
             "versionLocal" => $versionLocal,
             "updateAvailable" => $updateAvailable
@@ -47,8 +52,8 @@ class AboutController extends AbstractController
      */
     public function checkUpdate()
     {
-        $getLocalVersion = file_get_contents($this->getParameter('version'));
-        $versionLocal = json_decode($getLocalVersion)->version;
+        // $versionLocal = json_decode($getLocalVersion)->version;
+        $versionLocal = $this->getParameter("version");
 
         $getOnlineVersion = file_get_contents("https://www.dropbox.com/s/tcyg3mi6i74jgkl/update.json?dl=1");
         $versionOnline = json_decode($getOnlineVersion);
@@ -72,32 +77,42 @@ class AboutController extends AbstractController
     {
         $getOnlineVersion = file_get_contents("https://www.dropbox.com/s/tcyg3mi6i74jgkl/update.json?dl=1");
         $versionOnline = json_decode($getOnlineVersion);
-        
-        // get latest german WordPress file
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $versionOnline->downloadLink);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $data = curl_exec($ch);
-        curl_close($ch);
 
-        // save as wordpress.zip
-        $destination = $this->getParameter("update") . "cmsupdate.zip";
-        $file = fopen($destination, "w+");
-        fputs($file, $data);
-        fclose($file);
+        $file = $versionOnline->downloadLink;
+        $newfile = $this->getParameter("update") . "cmsupdate.zip";
+
+        ## Download Update
+        if (!copy($file, $newfile)) {
+            dd("failed to copy $file...\n");
+        } else {
+            $zip = new ZipArchive;
+            $res = $zip->open($this->getParameter("update") . "cmsupdate.zip");
+            if ($res === TRUE) {
+                $zip->extractTo($this->getParameter("update")); // directory to extract contents to
+                $zip->close();
+                unlink($this->getParameter("update") . "cmsupdate.zip");
+                $this->addFlash('success', 'Update installed');
+                return new JsonResponse(true);
+            } else {
+                $this->addFlash('error', 'Update failed');
+                return new JsonResponse(false);
+            }
+        }
+
+        // // get latest german WordPress file
+        // $ch = curl_init();
+        // curl_setopt($ch, CURLOPT_URL, $versionOnline->downloadLink);
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        // $data = curl_exec($ch);
+        // curl_close($ch);
+
+        // // save as wordpress.zip
+        // $destination = $this->getParameter("update") . "cmsupdate.zip";
+        // $file = fopen($destination, "w+");
+        // fputs($file, $data);
+        // fclose($file);
 
         // unzip
-        $zip = new ZipArchive;
-        $res = $zip->open($this->getParameter("update") . "cmsupdate.zip");
-        if ($res === TRUE) {
-            $zip->extractTo($this->getParameter("update") . '/test'); // directory to extract contents to
-            $zip->close();
-            // unlink('cmsupdate.zip');
-            $this->addFlash('success', 'Update installed');
-            return new JsonResponse(true);
-        } else {
-            $this->addFlash('error', 'Update failed');
-            return new JsonResponse(false);
-        }
+
     }
 }

@@ -132,7 +132,7 @@
             </div>
             <div class="card-body">
                 <div class="list-group">
-                    {% for user in last_register %}
+                    {% for user in last_register|slice(0,8) %}
                     <a href="{{path('admin.account.detail', {'user':user.id})}}" class="list-group-item list-group-item-action" aria-current="true">
                        {{user.username}} to create an account on {{user.date|date('d/m/Y')}} 
                     </a>

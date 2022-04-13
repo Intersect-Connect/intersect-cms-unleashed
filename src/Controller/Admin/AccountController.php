@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Settings\Api;
 use App\Settings\CmsSettings;
 use App\Repository\CmsSettingsRepository;
+use App\Repository\UserRepository;
 use Symfony\Contracts\Cache\ItemInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -110,7 +111,7 @@ class AccountController extends AbstractController
     /**
      * @Route("/detail/{user}", name="admin.account.detail")
      */
-    public function accountDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $user, CmsSettings $setting): Response
+    public function accountDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $user, CmsSettings $setting, UserRepository $userRepo): Response
     {
         if ($request->isMethod('POST')) {
             $user_id = $request->request->get('user_id');
@@ -161,10 +162,44 @@ class AccountController extends AbstractController
             }
         }
 
+        $userData = [
+            "web" => $userRepo->findOneBy(["id" => $user]),
+            "game" => $api->getUser($user)
+        ];
+
         return $this->render('AdminPanel/account/detail.html.twig', [
-            'user' => $api->getUser($user),
+            'user' => $userData,
             'characters' => $api->getCharacters($user),
             'maxCharacters' => $api->getServerConfig()['Player']['MaxCharacters']
         ]);
+    }
+
+    /**
+     * @Route("add-points", name="admin.account.add.point")
+     */
+    public function addPoint(Request $request, UserRepository $userRepo, TranslatorInterface $translator){
+        if ($request->isMethod('POST')) {
+            $points = $request->request->get("points");
+            $user = $request->request->get("user");
+
+            if(
+                isset($points) && $points > 0 &&
+                isset($user) && !empty($user)
+            ){
+                $getUser = $userRepo->findOneBy(["id" => $user]);
+
+                if($getUser){
+                    $getUser->setPoints($points);
+                    $this->getDoctrine()->getManager()->flush();
+                    $this->addFlash('success', $translator->trans('Les points ont bien été crédités.'));
+                    return $this->redirectToRoute('admin.account.detail', ["user" => $user]);
+
+                }else{
+                    ## User not find
+                    $this->addFlash('error', $translator->trans('Une erreur s\'est produite.'));
+                    return $this->redirectToRoute('admin.account.detail', ["user" => $user]);
+                }
+            }
+        }
     }
 }
