@@ -9,6 +9,7 @@
 /vendor/
 /public/assets/general/
 /public/updater/
+/src/Controller/Plugins/
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
