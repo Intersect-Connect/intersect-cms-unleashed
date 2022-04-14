@@ -14,6 +14,7 @@ Supporting the Creator: https://www.paypal.me/thomaaasfds
 # Intersect CMS Rework
 
 [![N|Solid](https://s3.us-east-2.amazonaws.com/ascensiongamedev/filehost/a4727b61d3221e25d4960d124f383986.png)](https://www.freemmorpgmaker.com/)
+![Logo français Intersect Engine](https://user-images.githubusercontent.com/48243771/163425944-887362d2-33a6-49ba-9f58-e21e6b21ef54.png)
 
 IntersectCMS uses the Intersect Engine API to process data as simply as possible through a web interface. Whether you use the sqlite or mysql database, this CMS will automatically adapt itself thanks to the game engine API. Part of the CMS uses a MySQL database, so it is necessary to have one for the proper functioning of the site's functionalities.
 
