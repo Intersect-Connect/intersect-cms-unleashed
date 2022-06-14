@@ -170,8 +170,14 @@ class Api
      */
     public function registerUser($data)
     {
-        return $this->APIcall_POST($this->getServer(), $data, $this->getToken(), '/api/v1/users/register');
+        $registerRequest =  $this->APIcall_POST($this->getServer(), $data, $this->getToken(), '/api/v1/users/register');
+        if (isset($registerRequest["Message"]) && $registerRequest["Message"] == "") {
+            $this->setToken();
+            $registerRequest =  $this->APIcall_POST($this->getServer(), $data, $this->getToken(), '/api/v1/users/register');
+        }
+        return $registerRequest;
     }
+
 
     /**
      * Récupère les informations d'un compte
@@ -507,7 +513,7 @@ class Api
                 }
                 $allPlayers = [];
 
-                if($results){
+                if ($results) {
                     foreach ($results as $key => $item) {
                         for ($i = 0; $i < 100; $i++) {
                             $allPlayers[] = $item['Values'][$i];
@@ -545,18 +551,19 @@ class Api
             $guilds = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/');
         }
 
-        foreach($guilds["Values"] as $guild){
+        foreach ($guilds["Values"] as $guild) {
             $guildsLists[] = $this->getGuild($guild["Key"]["Id"]);
         }
 
         return ["Total" => $guilds["Total"], "Values" => $guildsLists];
     }
 
-    public function getGuild($id){
-        $guild = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/'.$id);
+    public function getGuild($id)
+    {
+        $guild = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/' . $id);
         if (isset($guilds['Message']) && $guilds['Message'] == "Authorization has been denied for this request.") {
             $this->setToken();
-            $guild = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/'.$id);
+            $guild = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/' . $id);
         }
 
         return [
@@ -565,11 +572,12 @@ class Api
         ];
     }
 
-    public function getGuildMember($id){
-        $guildMember = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/'.$id.'/members?pageSize=100');
+    public function getGuildMember($id)
+    {
+        $guildMember = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/' . $id . '/members?pageSize=100');
         if (isset($guildMember['Message']) && $guildMember['Message'] == "Authorization has been denied for this request.") {
             $this->setToken();
-            $guildMember = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/'.$id.'/members?pageSize=100');
+            $guildMember = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/' . $id . '/members?pageSize=100');
         }
 
         return $guildMember["Values"];
