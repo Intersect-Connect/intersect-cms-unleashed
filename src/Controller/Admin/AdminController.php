@@ -75,7 +75,7 @@ class AdminController extends AbstractController
         //    $total_users['Total'] != null ? $total_users['Total'] : null;
 
 
-        return $this->render($settings->get('theme') . '/admin/index.html.twig', [
+        return $this->render('AdminPanel/index.html.twig', [
             'total_users' => $total_users != null ? $total_users['Total'] : null,
             'total_players' => $total_players,
             'total_shop' => count($shop->findAll()),
@@ -90,7 +90,7 @@ class AdminController extends AbstractController
 
 
     /**
-     * @Route("admin/settings", name="admin.settings")
+     * @Route("settings", name="admin.settings")
      */
     public function settings(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, CmsSettings $settingCms): Response
     {
@@ -262,14 +262,14 @@ class AdminController extends AbstractController
         array_splice($folders, array_search('.', $folders), 1);
         array_splice($folders, array_search('..', $folders), 1);
 
-        return $this->render($settingCms->get('theme') . '/admin/cms_settings/index.html.twig', [
+        return $this->render('AdminPanel/cms_settings/index.html.twig', [
             'params' => $settings->findAll(),
             'folders' => $folders
         ]);
     }
 
     /**
-     * @Route("/admin/items/{page}", name="admin.items")
+     * @Route("/items/{page}", name="admin.items")
      */
     public function items(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, $page = 0, CmsSettings $settings): Response
     {
@@ -278,7 +278,7 @@ class AdminController extends AbstractController
         $total_page = floor($total / 20);
 
 
-        return $this->render($settings->get('theme') . '/admin/items_list/index.html.twig', [
+        return $this->render('AdminPanel/items_list/index.html.twig', [
             'total_page' => $total_page,
             'items' => $items['entries'],
             'page_actuel' => $page

@@ -1,0 +1,28 @@
+{{ form_start(form) }}
+
+<div class="form-group mt-3 mb-3">
+    <label for="cms_news_title">
+        {{"Titre"|trans}}
+    </label>
+    {{ form_widget(form.title) }}
+</div>
+<div class="form-group mt-3 mb-3">
+    <label for="cms_news_content">
+        {{"Sélectionnez une catégorie"|trans}}
+    </label>
+    {{ form_widget(form.category) }}
+</div>
+<div class="form-group mt-3 mb-3">
+    <label for="cms_news_imgUrl">
+        {{"L'image de l'article"|trans}}
+    </label>
+    {{ form_widget(form.imgUrl) }}
+</div>
+<div class="form-group mt-3 mb-3">
+    <label for="cms_news_content">
+        {{"Contenu de l'article"|trans}}
+    </label>
+    {{ form_widget(form.content) }}
+</div>
+    <button class="btn btn-success btn-block mb-4">{{"Sauvegarder"|trans}}</button>
+{{ form_end(form) }}

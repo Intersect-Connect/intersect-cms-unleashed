@@ -1,0 +1,32 @@
+{% extends settings.get("theme") ~'/base.html.twig' %}
+
+{% block title %}
+{{ 'Téléchargement'|trans }}
+{% endblock %}
+
+{% block body %}
+
+<h1>
+    {{ 'Téléchargement'|trans }}
+</h1>
+<ul id="breadcrump">
+    <li>
+        <a href="{{path('home')}}">{{ 'Accueil'|trans }}</a>
+    </li>
+    <li>{{"Téléchargement"|trans}}</li>
+</ul>
+
+<div id="news" class="read">
+    <article>
+        <p>
+
+            {{news.content|raw }}
+        </p>
+
+    </article>
+    <div class="clear"></div>
+</div>
+
+
+
+{% endblock %}

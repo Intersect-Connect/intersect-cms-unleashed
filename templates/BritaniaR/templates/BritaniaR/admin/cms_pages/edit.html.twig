@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{'Modifier une page'|trans}}{% endblock %}
+
+{% block body %}
+
+
+<div class="card bg-transparent">
+  <div class="card-header bg-transparent p-0">
+    <h1>{{'Modifier une page'|trans}}</h1>
+    <ul id="breadcrump">
+            <li><a href="{{path('admin')}}">{{"Administration"|trans}}</a></li>
+      <li><a href="{{path('cms_pages_index')}}">{{"Gérer les pages"|trans}}</a></li>
+      <li>{{'Modifier une page'|trans}}</li>
+    </ul>
+  </div>
+  <div class="card-body bg-white">
+
+    {{ include('admin/cms_pages/_form.html.twig') }}
+    {{ include('admin/cms_pages/_delete_form.html.twig') }}
+    <a class="btn btn-sm btn-primary" href="{{ path('cms_pages_index') }}">{{"Retour à la liste"|trans}}</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script src='https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js' referrerpolicy="origin">
+</script>
+<script>
+  tinymce.init({
+    selector: 'textarea',
+    language: 'fr_FR',
+    plugins: [
+      'advlist autolink link image imagetools lists charmap print preview hr anchor pagebreak spellchecker',
+      'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+      'table emoticons template paste help autoresize autosave'
+    ],
+    toolbar: 'undo redo | formatselect  | bold italic | alignleft aligncenter alignright alignjustify | ' +
+      'bullist numlist outdent indent | link image | print preview media fullpage | ' +
+      'forecolor backcolor emoticons | restoredraft help',
+    menu: {
+      favs: { title: 'Favoris', items: 'code visualaid | searchreplace | spellchecker | emoticons' }
+    },
+    a11y_advanced_options: true,
+    image_advtab: true,
+    image_title: true,
+    autoresize_bottom_margin: 50,
+    autosave_ask_before_unload: false,
+    style_formats: [
+      {
+        title: 'Image Left', selector: 'img', styles: {
+          'float': 'left',
+          'margin': '0 10px 0 10px'
+        }
+      },
+      {
+        title: 'Image Right', selector: 'img', styles: {
+          'float': 'right',
+          'margin': '0 10px 0 10px'
+        }
+      }
+    ],
+    menubar: 'favs file edit view insert format tools table help'
+  });
+
+</script>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends settings.get("theme") ~'/base.html.twig' %}
+
+{% block title %}{{"Page non trouvée"|trans}}{% endblock %}
+
+{% block body %}
+    <h1>{{"Page non trouvée"|trans}}</h1>
+    <p class="bg-white p-3">{{"La page que vous cherchez n'a pas été trouvée"|trans}}</p>
+{% endblock %}

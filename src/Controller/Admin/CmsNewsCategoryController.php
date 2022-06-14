@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @IsGranted("ROLE_ADMIN")
- * @Route("admin/news/category")
+ * @Route("news/category")
  */
 
 class CmsNewsCategoryController extends AbstractController
@@ -24,7 +24,7 @@ class CmsNewsCategoryController extends AbstractController
      */
     public function index(CmsSettings $setting, CmsNewsCategoryRepository $categoryRepo): Response
     {
-        return $this->render($setting->get('theme') . '/admin/cms_news_category/index.html.twig', [
+        return $this->render('AdminPanel/cms_news_category/index.html.twig', [
             'categorys' => $categoryRepo->findAll(),
         ]);
     }
@@ -48,7 +48,7 @@ class CmsNewsCategoryController extends AbstractController
                 return $this->redirectToRoute('cms_news_category');
             }
         }
-        return $this->render($setting->get('theme') . '/admin/cms_news_category/new.html.twig', []);
+        return $this->render('AdminPanel/cms_news_category/new.html.twig', []);
     }
 
     /**
@@ -70,7 +70,7 @@ class CmsNewsCategoryController extends AbstractController
                 return $this->redirectToRoute('cms_news_category');
             }
         }
-        return $this->render($setting->get('theme') . '/admin/cms_news_category/edit.html.twig', [
+        return $this->render('AdminPanel/cms_news_category/edit.html.twig', [
             'category' => $category
         ]);
     }

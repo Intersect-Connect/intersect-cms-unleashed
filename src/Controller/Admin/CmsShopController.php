@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @IsGranted("ROLE_ADMIN")
- * @Route("admin/shop")
+ * @Route("shop")
  */
 class CmsShopController extends AbstractController
 {
@@ -27,7 +27,7 @@ class CmsShopController extends AbstractController
             ->getRepository(CmsShop::class)
             ->findAll();
 
-        return $this->render($settings->get('theme') . '/admin/cms_shop/index.html.twig', [
+        return $this->render('AdminPanel/cms_shop/index.html.twig', [
             'cms_shops' => $cmsShops,
         ]);
     }
@@ -73,7 +73,7 @@ class CmsShopController extends AbstractController
             return $this->redirectToRoute('cms_shop_index');
         }
 
-        return $this->render($settings->get('theme') . '/admin/cms_shop/new.html.twig', [
+        return $this->render('AdminPanel/cms_shop/new.html.twig', [
             'cms_shop' => $cmsShop,
             'form' => $form->createView(),
         ]);
@@ -110,7 +110,7 @@ class CmsShopController extends AbstractController
             return $this->redirectToRoute('cms_shop_index');
         }
 
-        return $this->render($settings->get('theme') . '/admin/cms_shop/edit.html.twig', [
+        return $this->render('AdminPanel/cms_shop/edit.html.twig', [
             'cms_shop' => $cmsShop,
             'form' => $form->createView(),
         ]);

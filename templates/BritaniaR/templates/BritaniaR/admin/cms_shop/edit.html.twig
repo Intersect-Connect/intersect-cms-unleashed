@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{"Modifier un article dans la boutique VIP"|trans}}{% endblock %}
+
+{% block body %}
+<div class="card">
+  <div class="card-header p-0">
+    <h1>{{"Modifier un article dans la boutique VIP"|trans}}</h1>
+  </div>
+  <div class="card-body">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb p-2">
+        <li class="breadcrumb-item"><a href="{{path('admin')}}">{{"Administration"|trans}}</a></li>
+        <li class="breadcrumb-item"><a href="{{path('cms_shop_index')}}">{{"Gérer la boutique"|trans}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{'Modifier un article dans la boutique VIP'|trans}}</li>
+      </ol>
+    </nav>
+    {{ include('admin/cms_shop/_form.html.twig') }}
+    
+    {{ include('admin/cms_shop/_delete_form.html.twig') }}
+    <a class="btn btn-sm btn-primary" href="{{ path('cms_shop_index') }}">{{"Retour à la liste"|trans}}</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script src='https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js' referrerpolicy="origin">
+</script>
+<script>
+  tinymce.init({
+    selector: 'textarea',
+    language: 'fr_FR',
+    plugins: [
+      'advlist autolink link image imagetools lists charmap print preview hr anchor pagebreak spellchecker',
+      'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+      'table emoticons template paste help autoresize autosave'
+    ],
+    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
+      'bullist numlist outdent indent | link image | print preview media fullpage | ' +
+      'forecolor backcolor emoticons | restoredraft help',
+    menu: {
+      favs: { title: 'Favoris', items: 'code visualaid | searchreplace | spellchecker | emoticons' }
+    },
+    a11y_advanced_options: true,
+    image_advtab: true,
+    image_title: true,
+    autoresize_bottom_margin: 50,
+    autosave_ask_before_unload: false,
+    style_formats: [
+      {
+        title: 'Image Left', selector: 'img', styles: {
+          'float': 'left',
+          'margin': '0 10px 0 10px'
+        }
+      },
+      {
+        title: 'Image Right', selector: 'img', styles: {
+          'float': 'right',
+          'margin': '0 10px 0 10px'
+        }
+      }
+    ],
+    menubar: 'favs file edit view insert format tools table help'
+  });
+
+</script>
+{% endblock %}

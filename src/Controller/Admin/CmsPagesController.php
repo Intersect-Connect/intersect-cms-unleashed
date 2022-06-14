@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @IsGranted("ROLE_ADMIN")
- * @Route("admin/pages")
+ * @Route("pages")
  */
 class CmsPagesController extends AbstractController
 {
@@ -26,7 +26,7 @@ class CmsPagesController extends AbstractController
             ->getRepository(CmsPages::class)
             ->findAll();
 
-        return $this->render($settings->get('theme') . '/admin/cms_pages/index.html.twig', [
+        return $this->render($settings->get('theme') . '/cms_pages/index.html.twig', [
             'cms_pages' => $cmsPages,
         ]);
     }
@@ -50,7 +50,7 @@ class CmsPagesController extends AbstractController
             return $this->redirectToRoute('cms_pages_index');
         }
 
-        return $this->render($settings->get('theme') . '/admin/cms_pages/new.html.twig', [
+        return $this->render($settings->get('theme') . '/cms_pages/new.html.twig', [
             'cms_page' => $cmsPage,
             'form' => $form->createView(),
         ]);
@@ -61,7 +61,7 @@ class CmsPagesController extends AbstractController
      */
     public function show(CmsPages $cmsPage, CmsSettings $setting): Response
     {
-        return $this->render($setting->get('theme') . '/admin/cms_pages/show.html.twig', [
+        return $this->render('AdminPanel/cms_pages/show.html.twig', [
             'cms_page' => $cmsPage,
         ]);
     }
@@ -83,7 +83,7 @@ class CmsPagesController extends AbstractController
             return $this->redirectToRoute('cms_pages_index');
         }
 
-        return $this->render($setting->get('theme') . '/admin/cms_pages/edit.html.twig', [
+        return $this->render('AdminPanel/cms_pages/edit.html.twig', [
             'cms_page' => $cmsPage,
             'form' => $form->createView(),
         ]);

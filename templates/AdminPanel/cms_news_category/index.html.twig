@@ -1,0 +1,45 @@
+{% extends 'AdminPanel/base.html.twig' %}
+
+{% block title %}{{'Liste des catégories d\'article'|trans}}{% endblock %}
+
+{% block body %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">{{'Liste des catégories d\'article'|trans}}</h6>
+    </div>
+    <div class="card-body">
+        <a class="btn btn-sm btn-primary mb-3" href="{{ path('cms_news_category.new') }}">{{'Créer une catégorie d\'article'|trans}}</a>
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>{{'Nom'|trans}}</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categorys %}
+                    <tr>
+                        <td>{{ category.id }}</td>
+                        <td>{{ category.name }}</td>
+                        <td>
+                            <a href="{{ path('cms_news_category.edit', {'id': category.id}) }}">{{"Modifier"|trans}}</a>
+                            <a href="{{ path('cms_news_category.delete', {'id': category.id}) }}">{{"Supprimer"|trans}}</a>
+
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="8">{{"Aucun enregistrement trouvé"|trans}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

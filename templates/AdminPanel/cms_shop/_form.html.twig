@@ -1,0 +1,56 @@
+{{ form_start(form) }}
+<div class="form-group mb-3">
+    <label for="cms_shop_idItem">
+        {{"ID de l'item"|trans}}
+    </label>
+    {% if cms_shop.idItem is not null %}
+    {{ form_widget(form.idItem, { 'attr': {'readonly':true} }) }}
+    {% else %}
+    {{ form_widget(form.idItem) }}
+    {% endif %}
+</div>
+
+<div class="form-group mt-3 mb-3">
+    <label for="cms_shop_idItem">
+        {{"Prix"|trans}}
+    </label>
+    {{ form_widget(form.price) }}
+</div>
+
+<div class="form-group mt-3 mb-3">
+    <label for="cms_shop_idItem">
+        {{"Quantité"|trans}}
+    </label>
+    {{ form_widget(form.quantity) }}
+</div>
+
+<div class="form-group mt-3 mb-3">
+    <label for="cms_shop_idItem">
+        {{"Promotion"|trans}}
+    </label>
+    {{ form_widget(form.promotion) }}
+</div>
+
+<div class="form-group mt-3 mb-3">
+    <label for="cms_shop_idItem">
+        {{"Description"|trans}}
+    </label>
+    {{ form_widget(form.forceddescription) }}
+</div>
+
+<div class="form-group mt-3 mb-3">
+    <label for="cms_shop_idItem">
+        {{"Image"|trans}}
+    </label>
+    {{ form_widget(form.image) }}
+</div>
+
+<div class="form-group mt-3 mb-3">
+    <label for="cms_shop_idItem">
+        {{"Visible ?"|trans}}
+    </label>
+    {{ form_widget(form.visible) }}
+</div>
+
+<button class="btn btn-success btn-block mb-3">{{"Sauvegarder"|trans}}</button>
+{{ form_end(form) }}

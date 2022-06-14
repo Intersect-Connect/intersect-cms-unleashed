@@ -1,0 +1,62 @@
+{% extends 'AdminPanel/base.html.twig' %}
+
+{% block title %}{{'Créer un article'|trans}}{% endblock %}
+
+{% block body %}
+
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">{{'Créer un article'|trans}}</h6>
+  </div>
+  <div class="card-body">
+    {{ include('AdminPanel/cms_news/_form.html.twig') }}
+    <a class="btn btn-primary btn-block mt-3" href="{{ path('cms_news_index') }}">{{"Retour à la liste"|trans}}</a>
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+<script src='https://cdn.tiny.cloud/1/{{ settings.get("tinymce_key") }}/tinymce/5/tinymce.min.js'
+  referrerpolicy="origin">
+  </script>
+<script>
+  tinymce.init({
+    selector: 'textarea',
+    language: 'fr_FR',
+    plugins: [
+      'advlist autolink link image imagetools lists charmap print preview hr anchor pagebreak spellchecker',
+      'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+      'table emoticons template paste help autoresize autosave'
+    ],
+    toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
+      'bullist numlist outdent indent | link image | print preview media fullpage | ' +
+      'forecolor backcolor emoticons | restoredraft help',
+    menu: {
+      favs: { title: 'Favoris', items: 'code visualaid | searchreplace | spellchecker | emoticons' }
+    },
+    a11y_advanced_options: true,
+    image_advtab: true,
+    image_title: true,
+    autoresize_bottom_margin: 50,
+    autosave_ask_before_unload: false,
+    style_formats: [
+      {
+        title: 'Image Left', selector: 'img', styles: {
+          'float': 'left',
+          'margin': '0 10px 0 10px'
+        }
+      },
+      {
+        title: 'Image Right', selector: 'img', styles: {
+          'float': 'right',
+          'margin': '0 10px 0 10px'
+        }
+      }
+    ],
+    menubar: 'favs file edit view insert format tools table help'
+  });
+
+</script>
+{% endblock %}

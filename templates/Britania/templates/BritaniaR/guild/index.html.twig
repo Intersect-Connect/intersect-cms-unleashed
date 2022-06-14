@@ -1,0 +1,42 @@
+{% extends settings.get("theme") ~'/base.html.twig' %}
+
+{% block title %}
+	{{ 'Liste des guildes'|trans }}
+{% endblock %}
+
+{% block body %}
+	<h1>{{ 'Liste des guildes'|trans }}</h1>
+	<ul id="breadcrump">
+		<li>
+			<a href="{{ path('home') }}">{{ 'Accueil'|trans }}</a>
+		</li>
+		<li>{{ 'Liste des guildes'|trans }}</li>
+	</ul>
+
+    <div id="middle" class="p-0 bg-white">
+        <div class="table-responsive">
+            <table class="table table-hover text-center">
+                <thead class="text-center bg-table">
+                    <tr class="text-center">
+                        <th class="text-center">{{ 'Nom'|trans }}</th>
+                        <th class="text-center">{{ 'Membres'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for guild in guilds %}
+                    <tr>
+                        <td>
+                            {{guild.guildInfo.Name}}
+                        </td>
+                        <td>
+                            {{guild.members|length}}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {{ knp_pagination_render(guilds) }}
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends settings.get("theme") ~'/base.html.twig' %}
+
+{% block title %}{{"Une erreur s'est produit"|trans}}{% endblock %}
+
+{% block body %}
+    <h1>{{"Une erreur s'est produit"|trans}}</h1>
+    <p class="bg-white p-3">{{"Une erreur s'est produit, contactez un administrateur."|trans}}</p>
+{% endblock %}
