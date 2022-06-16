@@ -691,7 +691,7 @@ class Api
      * Récupère le classement général de l'API
      */
 
-    public function getRank($page)
+    public function getRank($page = 0)
     {
         $joueurs = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/rank?page=' . $page . '&pageSize=25&sortDirection=Descending');
         if (isset($joueurs['Message']) && $joueurs['Message'] == "Authorization has been denied for this request.") {

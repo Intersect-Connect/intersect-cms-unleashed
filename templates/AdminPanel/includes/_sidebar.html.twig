@@ -86,7 +86,7 @@
     </div>
 
     <li class="nav-item">
-        <a class="nav-link" href="{{path('admin.account')}}">
+        <a class="nav-link" href="{{path('admin.account', {"page":0})}}">
             <i class="fas fa-users"></i>
             <span>{{"Liste des comptes"|trans}}</span>
         </a>
@@ -100,16 +100,9 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="{{path('admin.items')}}">
+        <a class="nav-link" href="{{path('admin.items',{"page":0})}}">
             <i class="fas fa-database"></i>
             <span>{{"Voir la liste des items"|trans}}</span>
-        </a>
-    </li>
-
-    <li class="nav-item d-none">
-        <a class="nav-link" href="{{path('admin.items')}}">
-            <i class="fas fa-users"></i>
-            <span>{{"Liste des transactions"|trans}}</span>
         </a>
     </li>
 

@@ -16,7 +16,7 @@ class GameController extends AbstractController
     /**
      * @Route("/players", name="game.players.liste",  requirements={"_locale": "en|fr"})
      */
-    public function listeJoueurs(Api $api, $page = 0, PaginatorInterface $paginator, Request $request, CmsSettings $settings): Response
+    public function listeJoueurs(Api $api,  PaginatorInterface $paginator, Request $request, CmsSettings $settings): Response
     {
         $serveur_statut = $api->ServeurStatut();
 
@@ -55,7 +55,6 @@ class GameController extends AbstractController
             $response = new Response($this->renderView($settings->get('theme') . '/game/players.html.twig', [
                 'joueurs' => $joueurs,
                 'max' => $total_page,
-                'page_actuel' => $page
             ]));
 
             $response->setPublic();
@@ -74,7 +73,7 @@ class GameController extends AbstractController
     /**
      * @Route("/online-players", name="game.players.liste.online",  requirements={"_locale": "en|fr"})
      */
-    public function listeJoueursEnLigne(Api $api, $page = 0, CmsSettings $settings): Response
+    public function listeJoueursEnLigne(Api $api, CmsSettings $settings): Response
     {
         $serveur_statut = $api->ServeurStatut();
         if ($serveur_statut['success']) {
