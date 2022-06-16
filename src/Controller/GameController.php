@@ -28,6 +28,7 @@ class GameController extends AbstractController
 
 
             $joueurs_liste = $cache->get('player_lists', function (ItemInterface $item) use ($api, $joueurs) {
+                $item->expiresAfter(86400);
                 $total_joueurs = $joueurs['Total'];
                 $par_page = 30;
                 $total_page = floor($total_joueurs / $par_page);
@@ -74,7 +75,9 @@ class GameController extends AbstractController
         $serveur_statut = $api->ServeurStatut();
         if ($serveur_statut['success']) {
 
-            $joueurs = $cache->get('level_rank_list', function (ItemInterface $item) use ($api) {
+            $joueurs = $cache->get('online_players', function (ItemInterface $item) use ($api) {
+                $item->expiresAfter(1800);
+
                 $joueurs = $api->onlinePlayers();
 
                 $joueurs_liste = [];
@@ -99,32 +102,29 @@ class GameController extends AbstractController
     /**
      * @Route("/rank/level", name="game.rank.level",  requirements={"_locale": "en|fr"})
      */
-    public function rankNiveau(Api $api, CmsSettings $settings): Response
+    public function rankNiveau(Api $api, CmsSettings $settings, CacheInterface $cache): Response
     {
         $serveur_statut = $api->ServeurStatut();
         if ($serveur_statut['success']) {
+            $joueurs = $cache->get('rank_level_players', function (ItemInterface $item) use ($api) {
+                $item->expiresAfter(86400);
+                $joueurs = $api->getRank();
 
+                $joueurs_liste = [];
 
-            $joueurs = $api->getRank();
+                foreach ($joueurs as $joueur) {
 
-            $joueurs_liste = [];
-
-            foreach ($joueurs as $joueur) {
-
-                if ($joueur['Name'] != "Admin" && $joueur['Level'] != "0") {
-                    $joueurs_liste[] = ['name' => $joueur['Name'], 'level' => $joueur['Level'], 'exp' => $joueur['Exp'], 'expNext' => $joueur['ExperienceToNextLevel']];
+                    if ($joueur['Name'] != "Admin" && $joueur['Level'] != "0") {
+                        $joueurs_liste[] = ['name' => $joueur['Name'], 'level' => $joueur['Level'], 'exp' => $joueur['Exp'], 'expNext' => $joueur['ExperienceToNextLevel']];
+                    }
                 }
-            }
 
-            $response = new Response($this->renderView($settings->get('theme') . '/game/level_rank.html.twig', [
-                'joueurs' => $joueurs_liste,
-            ]));
+                return $joueurs_liste;
+            });
 
-            $response->setPublic();
-            $response->setSharedMaxAge(3600);
-            $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
-
-            return $response;
+            return $this->render($settings->get('theme') . '/game/level_rank.html.twig', [
+                'joueurs' => $joueurs
+            ]);
         } else {
             return $this->render($settings->get('theme') . '/game/level_rank.html.twig', [
                 'serveur_statut' => false
