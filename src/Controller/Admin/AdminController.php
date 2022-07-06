@@ -54,8 +54,6 @@ class AdminController extends AbstractController
         }
 
 
-
-
         if (isset($api->getAllPlayers(0)['Total'])) {
             $total_players = $api->getAllPlayers(0)['Total'];
         }
@@ -273,14 +271,22 @@ class AdminController extends AbstractController
      */
     public function items(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, $page = 0, CmsSettings $settings): Response
     {
-        $items = $api->getAllItems($page);
-        $total = $items['total'];
-        $total_page = floor($total / 20);
+        $items = null;
+        $total = null;
+        $total_page = null;
 
+        if($api->ServeurStatut()){
+            $items = $api->getAllItems($page);
+            $total = $items['total'];
+            $total_page = floor($total / 20);
+        }else{
+            $items = [];
+        }
+        
 
         return $this->render('AdminPanel/items_list/index.html.twig', [
             'total_page' => $total_page,
-            'items' => $items['entries'],
+            'items' => isset($items['entries']) ? $items["entries"] : [],
             'page_actuel' => $page
         ]);
     }
@@ -340,14 +346,22 @@ class AdminController extends AbstractController
             }
         }
 
-        $users = $api->getAllUsers($page);
-        $total = $users['Total'];
-        $total_page = floor($total / 30);
+        $users = null;
+        $total = null;
+        $total_page = null;
+        
+        if($api->ServeurStatut()){
+            $users = $api->getAllUsers($page);
+            $total = $users['Total'];
+            $total_page = floor($total / 30);
+        }else{
+            $users = [];
+        }
 
-
-        return $this->render($setting->get('theme') . '/admin/account/index.html.twig', [
+        
+        return $this->render('AdminPanel/account/index.html.twig', [
             'total_page' => $total_page,
-            'items' => $users['Values'],
+            'items' => isset($users['Values']) ? $users['Values'] : [],
             'page_actuel' => $page
         ]);
     }

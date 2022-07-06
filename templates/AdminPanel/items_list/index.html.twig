@@ -27,14 +27,18 @@
             <td class="c">{{ item.Value.Name }}</td>
           </tr>
           {% else %}
-          <div class="alert alert-info">
-            Aucune information disponible.
-          </div>
+          <tr class="border-0">
+           <td colspan="12" class="p-0 border-0"> 
+              <div class="alert alert-info mb-0 rounded-0">
+                 Aucune information disponible.
+              </div>
+           </td>
+          </tr>
           {% endfor %}
         </tbody>
-      </table>
+      </table>      
 
-      <nav aria-label="Pagination de la liste des joueurs">
+      <nav aria-label="Pagination de la liste des joueurs" class="{% if items|length == 0 %}d-none{% endif %}">
         <ul class="pagination p-3 overflow-auto">
           {% for i in 0..total_page %}
           <li class="page-item  {% if page_actuel == i %}active{% endif %}">

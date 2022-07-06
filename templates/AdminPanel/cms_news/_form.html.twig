@@ -24,5 +24,11 @@
     </label>
     {{ form_widget(form.content) }}
 </div>
-    <button class="btn btn-success btn-block mb-4">{{"Sauvegarder"|trans}}</button>
+    <button class="btn btn-success btn-block mb-4" type="submit">{{"Sauvegarder"|trans}}</button>
 {{ form_end(form) }}
+
+<ul>
+    {% for error in form.vars.errors.form.getErrors(true) %}
+    <li>{{ error.message }}</li>
+    {% endfor %}
+</ul>

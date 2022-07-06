@@ -39,11 +39,6 @@
 
 <div id="news" class="read">
     <article>
-        {% if news.category is not null %}
-        <div class="category_tag" style="background: rgb({{news.category.color|categoryColor}});">
-            <span class="p-3">{{news.category.name}}</span>
-        </div>
-        {% endif %}
         <div class="header" style="background-image:url('{{asset('assets/general/news/'~ news.imgUrl)}}');">
             <h2 class="read">
                 <img src="{{asset('assets/themes/' ~ settings.get("theme") ~ '/img/i_news.png' )}}"
@@ -61,9 +56,5 @@
             </strong>
         </div>
     </article>
-    <div class="clear"></div>
 </div>
-
-
-
 {% endblock %}

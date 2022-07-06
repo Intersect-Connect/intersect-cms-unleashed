@@ -17,12 +17,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @IsGranted("ROLE_ADMIN")
- * @Route("news/")
+ * @Route("admin/news", name="admin.news.")
  */
 class CmsNewsController extends AbstractController
 {
     /**
-     * @Route("/", name="cms_news_index", methods={"GET"})
+     * @Route("/", name="index", methods={"GET"})
      */
     public function index(CmsSettings $setting): Response
     {
@@ -36,9 +36,9 @@ class CmsNewsController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="cms_news_new", methods={"GET","POST"})
+     * @Route("/new", name="new", methods={"GET","POST"})
      */
-    public function new(Request $request, Api $api, Packages $assetPackage, CmsSettings $setting): Response
+    public function new(Request $request): Response
     {
         $cmsNews = new CmsNews();
         $form = $this->createForm(CmsNewsType::class, $cmsNews);
@@ -46,6 +46,8 @@ class CmsNewsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $fichier = $form->get('imgUrl')->getData();
+            // dd($form->getData());
+            // dd($fichier);
 
             if ($fichier != null) {
                 $fichierNew = md5(uniqid()) . '.' . $fichier->guessExtension();
@@ -76,7 +78,7 @@ class CmsNewsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="cms_news_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      */
     public function edit(Request $request, CmsNews $cmsNews, CmsSettings $setting): Response
     {
@@ -115,7 +117,7 @@ class CmsNewsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="cms_news_delete", methods={"POST"})
+     * @Route("/{id}", name="delete", methods={"POST"})
      */
     public function delete(Request $request, CmsNews $cmsNews, CmsSettings $setting): Response
     {

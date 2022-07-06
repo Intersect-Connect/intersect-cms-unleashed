@@ -132,17 +132,12 @@ class Api
      */
     public function ServeurStatut()
     {
-        $server_infos = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/info/stats');
-
-        if (isset($server_infos['Message']) && $server_infos['Message'] == "Authorization has been denied for this request.") {
-            $this->setToken();
-            $server_infos = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/info/stats');
-        }
-
-        if (isset($server_infos['uptime'])) {
-            return ['success' => true, 'online' => $server_infos['onlineCount']];
+        $server = explode("http://", $this->getServer())[1];
+        $server = explode(":", $server);
+        if (!@fsockopen($server[0], $server[1], $num, $error, 0.25)) {
+            return false;
         } else {
-            return  ['success' => false];
+            return true;
         }
     }
 

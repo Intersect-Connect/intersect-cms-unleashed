@@ -1,12 +1,12 @@
 {% set status = api.ServeurStatut %}
 
 
-{% if status.success is defined and status.success %}
+{% if status is defined and status %}
 <a href="{{path('game.players.liste.online')}}" class="butt serverOnline">
     <span class="illu"></span>
     {{'Etat du serveur'|trans}}
     <small>
-        {{'En ligne'|trans}} ({{status.online}} {{'joueurs'|trans}})
+        {{'En ligne'|trans}}
     </small>
 </a>
 {% else %}

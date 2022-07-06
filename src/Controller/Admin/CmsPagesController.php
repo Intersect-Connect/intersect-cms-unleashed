@@ -13,12 +13,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @IsGranted("ROLE_ADMIN")
- * @Route("pages")
+ * @Route("admin/pages/", name="admin.pages.")
  */
 class CmsPagesController extends AbstractController
 {
     /**
-     * @Route("/", name="cms_pages_index", methods={"GET"})
+     * @Route("/", name="index", methods={"GET"})
      */
     public function index(CmsSettings $settings): Response
     {
@@ -26,13 +26,13 @@ class CmsPagesController extends AbstractController
             ->getRepository(CmsPages::class)
             ->findAll();
 
-        return $this->render($settings->get('theme') . '/cms_pages/index.html.twig', [
+        return $this->render('AdminPanel/cms_pages/index.html.twig', [
             'cms_pages' => $cmsPages,
         ]);
     }
 
     /**
-     * @Route("/new", name="cms_pages_new", methods={"GET","POST"})
+     * @Route("/new", name="new", methods={"GET","POST"})
      */
     public function new(Request $request, CmsSettings $settings): Response
     {
@@ -50,14 +50,14 @@ class CmsPagesController extends AbstractController
             return $this->redirectToRoute('cms_pages_index');
         }
 
-        return $this->render($settings->get('theme') . '/cms_pages/new.html.twig', [
+        return $this->render('AdminPanel/cms_pages/new.html.twig', [
             'cms_page' => $cmsPage,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="cms_pages_show", methods={"GET"})
+     * @Route("/{id}", name="show", methods={"GET"})
      */
     public function show(CmsPages $cmsPage, CmsSettings $setting): Response
     {
