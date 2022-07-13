@@ -68,7 +68,7 @@ class CmsNewsController extends AbstractController
             $entityManager->persist($cmsNews);
             $entityManager->flush();
 
-            return $this->redirectToRoute('cms_news_index');
+            return $this->redirectToRoute('admin.news.index');
         }
 
         return $this->render('AdminPanel/cms_news/new.html.twig', [
@@ -107,7 +107,7 @@ class CmsNewsController extends AbstractController
             }
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('cms_news_index');
+            return $this->redirectToRoute('admin.news.index');
         }
 
         return $this->render('AdminPanel/cms_news/edit.html.twig', [
@@ -129,7 +129,7 @@ class CmsNewsController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('cms_news_index');
+        return $this->redirectToRoute('admin.news.index');
     }
 
 

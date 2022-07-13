@@ -1,0 +1,7 @@
+{% extends settings.get("theme") ~'/base.html.twig' %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block body %}
+    {% include "@plugins" ~ path %}
+{% endblock %}

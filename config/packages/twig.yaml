@@ -1,7 +1,7 @@
 twig:
     paths:
         '%kernel.project_dir%/templates/': 'default_path'
-        '%kernel.project_dir%/src/Controller/Plugins/': 'plugins'
+        '%kernel.project_dir%/src/Plugins/': 'plugins'
         '%kernel.project_dir%/templates/AdminPanel': 'AdminPanel'
     globals:
         settings: '@App\Settings\CmsSettings'

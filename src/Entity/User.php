@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Plugins\RedeemCodes\Entity\RedeemsCodesUnique;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -78,6 +79,16 @@ class User implements UserInterface
      * @ORM\Column(type="json")
      */
     private $roles = [];
+
+    /**
+     * @ORM\OneToMany(targetEntity=RedeemsCodesUnique::class, mappedBy="user")
+     */
+    private $redeemsCodesUniques;
+
+    public function __construct()
+    {
+        $this->redeemsCodesUniques = new ArrayCollection();
+    }
 
 
     /**
@@ -308,6 +319,36 @@ class User implements UserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|RedeemsCodesUnique[]
+     */
+    public function getRedeemsCodesUniques(): Collection
+    {
+        return $this->redeemsCodesUniques;
+    }
+
+    public function addRedeemsCodesUnique(RedeemsCodesUnique $redeemsCodesUnique): self
+    {
+        if (!$this->redeemsCodesUniques->contains($redeemsCodesUnique)) {
+            $this->redeemsCodesUniques[] = $redeemsCodesUnique;
+            $redeemsCodesUnique->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRedeemsCodesUnique(RedeemsCodesUnique $redeemsCodesUnique): self
+    {
+        if ($this->redeemsCodesUniques->removeElement($redeemsCodesUnique)) {
+            // set the owning side to null (unless already changed)
+            if ($redeemsCodesUnique->getUser() === $this) {
+                $redeemsCodesUnique->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -9,8 +9,7 @@
         <h6 class="m-0 font-weight-bold text-primary">{{'Liste des pages'|trans}}</h6>
     </div>
     <div class="card-body">
-        <a class="btn btn-sm btn-primary mb-3" href="{{ path('cms_pages_new') }}">{{'Créer une nouvelle
-            page'|trans}}</a>
+        <a class="btn btn-sm btn-primary mb-3" href="{{ path('admin.pages.new') }}">{{'Créer une nouvelle page'|trans}}</a>
 
         <div class="table-responsive">
             <table class="table">
@@ -29,7 +28,7 @@
                         <td>{{ cms_page.category }}</td>
                         <td>{{ cms_page.name }}</td>
                         <td>
-                            <a href="{{ path('cms_pages_edit', {'id': cms_page.id}) }}">{{"Modifier"|trans}}</a>
+                            <a href="{{ path('admin.pages.edit', {'id': cms_page.id}) }}">{{"Modifier"|trans}}</a>
                         </td>
                     </tr>
                     {% else %}

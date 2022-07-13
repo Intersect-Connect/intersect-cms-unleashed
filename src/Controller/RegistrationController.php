@@ -26,7 +26,7 @@ class RegistrationController extends AbstractController
     {
         $serveur_statut = $api->ServeurStatut();
 
-        if ($serveur_statut['success']) {
+        if ($serveur_statut) {
             $user = new User();
             $form = $this->createForm(RegistrationFormType::class, $user);
             $form->handleRequest($request);

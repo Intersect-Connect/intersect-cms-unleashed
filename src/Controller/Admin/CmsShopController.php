@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @IsGranted("ROLE_ADMIN")
- * @Route("shop")
+ * @Route("admin/shop")
  */
 class CmsShopController extends AbstractController
 {

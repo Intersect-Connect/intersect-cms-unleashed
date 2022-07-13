@@ -44,6 +44,18 @@ class CheckPlugins
         return true;
     }
 
+    public function install($sqlData){
+        try {
+            $sql = $sqlData;
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+        } catch (\Throwable $th) {
+            //throw $th;
+            return false;
+        }
+        return true;
+    }
+
     public function isEmpty()
     {
         $di = new RecursiveDirectoryIterator($this->params->get('plugins_path'), FilesystemIterator::SKIP_DOTS);
@@ -71,7 +83,7 @@ class CheckPlugins
 
     public function findRoute($pluginName){
         $paths = [];
-        
+
         foreach($this->router->getRouteCollection() as $key => $route){
             if(strpos($key, $pluginName) !== false){
                 return true;

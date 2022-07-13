@@ -9,7 +9,7 @@
         <h6 class="m-0 font-weight-bold text-primary">{{'Liste des articles'|trans}}</h6>
     </div>
     <div class="card-body">
-        <a class="btn btn-sm btn-primary mb-3" href="{{ path('cms_news_new') }}">{{'Créer un article'|trans}}</a>
+        <a class="btn btn-sm btn-primary mb-3" href="{{ path('admin.news.new') }}">{{'Créer un article'|trans}}</a>
 
         <div class="table-responsive">
             <table class="table">
@@ -28,7 +28,7 @@
                         <td>{{ cms_news.title }}</td>
                         <td>{{ cms_news.date ? cms_news.date|date('d/m/Y') : '' }}</td>
                         <td>
-                            <a href="{{ path('cms_news_edit', {'id': cms_news.id}) }}">{{"Modifier"|trans}}</a>
+                            <a href="{{ path('admin.news.edit', {'id': cms_news.id}) }}">{{"Modifier"|trans}}</a>
                         </td>
                     </tr>
                     {% else %}

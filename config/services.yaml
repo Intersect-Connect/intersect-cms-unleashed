@@ -8,7 +8,7 @@ parameters:
     images_items: '%kernel.project_dir%/public/assets/general/items'
     dedipass.public_key: '%env(DEDIPASS_PUBLIC_KEY)%'
     dedipass.private_key: '%env(DEDIPASS_PRIVATE_KEY)%'
-    plugins_path: '%kernel.project_dir%/src/Controller/Plugins'
+    plugins_path: '%kernel.project_dir%/src/Plugins'
 
 
 services:
@@ -32,6 +32,11 @@ services:
     App\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
+
+    App\Plugins\:
+        resource: '../src/Plugins/'
+        tags: ['controller.service_arguments']
+        
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

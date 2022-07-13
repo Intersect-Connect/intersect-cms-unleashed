@@ -36,7 +36,7 @@ class GameController extends AbstractController
     {
         $serveur_statut = $this->api->ServeurStatut();
 
-        if ($serveur_statut['success']) {
+        if ($serveur_statut) {
 
             $joueurs = $this->api->getAllPlayers(0);
 
@@ -86,7 +86,7 @@ class GameController extends AbstractController
     public function listeJoueursEnLigne(): Response
     {
         $serveur_statut = $this->api->ServeurStatut();
-        if ($serveur_statut['success']) {
+        if ($serveur_statut) {
 
             $joueurs = $this->cache->get('online_players', function (ItemInterface $item)  {
                 $item->expiresAfter(1800);
@@ -118,7 +118,7 @@ class GameController extends AbstractController
     public function rankNiveau(): Response
     {
         $serveur_statut = $this->api->ServeurStatut();
-        if ($serveur_statut['success']) {
+        if ($serveur_statut) {
             $joueurs = $this->cache->get('rank_level_players', function (ItemInterface $item) {
                 $item->expiresAfter(86400);
                 $joueurs = $this->api->getRank();

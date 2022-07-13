@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @IsGranted("ROLE_ADMIN")
- * @Route("admin/pages/", name="admin.pages.")
+ * @Route("admin/pages", name="admin.pages.")
  */
 class CmsPagesController extends AbstractController
 {
@@ -47,7 +47,7 @@ class CmsPagesController extends AbstractController
             $entityManager->persist($cmsPage);
             $entityManager->flush();
 
-            return $this->redirectToRoute('cms_pages_index');
+            return $this->redirectToRoute('admin.pages.index');
         }
 
         return $this->render('AdminPanel/cms_pages/new.html.twig', [
@@ -67,7 +67,7 @@ class CmsPagesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="cms_pages_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      */
     public function edit(Request $request, CmsPages $cmsPage, CmsSettings $setting): Response
     {
@@ -80,7 +80,7 @@ class CmsPagesController extends AbstractController
             $entityManager->persist($cmsPage);
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('cms_pages_index');
+            return $this->redirectToRoute('admin.pages.index');
         }
 
         return $this->render('AdminPanel/cms_pages/edit.html.twig', [
@@ -90,7 +90,7 @@ class CmsPagesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="cms_pages_delete", methods={"POST"})
+     * @Route("/{id}", name="delete", methods={"POST"})
      */
     public function delete(Request $request, CmsPages $cmsPage, CmsSettings $setting): Response
     {
@@ -100,7 +100,7 @@ class CmsPagesController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('cms_pages_index');
+        return $this->redirectToRoute('admin.pages.index');
     }
 
         public function format_uri($string, $separator = '-')
