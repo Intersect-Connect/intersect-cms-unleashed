@@ -4,13 +4,6 @@ controllers:
     prefix: '{_locale}'
     requirements:
         _locale: en|fr|es
-redeemcodes:
-    resource: ../../src/Plugins/RedeemCodes/Controller/
-    type: annotation
-    prefix: '{_locale}'
-    requirements:
-        _locale: en|fr|es
-
 kernel:
     resource: ../../src/Kernel.php
     type: annotation

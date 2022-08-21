@@ -74,7 +74,8 @@ class CheckPlugins
                     "pluginName" => $jsonData->name,
                     "folderName" => $fileinfo->getFilename(),
                     "folderPath" => $fileinfo->getPathname(),
-                    "paths" => $jsonData->paths
+                    "paths" => $jsonData->paths,
+                    "enable" => $jsonData->Enabled
                 ];
             }
         }
