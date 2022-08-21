@@ -423,7 +423,7 @@ class AdminController extends AbstractController
         // dd($api->getUser($user));
 
 
-        return $this->render($setting->get('theme') . '/admin/account/detail.html.twig', [
+        return $this->render('AdminPanel/account/detail.html.twig', [
             'user' => $api->getUser($user),
             'characters' => $api->getCharacters($user),
             'maxCharacters' => $api->getServerConfig()['Player']['MaxCharacters']
@@ -525,7 +525,7 @@ class AdminController extends AbstractController
             }
         }
 
-        return $this->render($setting->get('theme') . '/admin/account/character.html.twig', [
+        return $this->render('/AdminPanel/character.html.twig', [
             'player' => $api->getCharacter($character),
             'inventory' => $inventory_list,
             'bank' => $bank_list,
