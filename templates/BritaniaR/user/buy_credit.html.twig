@@ -1,0 +1,59 @@
+{% extends settings.get("theme") ~'/base.html.twig' %}
+
+{% block title %}
+	{{ 'Acheter le '|trans }} {{point.name}}
+{% endblock %}
+
+{% block body %}
+
+	<h1>
+		{{ 'Acheter le '|trans }} {{point.name}}
+	</h1>
+	<ul id="breadcrump">
+		<li>
+			<a href="{{path('home')}}">{{ 'Accueil'|trans }}</a>
+		</li>
+		<li>{{ 'Acheter le '|trans }} {{point.name}}</li>
+	</ul>
+
+	<div id="middle">
+		<h2>{{'Recharger'|trans}}</h2>
+		<div id="shop" class="row">
+			<div class="col-md-12">
+				<article class="card rounded-0" data-amount="{{point.quantity}}" data-price="{{point.price}}" data-name="{{point.name}}">
+					<img src="{{asset("assets/shops/" ~ point.image)}}" class="card-img-top rounded-0" alt="{{point.description}}">
+
+					<div class="card-header p-0 rounded-0">
+						<h2>
+							{{point.name}}
+						</h2>
+						<p>
+                            {{point.description}}
+                        </p>
+					</div>
+
+					<div class="card-body">
+						<ul>
+							<li>Vous êtes sur le point d'acheter le pack suivant : {{point.name}}</li>
+							<li>Vous allez obtenir {{point.quantity}} crédits pour {{point.price}}$</li>
+							<li><strong><u>Une fois le pack acheter, aucun remboursement n'est possible.</strong></u></li>
+						</ul>
+
+						<form id="buyForm" method="post">
+							<div id="errors" class="alert alert-danger d-none text-dark"></div>
+							<input id="cardholder-name" type="text" placeholder="Titulaire de la carte" class="form-control">
+							<div id="card-element" class="form-control"></div>
+							<div id="card-errors" role="alert"></div>
+							<button id="card-button" type="button" class="btn btn-primary" data-secret="{{intent["client_secret"]}}">Valider le paiement</button>
+						</form>
+					</div>
+				</article>
+			</div>            
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="https://js.stripe.com/v3/"></script>
+	<script src="{{asset("assets/themes/global/js/payment.js")}}"></script>
+{% endblock %}

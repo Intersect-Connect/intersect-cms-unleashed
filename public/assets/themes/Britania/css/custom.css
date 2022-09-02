@@ -157,18 +157,16 @@ main article.card .card-header h2 {
   font-family: 'proxima-nova_bold', Helvetica, Arial, sans-serif;
   width: 100%;
   position: absolute;
-  bottom: 0;
+  bottom: 0 !important;
   font-weight: 400;
   letter-spacing: 0.5px;
   text-shadow: 0 0 5px #000000, 0 0 3px #000000, 0 0 1px #000000;
   font-size: 20px;
   line-height: 22px;
   padding: 15px;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(15%, #202c24), to(rgba(0, 0, 0, 0)));
   background: linear-gradient(to top, #202c24 15%, rgba(0, 0, 0, 0));
   color: white;
   left: 0;
-  bottom: 30px !important;
 }
 
 main article.card .card-footer {
@@ -176,8 +174,7 @@ main article.card .card-footer {
 }
 
 .search {
-  -webkit-box-shadow: none !important;
-          box-shadow: none !important;
+  box-shadow: none !important;
   padding: 0.5rem !important;
 }
 
@@ -235,4 +232,7 @@ footer a {
   color: white;
   opacity: 1;
 }
-/*# sourceMappingURL=custom.css.map */
+
+.__PrivateStripeElement {
+  bottom: -13px !important;
+}

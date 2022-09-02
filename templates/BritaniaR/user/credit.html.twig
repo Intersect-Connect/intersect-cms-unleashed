@@ -15,11 +15,41 @@
 </ul>
 
 <div id="middle">
-    <h2>{{'Recharger'|trans}}</h2>
-    <div data-dedipass="{{ dedipass }}" data-dedipass-custom="{{app.user.webId}}"></div>
-</div>
-{% endblock %}
+	<h2>{{'Recharger'|trans}}</h2>
+	<div class="row">
+		{% for key, point in points %}
+			<div class="col-md-6">
+				<article class="card rounded-0">
+					<img src="" class="card-img-top rounded-0" alt="{{point.description}}">
 
-{% block javascripts %}
-<script src="//api.dedipass.com/v1/pay.js"></script>
+					<div class="card-header p-0 rounded-0">
+						<h2>
+							{{point.name}}
+						</h2>
+                        <p>
+                            {{point.description}}
+                        </p>
+					</div>
+
+					<div class="card-footer border-0">
+						<div class="row">
+							<div class="col-10">
+								+
+								<strong>{{point.quantity}}</strong>
+								for
+								<strong>{{point.price}}$</strong>
+							</div>
+							<div class="col-2">
+								<a href="{{path('account.credit.buy', {'id':key})}}">
+									<img src="{{asset('assets/themes/Britania/img/i_basket.png')}}" width="25px">
+								</a>
+							</div>
+						</div>
+					</div>
+				</article>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+
 {% endblock %}

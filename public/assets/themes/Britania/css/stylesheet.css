@@ -1062,6 +1062,7 @@ main #content #middle h2 {
 	text-transform: uppercase;
 	font-family: 'Montserrat', 'proxima-nova_bold', Helvetica, Arial, sans-serif;
 	font-weight: 800;
+	bottom:0;
 }
 
 main #content #middle h2 a:hover {

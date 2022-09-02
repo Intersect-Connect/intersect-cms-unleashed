@@ -2,24 +2,28 @@
 
 namespace App\Controller;
 
+use DateTime;
+use Stripe\Stripe;
+use App\Settings\Api;
+use Stripe\PaymentIntent;
+use App\Settings\CmsSettings;
 use App\Entity\CmsPointsHistory;
-use App\Repository\CmsPointsHistoryRepository;
-use App\Repository\CmsShopHistoryRepository;
-use App\Repository\CmsShopRepository;
+use App\Managers\PaymentManager;
 use App\Repository\UserRepository;
 use App\Security\LoginAuthenticator;
-use App\Settings\Api;
-use App\Settings\CmsSettings;
-use DateTime;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\CmsShopRepository;
+use App\Repository\CmsShopHistoryRepository;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\CmsPointsHistoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @IsGranted("ROLE_USER")
@@ -129,8 +133,16 @@ class UserController extends AbstractController
     /**
      * @Route("/account/credits", name="account.credit.reload")
      */
-    public function credit(Api $api, Request $request, CmsSettings $settings, UserRepository $userRepo, TranslatorInterface $translator, LoginAuthenticator $login, GuardAuthenticatorHandler $guard): Response
-    {
+    public function credit(
+        Api $api,
+        Request $request,
+        CmsSettings $settings,
+        UserRepository $userRepo,
+        TranslatorInterface $translator,
+        LoginAuthenticator $login,
+        GuardAuthenticatorHandler $guard,
+        PaymentManager $paymentManager
+    ): Response {
         if ($request->isMethod('POST')) {
             $code = $request->request->get('code');
 
@@ -171,8 +183,73 @@ class UserController extends AbstractController
             }
         }
         return $this->render($settings->get('theme') . '/user/credit.html.twig', [
-            'dedipass' => $api->getDedipassPublic()
+            'dedipass' => $api->getDedipassPublic(),
+            "points" => $paymentManager->getPoints()
         ]);
+    }
+
+    /**
+     * @Route("/account/buy/credits/{id}", name="account.credit.buy")
+     */
+    public function buyCredits($id, Api $api, Request $request, CmsSettings $settings, UserRepository $userRepo, TranslatorInterface $translator, LoginAuthenticator $login, GuardAuthenticatorHandler $guard,  PaymentManager $paymentManager): Response
+    {
+        $point = $paymentManager->getPoints()[$id];
+        $stripe = Stripe::setApiKey($paymentManager->getPrivateKey());
+        
+        $intent = PaymentIntent::create([
+            'amount' => $point["price"] * 100, // Le prix doit être transmis en centimes
+            'currency' => $paymentManager->getDevice(),
+            'receipt_email' => $this->getUser()->getEmail()
+        ]);
+
+        return $this->render($settings->get('theme') . '/user/buy_credit.html.twig', [
+            'dedipass' => $api->getDedipassPublic(),
+            'point' => $point,
+            'intent' => $intent
+        ]);
+    }
+
+    /**
+     * @Route("/account/buy/confirm/credits", name="account.credit.confirmBuy")
+     */
+    public function confirmBuyCredits(
+        Api $api, 
+        Request $request, 
+        CmsSettings $settings, 
+        UserRepository $userRepo
+        ): Response
+    {
+        if ($request->isMethod('POST')) {
+            $amount = $request->request->get("amount");
+            $price = $request->request->get("price");
+            $name = $request->request->get("name");
+
+            if (
+                isset($amount) && $amount != 0 &&
+                isset($price) && $price != 0 &&
+                isset($price) && !empty($name)
+            ) {
+                $user = $userRepo->find($this->getUser());
+                if ($user) {
+                    $user->setPoints($user->getPoints() + $amount);
+                    $newHistoric = new CmsPointsHistory();
+                    $newHistoric->setDate(new DateTime());
+                    $newHistoric->setUserId($this->getUser()->getWebId());
+                    $newHistoric->setCode($name);
+                    $newHistoric->setPointsAmount($amount);
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($user);
+                    $entityManager->persist($newHistoric);
+                    $entityManager->flush();
+
+                    return new JsonResponse(['success' => true]);
+                }
+            } else {
+                ## Field empty or null
+                return new JsonResponse(['success' => false]);
+            }
+        }
+        return $this->render($settings->get('theme') . '/user/buy_credit.html.twig', []);
     }
 
     /**
