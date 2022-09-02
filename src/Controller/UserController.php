@@ -234,7 +234,7 @@ class UserController extends AbstractController
                     $user->setPoints($user->getPoints() + $amount);
                     $newHistoric = new CmsPointsHistory();
                     $newHistoric->setDate(new DateTime());
-                    $newHistoric->setUserId($this->getUser()->getWebId());
+                    $newHistoric->setUserId($user->getWebId());
                     $newHistoric->setCode($name);
                     $newHistoric->setPointsAmount($amount);
                     $entityManager = $this->getDoctrine()->getManager();
@@ -258,8 +258,8 @@ class UserController extends AbstractController
     public function history(Api $api, Request $request, UserRepository $userRepo, CmsShopHistoryRepository $shopHistory, TranslatorInterface $translator, CmsShopRepository $cmsShopRepo, CmsPointsHistoryRepository $pointsRepo, CmsSettings $settings): Response
     {
 
-        $shop_history = $shopHistory->findBy(['userId' => $this->getUser()->getId()]);
-        $point_history = $pointsRepo->findBy(['userId' => $this->getUser()->getId()]);
+        $shop_history = $shopHistory->findBy(['userId' => $this->getUser()->getWebId()]);
+        $point_history = $pointsRepo->findBy(['userId' => $this->getUser()->getWebId()]);
 
         $history = [];
 
@@ -285,8 +285,6 @@ class UserController extends AbstractController
                 'quantity' => $point_history->getPointsAmount()
             ];
         }
-
-
 
         return $this->render($settings->get('theme') . '/user/history.html.twig', [
             'history' => $history
