@@ -75,7 +75,12 @@ class CmsPagesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $cmsPage->setUniqueSlug($this->format_uri($form->get('name')->getData()));
+            if($cmsPage->getCategory() === "Legal"){
+                $cmsPage->setCategory("Legal");
+                $cmsPage->setUniqueSlug($cmsPage->getUniqueSlug());
+            }else{
+                $cmsPage->setUniqueSlug($this->format_uri($form->get('name')->getData()));
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($cmsPage);
             $this->getDoctrine()->getManager()->flush();

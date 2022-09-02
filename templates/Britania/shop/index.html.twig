@@ -29,10 +29,10 @@
             </div>
 
             <div class="card-body">
-                <p>
-                    {{ (item.description|striptags|length) > 150 ? ((item.description|striptags|slice(0, 150)) ~
+                <p class="h-100">
+                    {{ (item.forcedDescription|striptags|length) > 150 ? ((item.forcedDescription|striptags|slice(0, 150)) ~
                     '...')|raw :
-                    (item.description|striptags|raw) }}
+                    (item.forcedDescription|striptags|raw) }}
                 </p>
             </div>
 

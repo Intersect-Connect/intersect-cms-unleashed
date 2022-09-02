@@ -33,6 +33,9 @@
 				<li class="nav-item" role="presentation">
 					<a class="nav-link" id="pills-social-tab" data-toggle="pill" href="#pills-social" role="tab" aria-controls="pills-social" aria-selected="false">Socials settings</a>
 				</li>
+				<li class="nav-item" role="presentation">
+					<a class="nav-link" id="pills-seo-tab" data-toggle="pill" href="#pills-seo" role="tab" aria-controls="pills-seo" aria-selected="false">SEO settings</a>
+				</li>
 			</ul>
 			<form method="post">
 				<div class="tab-content" id="pills-tabContent">
@@ -111,6 +114,42 @@
 					<div class="tab-pane fade" id="pills-social" role="tabpanel" aria-labelledby="pills-social-tab">
                         {% for param in params %}
 							{% if param.setting in settingsCat.social %}
+								{% if param.setting == "use_nav_community" or param.setting == "use_right_community_button" or param.setting == "use_wiki" %}
+									<div class="mt-3 mb-3">
+										<label for="{{param.setting}}">{{param.description}}</label>
+										<select name="{{param.setting}}" id="{{param.setting}}" class="form-control">
+											<option value="true" {% if param.defaultValue=="true" %} selected {% endif %}>{{"Oui"|trans}}
+											</option>
+											<option value="false" {% if param.defaultValue=="false" %} selected {% endif %}>{{"Non"|trans}}
+											</option>
+										</select>
+									</div>
+								{% else %}
+									{% if param.setting != "theme" %}
+										<div class="mt-3 mb-3">
+											<label for="{{param.setting}}">{{param.description}}</label>
+											<input type="text" name="{{param.setting}}" id="{{param.setting}}" value="{{param.defaultValue}}" class="w-100 form-control">
+										</div>
+									{% endif %}
+								{% endif %}
+
+								{% if param.setting == "theme" %}
+									<label for="{{param.setting}}">{{param.description}}</label>
+									<select name="{{param.setting}}" id="{{param.setting}}" class="form-control">
+										{% for folder in folders %}
+											<option value="{{folder}}" {% if param.defaultValue==folder %} selected {% endif %}>
+												{{folder}}
+											</option>
+										{% endfor %}
+									</select>
+
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+                    </div>
+					<div class="tab-pane fade" id="pills-seo" role="tabpanel" aria-labelledby="pills-seo-tab">
+                        {% for param in params %}
+							{% if param.setting in settingsCat.seo %}
 								{% if param.setting == "use_nav_community" or param.setting == "use_right_community_button" or param.setting == "use_wiki" %}
 									<div class="mt-3 mb-3">
 										<label for="{{param.setting}}">{{param.description}}</label>

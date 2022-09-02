@@ -1,27 +1,32 @@
 // Import Custom SB Admin 2 Variables (Overrides Default Bootstrap Variables)
-@import "variables.scss";
+@import "_variables.scss";
 
 // Import Bootstrap
 @import "../vendor/bootstrap/scss/bootstrap.scss";
 
 // Import Custom SB Admin 2 Mixins and Components
-@import "mixins.scss";
-@import "global.scss";
-@import "utilities.scss";
+@import "_mixins.scss";
+@import "_global.scss";
+@import "_utilities.scss";
 
 // Custom Components
-@import "dropdowns.scss";
-@import "navs.scss";
-@import "buttons.scss";
-@import "cards.scss";
-@import "charts.scss";
-@import "login.scss";
-@import "error.scss";
-@import "footer.scss";
+@import "_dropdowns.scss";
+@import "_navs.scss";
+@import "_buttons.scss";
+@import "_cards.scss";
+@import "_charts.scss";
+@import "_login.scss";
+@import "_error.scss";
+@import "_footer.scss";
 
 .slot {
     padding: 8px;
     border: 1px solid;
     background: gray;
     margin-bottom: 1rem;
+}
+
+select[readonly]
+{
+    pointer-events: none;
 }

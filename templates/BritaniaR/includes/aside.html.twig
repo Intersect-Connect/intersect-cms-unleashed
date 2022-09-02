@@ -1,13 +1,16 @@
-{% if serveur_online %}
-<a href="{{path('game.players.liste.online')}}" class="butt serverOnline">
+{% set status = api.ServeurStatut %}
+
+
+{% if status is defined and status %}
+<a href="{{path('game.players.liste.online')}}" class="butt serverOnline text-decoration-none">
     <span class="illu"></span>
     {{'Etat du serveur'|trans}}
     <small>
-        {{'En ligne'|trans}} ({{players_count}} {{'joueurs'|trans}})
+        {{'En ligne'|trans}}
     </small>
 </a>
 {% else %}
-<a href="{{path('game.players.liste.online')}}" class="butt serverOffline">
+    <a href="{{path('game.players.liste.online')}}" class="butt serverOffline text-decoration-none">
     <span class="illu"></span>
     {{'Etat du serveur'|trans}}
     <small>
@@ -16,16 +19,17 @@
 </a>
 {% endif %}
 
+
 {% if app.user %}
 {% if is_granted('ROLE_ADMIN') %}
-<a href="{{path("admin")}}" class="butt ladder">
+<a href="{{path("admin")}}" class="butt ladder text-decoration-none">
     <span class="illu"></span>
     {{"Administration"|trans}}
     <small>{{"Gérer le CMS"|trans}}</small>
 </a>
 {% endif %}
 
-<a href="{{path('account')}}" class="butt joins">
+<a href="{{path('account')}}" class="butt joins text-decoration-none">
     <span class="illu"></span>
     {{app.user.username}}
     <small>{{app.user.points}} {{'credits'|trans}}</small>
@@ -36,7 +40,7 @@
 {% if settings.get('use_right_community_button') != "false" %}
 
 {% if settings.get('discord_link') != "#" %}
-<a href="{{settings.get('discord_link')}}" class="butt discord">
+<a href="{{settings.get('discord_link')}}" class="butt discord text-decoration-none">
     <span class="illu"></span>
     Discord
     <small>{{'Discuter avec les joueurs'|trans}}</small>
@@ -44,7 +48,7 @@
 {% endif %}
 
 {% if settings.get('facebook_link') != "#" %}
-<a href="{{settings.get('facebook_link')}}" class="butt facebook">
+<a href="{{settings.get('facebook_link')}}" class="butt facebook text-decoration-none">
     <span class="illu"></span>
     Facebook
     <small>{{'Suivez-nous sur Facebook'|trans}}</small>
@@ -52,7 +56,7 @@
 {% endif %}
 
 {% if settings.get('twitter_link') != "#" %}
-<a href="{{settings.get('twitter_link')}}" class="butt twitter">
+<a href="{{settings.get('twitter_link')}}" class="butt twitter text-decoration-none">
     <span class="illu"></span>
     Twitter
     <small>{{'Suivez-nous sur Twitter'|trans}}</small>
@@ -60,7 +64,7 @@
 {% endif %}
 
 {% if settings.get('youtube_link') != "#" %}
-<a href="{{settings.get('youtube_link')}}" class="butt youtube">
+<a href="{{settings.get('youtube_link')}}" class="butt youtube text-decoration-none">
     <span class="illu"></span>
     Youtube
     <small>{{'Suivez-nous sur Youtube'|trans}}</small>
@@ -68,7 +72,7 @@
 {% endif %}
 
 {% if settings.get('instagram_link') != "#" %}
-<a href="{{settings.get('instagram_link')}}" class="butt instagram">
+<a href="{{settings.get('instagram_link')}}" class="butt instagram text-decoration-none">
     <span class="illu"></span>
     Instagram
     <small>{{'Suivez-nous sur Instagram'|trans}}</small>

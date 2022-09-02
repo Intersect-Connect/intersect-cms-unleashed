@@ -23,7 +23,7 @@ class HomeController extends AbstractController
     {
         $serveur_statut = $api->ServeurStatut();
 
-        if ($serveur_statut['success']) {
+        if ($serveur_statut) {
             $serveur_online = true;
 
             return $this->render($settings->get('theme') . '/includes/aside.html.twig', [
@@ -44,8 +44,12 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home",  requirements={"_locale": "en|fr"})
      */
-    public function index(CmsNewsRepository $newsRepo, CmsShopRepository $shopRepo, Api $api, Request $request, SettingsCmsSettings $settings): Response
-    {
+    public function index(
+        CmsNewsRepository $newsRepo,
+        CmsShopRepository $shopRepo,
+        Request $request,
+        SettingsCmsSettings $settings
+    ): Response {
 
         $routeParameters = $request->attributes->get('_route_params');
 
@@ -55,39 +59,9 @@ class HomeController extends AbstractController
 
         $shopItems = $shopRepo->findBy(['visible' => true], ['id' => 'DESC'], 2);
 
-        $shop = array();
-
-        foreach ($shopItems as $itemShop) {
-
-            $itemData = $api->getObjectDetail($itemShop->getIdItem());
-
-
-            $shop[$itemShop->getId()]['itemData'] = $itemData;
-            if ($itemShop->getForcedDescription() != "") {
-                $shop[$itemShop->getId()]['description'] = $itemShop->getForcedDescription();
-            } else {
-                $shop[$itemShop->getId()]['description'] = $itemData['Description'];
-            }
-            if ($itemShop->getPromotion() > 0) {
-                $shop[$itemShop->getId()]['price'] = $itemShop->getPrice() * (1 - ($itemShop->getPromotion() / 100));
-            } else {
-                $shop[$itemShop->getId()]['price'] =  $itemShop->getPrice();
-            }
-            $shop[$itemShop->getId()]['quantity'] = $itemShop->getQuantity();
-            $shop[$itemShop->getId()]['promotion'] = $itemShop->getPromotion();
-            $shop[$itemShop->getId()]['id'] = $itemShop->getId();
-            $shop[$itemShop->getId()]['name'] = $itemShop->getName();
-
-            if ($itemShop->getImage() != null) {
-                $shop[$itemShop->getId()]['image'] = $itemShop->getImage();
-            } else {
-                $shop[$itemShop->getId()]['image'] = null;
-            }
-        }
-
         return $this->render($settings->get('theme') . '/home/index.html.twig', [
             'news' => $newsRepo->findBy([], ['id' => 'DESC'], 2),
-            'shop' => $shop,
+            'shop' => $shopItems,
         ]);
     }
 

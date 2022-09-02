@@ -1,0 +1,167 @@
+<nav>
+	<ul class="nav">
+		<li class="list-style-none">
+			<a href="{{ path('home') }}" class="text-decoration-none">
+				{{ 'Accueil'|trans }}
+				<span class="ico_home"></span>
+			</a>
+		</li>
+		<li class="sub">
+			{{ 'Le jeu'|trans }}
+			<span class="ico_caret-down"></span>
+			<ul class="submenu">
+
+				{% if not app.user %}
+					<li class="list-style-none">
+						<a href="{{ path('app_register') }}" class="text-decoration-none">
+							{{ 'Inscription'|trans }}
+						</a>
+					</li>
+				{% endif %}
+
+
+				{% for gamepage in settings.getGamePage() %}
+					{% if gamepage.id == 1 %}
+						<li class="list-style-none">
+							<a href="{{ path('game.download') }}" class="text-decoration-none">
+								{{ 'Téléchargement'|trans }}
+							</a>
+						</li>
+					{% endif %}
+					{% if gamepage.id != 1 %}
+						<li class="list-style-none">
+							<a href="{{ path('game.pages', { 'slug': gamepage.uniqueSlug }) }}" class="text-decoration-none">
+								{{ gamepage.name }}
+							</a>
+						</li>
+					{% endif %}
+
+				{% endfor %}
+				<li class="list-style-none">
+					<a href="{{ path('game.players.liste') }}" class="text-decoration-none">{{ 'Liste des joueurs'|trans }}</a>
+				</li>
+				<li class="list-style-none">
+					<a href="{{ path('game.players.liste.online') }}" class="text-decoration-none">{{ 'Joueurs connecté'|trans }}</a>
+				</li>
+
+			</ul>
+		</li>
+		<li class="sub">
+			{{ 'Classements'|trans }}
+			<span class="ico_caret-down"></span>
+			<ul class="submenu">
+				<li class="list-style-none">
+					<a href="{{ path('game.rank.level') }}" class="text-decoration-none">{{ 'Classement niveaux'|trans }}</a>
+				</li>
+			</ul>
+		</li>
+		{% if settings.get('use_nav_community') == "true" %}
+			<li class="sub">
+				{{ 'Communauté'|trans }}
+				<span class="ico_caret-down"></span>
+				<ul class="submenu">
+					{% if settings.get('discord_link') != "#" %}
+						<li class="list-style-none">
+							<a href="{{settings.get('discord_link')}}" class="text-decoration-none">{{ 'Discord'|trans }}</a>
+						</li>
+					{% endif %}
+
+					{% if settings.get('facebook_link') != "#" %}
+						<li class="list-style-none">
+							<a href="{{settings.get('facebook_link')}}" class="text-decoration-none">{{ 'Facebook'|trans }}</a>
+						</li>
+					{% endif %}
+
+					{% if settings.get('twitter_link') != "#" %}
+						<li class="list-style-none">
+							<a href="{{settings.get('twitter_link')}}" class="text-decoration-none">{{ 'Twitter'|trans }}</a>
+						</li>
+					{% endif %}
+
+					{% if settings.get('youtube_link') != "#" %}
+						<li class="list-style-none">
+							<a href="{{settings.get('youtube_link')}}" class="text-decoration-none">{{ 'Youtube'|trans }}</a>
+						</li>
+					{% endif %}
+					{% if settings.get('instagram_link') != "#" %}
+						<li class="list-style-none">
+							<a href="{{settings.get('instagram_link')}}" class="text-decoration-none">{{ 'Instagram'|trans }}</a>
+						</li>
+					{% endif %}
+
+				</ul>
+			</li>
+		{% endif %}
+		<li class="sub">
+			{{ 'Boutiques'|trans }}
+			<span class="ico_caret-down"></span>
+			<ul class="submenu">
+				<li class="list-style-none">
+					<a href="{{ path('shop.index') }}" class="text-decoration-none">{{ "Boutique VIP"|trans }}</a>
+				</li>
+			</ul>
+		</li>
+		{% if settings.getWikiPage()|length > 0 and settings.get('use_wiki') == "true"%}
+			<li class="sub">
+				{{'Wiki'|trans}}
+				<span class="ico_caret-down"></span>
+				<ul class="submenu">
+					{% for wikipage in settings.getWikiPage() %}
+						<li class="list-style-none">
+							<a href="{{ path('game.pages', { 'slug': wikipage.uniqueSlug }) }}" class="text-decoration-none">
+								{{wikipage.name }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</li>
+		{% endif %}
+
+		{% if app.user %}
+			<li class="sub">
+				{{ 'Mon compte'|trans }}
+				<span class="ico_caret-down"></span>
+				<ul class="submenu">
+					<li class="list-style-none">
+						<a href="{{ path('account') }}" class="text-decoration-none">{{ 'Mon profil'|trans }}</a>
+					</li>
+					<li class="list-style-none">
+						<a href="{{ path('app_logout') }}" class="text-decoration-none">{{ 'Déconnexion'|trans }}</a>
+					</li>
+				</ul>
+			</li>
+		{% endif %}
+	</ul>
+</nav>
+<div class="panel {% if app.user %} login {% else %} logout {% endif %}">
+	<a data-nav="no" class="link menu">
+		<div class="ico_navicon"></div>
+	</a>
+
+	{% if not app.user %}
+		<a href="{{ path('app_login') }}" class="link" title=" {{ 'login_panel_login'|trans }}">
+			<div class="ico_lock"></div>
+		</a>
+		<a href="{{ path('app_register') }}" class="link" title=" {{ 'login_panel_register'|trans }}">
+			<div class="ico_user-plus"></div>
+		</a>
+	{% endif %}
+
+</div>
+
+<div class="dropdown mt-n0 languageDropdown {% if app.user %} login {% else %} logout {% endif %}">
+	<button class="btn btn-lg btn-block border-0 rounded-0 dropdown-toggle shadow-0 text-white" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+		<i class="ico_globe"></i>
+	</button>
+	<ul class="dropdown-menu w-100 rounded-0" aria-labelledby="dropdownMenuButton1" style="margin: 0px;">
+		<li>
+			<a class="dropdown-item" href="{{path('change_locale', {'locale':'fr'})}}">FR</a>
+		</li>
+		<li>
+			<a class="dropdown-item" href="{{path('change_locale', {'locale':'en'})}}">EN</a>
+		</li>
+		<li>
+			<a class="dropdown-item" href="{{path('change_locale', {'locale':'es'})}}">ES</a>
+		</li>
+	</ul>
+</div>

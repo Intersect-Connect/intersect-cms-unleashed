@@ -814,8 +814,8 @@
         <source>Mentions légales</source>
         <target>Nota legal</target>
       </trans-unit>
-      <trans-unit id="kwgjsCr" resname="Conditions Générales de Ventes">
-        <source>Conditions Générales de Ventes</source>
+      <trans-unit id="kwgjsCr" resname="Conditions Générales d'utilisation">
+        <source>Conditions Générales d'utilisation</source>
         <target>Términos y condiciones</target>
       </trans-unit>
       <trans-unit id="coX9BS8" resname="Confidentialités">

@@ -259,10 +259,42 @@ class AdminController extends AbstractController
         $folders = scandir($dir);
         array_splice($folders, array_search('.', $folders), 1);
         array_splice($folders, array_search('..', $folders), 1);
+        $settingsCat = [
+            "website" => [
+                "base_url",
+                "credit_dedipass_private_key",
+                "credit_dedipass_public_key",
+                "current_lang",
+                "theme",
+                "use_custom_game_pages",
+                "use_nav_community",
+                "use_right_community_button",
+                "use_wiki",
+                "tinymce_key",
+                "max_level"
+            ],
+            "api" => [
+                "api_username",
+                "api_password",
+                "api_server"
+            ],
+            "social" => [
+                "facebook_link",
+                "twitter_link",
+                "youtube_link",
+                "instagram_link",
+                "discord_link"
+            ],
+            "seo" => [
+                "game_title",
+                "seo_description"
+            ]
+        ];
 
         return $this->render('AdminPanel/cms_settings/index.html.twig', [
             'params' => $settings->findAll(),
-            'folders' => $folders
+            'folders' => $folders,
+            "settingsCat" => $settingsCat
         ]);
     }
 

@@ -17,10 +17,10 @@
 {% endblock %}
 
 {% block javascripts %}
-<script src='https://cdn.tiny.cloud/1/{{ settings.get("tinymce_key") }}/tinymce/5/tinymce.min.js' referrerpolicy="origin">
-</script>
-<script>
-  tinymce.init({
+<script src='https://cdn.tiny.cloud/1/{{ settings.get("tinymce_key") }}/tinymce/5/tinymce.min.js' referrerpolicy="origin" defer></script>
+<script defer>
+  window.onload = () => {
+ tinymce.init({
     selector: 'textarea',
     language: 'fr_FR',
     plugins: [
@@ -55,6 +55,6 @@
     ],
     menubar: 'favs file edit view insert format tools table help'
   });
-
+  }
 </script>
 {% endblock %}

@@ -10,11 +10,21 @@
     * interface.js
     * Code by Thomasfds 2021
     * www.thomasfds.fr
-	||
+    ||
 ======================================================================================
 */
 
 window.onload = () => {
+
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
+
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
 
     let sub = document.querySelectorAll('.sub');
     let button_menu = document.querySelector('[data-nav]');

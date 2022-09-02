@@ -61,23 +61,20 @@
                     </h2>
                 </div>
 
-                <div class="card-body">
-                    {{item.description|striptags|raw}}
+                <div class="card-body d-none">
+                    <p class="h-100 mt-0">{{ (item.forcedDescription|striptags|length) > 150 ? ((item.forcedDescription|striptags|slice(0, 150)) ~
+                    '...')|raw :
+                    (item.forcedDescription|striptags|raw) }}
+                    </p>
                 </div>
 
-                <div class="card-footer border-0">
-                    <div class="row">
-                        <div class="col-10">
-                            <strong>{{item.price}} {{"credits"|trans}}</strong>
-                        </div>
-                        <div class="col-2">
-                            {% if app.user %}
-                            <a href="{{path('shop.detail', {'id':item.id})}}">
-                                <img src="{{asset('assets/themes/' ~ settings.get("theme") ~ '/img/i_basket.png')}}" width="25px">
-                            </a>
-                            {% endif %}
-                        </div>
-                    </div>
+                <div class="footer">
+                    <strong>{{item.price}} {{"credits"|trans}}</strong>
+                    {% if app.user %}
+                    <a href="{{path('shop.detail', {'id':item.id})}}">
+                        <img src="{{asset('assets/themes/' ~ settings.get("theme") ~ '/img/i_basket.png')}}" width="25px"> {{ 'Achetez'|trans }}
+                    </a>
+                    {% endif %}
                 </div>
             </article>
 
@@ -107,7 +104,7 @@
                     <strong>{{item.price}} {{"credits"|trans}}</strong>
                     {% if app.user %}
                     <a href="{{path('shop.detail', {'id':item.id})}}">
-                        <img src="{{asset('assets/themes/' ~ settings.get("theme") ~ '/img/i_basket.png')}}" width="25px">
+                        <img src="{{asset('assets/themes/' ~ settings.get("theme") ~ '/img/i_basket.png')}}" width="25px"> {{ 'Achetez'|trans }}
                     </a>
                     {% endif %}
                 </div>

@@ -7,7 +7,11 @@
 
 <div class="form-group mt-3 mb-3">
     <label for="">{{"Catégorie de la page"|trans}}</label>
-    {{ form_widget(form.category) }}
+    {% if cms_page is defined and cms_page.category == "Legal" %}
+        {{ form_widget(form.category, { 'attr': {'readOnly':true} }) }}
+        {% else %}
+        {{ form_widget(form.category, { 'attr': {'readOnly': false} }) }}
+    {% endif %}
 </div>
 <div class="form-group mt-3 mb-3">
     <label for="">{{"Contenu de la page"|trans}}</label>

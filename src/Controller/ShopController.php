@@ -20,46 +20,16 @@ class ShopController extends AbstractController
     /**
      * @Route("/shop", name="shop.index",  requirements={"_locale": "en|fr"})
      */
-    public function index(CmsShopRepository $shopRepo, Api $api, PaginatorInterface $paginator, Request $request, CmsSettings $settings): Response
-    {
+    public function index(
+        CmsShopRepository $shopRepo,
+        PaginatorInterface $paginator,
+        Request $request,
+        CmsSettings $settings
+    ): Response {
 
         $shopItems = $shopRepo->findBy(['visible' => true]);
-
-        $shop = array();
-        foreach ($shopItems as $itemShop) {
-
-            $itemData = $api->getObjectDetail($itemShop->getIdItem());
-
-
-            $shop[$itemShop->getId()]['itemData'] = $itemData;
-
-            if ($itemShop->getForcedDescription() != "") {
-                $shop[$itemShop->getId()]['description'] = $itemShop->getForcedDescription();
-            } else {
-                $shop[$itemShop->getId()]['description'] = $itemData['Description'];
-            }
-            if ($itemShop->getPromotion() > 0) {
-                $shop[$itemShop->getId()]['price'] = $itemShop->getPrice() * (1 - ($itemShop->getPromotion() / 100));
-            } else {
-                $shop[$itemShop->getId()]['price'] =  $itemShop->getPrice();
-            }
-            $shop[$itemShop->getId()]['quantity'] = $itemShop->getQuantity();
-            $shop[$itemShop->getId()]['promotion'] = $itemShop->getPromotion();
-            $shop[$itemShop->getId()]['id'] = $itemShop->getId();
-
-
-
-            $shop[$itemShop->getId()]['name'] = $itemShop->getName();
-
-            if ($itemShop->getImage() != null) {
-                $shop[$itemShop->getId()]['image'] = $itemShop->getImage();
-            } else {
-                $shop[$itemShop->getId()]['image'] = null;
-            }
-        }
-
         $items = $paginator->paginate(
-            $shop, // Requête contenant les données à paginer (ici nos articles)
+            $shopItems, // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             6 // Nombre de résultats par page
         );

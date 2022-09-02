@@ -1,10 +1,4 @@
 /*!
- * Start Bootstrap - SB Admin 2 v4.1.3 (https://startbootstrap.com/theme/sb-admin-2)
- * Copyright 2013-2021 Start Bootstrap
- * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-sb-admin-2/blob/master/LICENSE)
- */
-
-/*!
  * Bootstrap v4.6.0 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
  * Copyright 2011-2021 Twitter, Inc.
@@ -92,11 +86,9 @@ p {
 abbr[title],
 abbr[data-original-title] {
   text-decoration: underline;
-  -webkit-text-decoration: underline dotted;
   text-decoration: underline dotted;
   cursor: help;
   border-bottom: 0;
-  -webkit-text-decoration-skip-ink: none;
   text-decoration-skip-ink: none;
 }
 
@@ -1865,26 +1857,6 @@ pre code {
   box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
 }
 
-.form-control::-webkit-input-placeholder {
-  color: #858796;
-  opacity: 1;
-}
-
-.form-control::-moz-placeholder {
-  color: #858796;
-  opacity: 1;
-}
-
-.form-control:-ms-input-placeholder {
-  color: #858796;
-  opacity: 1;
-}
-
-.form-control::-ms-input-placeholder {
-  color: #858796;
-  opacity: 1;
-}
-
 .form-control::placeholder {
   color: #858796;
   opacity: 1;
@@ -1899,8 +1871,6 @@ input[type="date"].form-control,
 input[type="time"].form-control,
 input[type="datetime-local"].form-control,
 input[type="month"].form-control {
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
 }
 
@@ -2313,9 +2283,6 @@ textarea.form-control {
   color: #858796;
   text-align: center;
   vertical-align: middle;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   background-color: transparent;
   border: 1px solid transparent;
@@ -3552,7 +3519,6 @@ input[type="button"].btn-block {
   display: block;
   min-height: 1.5rem;
   padding-left: 1.5rem;
-  -webkit-print-color-adjust: exact;
   color-adjust: exact;
 }
 
@@ -3714,8 +3680,6 @@ input[type="button"].btn-block {
   background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%235a5c69' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") right 0.75rem center/8px 10px no-repeat;
   border: 1px solid #d1d3e2;
   border-radius: 0.35rem;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
 }
 
@@ -3841,8 +3805,6 @@ input[type="button"].btn-block {
   height: 1.4rem;
   padding: 0;
   background-color: transparent;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
 }
 
@@ -3873,15 +3835,12 @@ input[type="button"].btn-block {
   background-color: #4e73df;
   border: 0;
   border-radius: 1rem;
-  -webkit-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  -webkit-appearance: none;
   appearance: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .custom-range::-webkit-slider-thumb {
-    -webkit-transition: none;
     transition: none;
   }
 }
@@ -3906,15 +3865,12 @@ input[type="button"].btn-block {
   background-color: #4e73df;
   border: 0;
   border-radius: 1rem;
-  -moz-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  -moz-appearance: none;
   appearance: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .custom-range::-moz-range-thumb {
-    -moz-transition: none;
     transition: none;
   }
 }
@@ -3942,14 +3898,12 @@ input[type="button"].btn-block {
   background-color: #4e73df;
   border: 0;
   border-radius: 1rem;
-  -ms-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   appearance: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .custom-range::-ms-thumb {
-    -ms-transition: none;
     transition: none;
   }
 }
@@ -4679,9 +4633,7 @@ input[type="button"].btn-block {
 
 @media (min-width: 576px) {
   .card-columns {
-    -moz-column-count: 3;
     column-count: 3;
-    -moz-column-gap: 1.25rem;
     column-gap: 1.25rem;
     orphans: 1;
     widows: 1;
@@ -5157,15 +5109,6 @@ a.badge-dark:focus, a.badge-dark.focus {
   color: #18181c;
 }
 
-@-webkit-keyframes progress-bar-stripes {
-  from {
-    background-position: 1rem 0;
-  }
-  to {
-    background-position: 0 0;
-  }
-}
-
 @keyframes progress-bar-stripes {
   from {
     background-position: 1rem 0;
@@ -5209,13 +5152,11 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .progress-bar-animated {
-  -webkit-animation: 1s linear infinite progress-bar-stripes;
   animation: 1s linear infinite progress-bar-stripes;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .progress-bar-animated {
-    -webkit-animation: none;
     animation: none;
   }
 }
@@ -5712,8 +5653,6 @@ a.close.disabled {
 .modal-dialog-centered::before {
   display: block;
   height: calc(100vh - 1rem);
-  height: -webkit-min-content;
-  height: -moz-min-content;
   height: min-content;
   content: "";
 }
@@ -5828,8 +5767,6 @@ a.close.disabled {
   }
   .modal-dialog-centered::before {
     height: calc(100vh - 3.5rem);
-    height: -webkit-min-content;
-    height: -moz-min-content;
     height: min-content;
   }
   .modal-sm {
@@ -6148,7 +6085,6 @@ a.close.disabled {
   float: left;
   width: 100%;
   margin-right: -100%;
-  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   transition: transform 0.6s ease-in-out;
 }
@@ -6311,12 +6247,6 @@ a.close.disabled {
   text-align: center;
 }
 
-@-webkit-keyframes spinner-border {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes spinner-border {
   to {
     transform: rotate(360deg);
@@ -6331,7 +6261,6 @@ a.close.disabled {
   border: 0.25em solid currentColor;
   border-right-color: transparent;
   border-radius: 50%;
-  -webkit-animation: .75s linear infinite spinner-border;
   animation: .75s linear infinite spinner-border;
 }
 
@@ -6339,16 +6268,6 @@ a.close.disabled {
   width: 1rem;
   height: 1rem;
   border-width: 0.2em;
-}
-
-@-webkit-keyframes spinner-grow {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    opacity: 1;
-    transform: none;
-  }
 }
 
 @keyframes spinner-grow {
@@ -6369,7 +6288,6 @@ a.close.disabled {
   background-color: currentColor;
   border-radius: 50%;
   opacity: 0;
-  -webkit-animation: .75s linear infinite spinner-grow;
   animation: .75s linear infinite spinner-grow;
 }
 
@@ -6381,7 +6299,6 @@ a.close.disabled {
 @media (prefers-reduced-motion: reduce) {
   .spinner-border,
   .spinner-grow {
-    -webkit-animation-duration: 1.5s;
     animation-duration: 1.5s;
   }
 }
@@ -7470,23 +7387,14 @@ button.bg-dark:focus {
 }
 
 .user-select-all {
-  -webkit-user-select: all !important;
-  -moz-user-select: all !important;
-  -ms-user-select: all !important;
   user-select: all !important;
 }
 
 .user-select-auto {
-  -webkit-user-select: auto !important;
-  -moz-user-select: auto !important;
-  -ms-user-select: auto !important;
   user-select: auto !important;
 }
 
 .user-select-none {
-  -webkit-user-select: none !important;
-  -moz-user-select: none !important;
-  -ms-user-select: none !important;
   user-select: none !important;
 }
 
@@ -7515,7 +7423,6 @@ button.bg-dark:focus {
 }
 
 .position-sticky {
-  position: -webkit-sticky !important;
   position: sticky !important;
 }
 
@@ -7535,9 +7442,8 @@ button.bg-dark:focus {
   z-index: 1030;
 }
 
-@supports ((position: -webkit-sticky) or (position: sticky)) {
+@supports (position: sticky) {
   .sticky-top {
-    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -9841,17 +9747,6 @@ a:focus {
   font-weight: 800;
 }
 
-@-webkit-keyframes growIn {
-  0% {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
 @keyframes growIn {
   0% {
     transform: scale(0.9);
@@ -9864,21 +9759,9 @@ a:focus {
 }
 
 .animated--grow-in, .sidebar .nav-item .collapse {
-  -webkit-animation-name: growIn;
   animation-name: growIn;
-  -webkit-animation-duration: 200ms;
   animation-duration: 200ms;
-  -webkit-animation-timing-function: transform cubic-bezier(0.18, 1.25, 0.4, 1), opacity cubic-bezier(0, 1, 0.4, 1);
   animation-timing-function: transform cubic-bezier(0.18, 1.25, 0.4, 1), opacity cubic-bezier(0, 1, 0.4, 1);
-}
-
-@-webkit-keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }
 
 @keyframes fadeIn {
@@ -9891,11 +9774,8 @@ a:focus {
 }
 
 .animated--fade-in {
-  -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
-  -webkit-animation-duration: 200ms;
   animation-duration: 200ms;
-  -webkit-animation-timing-function: opacity cubic-bezier(0, 1, 0.4, 1);
   animation-timing-function: opacity cubic-bezier(0, 1, 0.4, 1);
 }
 
@@ -10516,7 +10396,6 @@ a:focus {
     left: 0;
     z-index: 1;
     top: 0;
-    -webkit-animation: none;
     animation: none;
   }
   .sidebar .nav-item .collapse .collapse-inner {
@@ -10577,11 +10456,8 @@ a:focus {
     left: calc(6.5rem + 1.5rem / 2);
     z-index: 1;
     top: 2px;
-    -webkit-animation-name: growIn;
     animation-name: growIn;
-    -webkit-animation-duration: 200ms;
     animation-duration: 200ms;
-    -webkit-animation-timing-function: transform cubic-bezier(0.18, 1.25, 0.4, 1), opacity cubic-bezier(0, 1, 0.4, 1);
     animation-timing-function: transform cubic-bezier(0.18, 1.25, 0.4, 1), opacity cubic-bezier(0, 1, 0.4, 1);
   }
   .sidebar.toggled .nav-item .collapse .collapse-inner {
@@ -10976,135 +10852,69 @@ form.user .btn-user {
   width: 12.5rem;
 }
 
-@-webkit-keyframes noise-anim {
-  0% {
-    clip: rect(49px, 9999px, 40px, 0);
-  }
-  5% {
-    clip: rect(75px, 9999px, 72px, 0);
-  }
-  10% {
-    clip: rect(97px, 9999px, 93px, 0);
-  }
-  15% {
-    clip: rect(15px, 9999px, 9px, 0);
-  }
-  20% {
-    clip: rect(14px, 9999px, 92px, 0);
-  }
-  25% {
-    clip: rect(18px, 9999px, 94px, 0);
-  }
-  30% {
-    clip: rect(17px, 9999px, 20px, 0);
-  }
-  35% {
-    clip: rect(71px, 9999px, 59px, 0);
-  }
-  40% {
-    clip: rect(42px, 9999px, 84px, 0);
-  }
-  45% {
-    clip: rect(56px, 9999px, 25px, 0);
-  }
-  50% {
-    clip: rect(46px, 9999px, 14px, 0);
-  }
-  55% {
-    clip: rect(47px, 9999px, 1px, 0);
-  }
-  60% {
-    clip: rect(64px, 9999px, 58px, 0);
-  }
-  65% {
-    clip: rect(89px, 9999px, 92px, 0);
-  }
-  70% {
-    clip: rect(56px, 9999px, 39px, 0);
-  }
-  75% {
-    clip: rect(80px, 9999px, 71px, 0);
-  }
-  80% {
-    clip: rect(8px, 9999px, 13px, 0);
-  }
-  85% {
-    clip: rect(66px, 9999px, 68px, 0);
-  }
-  90% {
-    clip: rect(68px, 9999px, 4px, 0);
-  }
-  95% {
-    clip: rect(56px, 9999px, 14px, 0);
-  }
-  100% {
-    clip: rect(28px, 9999px, 53px, 0);
-  }
-}
-
 @keyframes noise-anim {
   0% {
-    clip: rect(49px, 9999px, 40px, 0);
+    clip: rect(43px, 9999px, 44px, 0);
   }
   5% {
-    clip: rect(75px, 9999px, 72px, 0);
+    clip: rect(27px, 9999px, 57px, 0);
   }
   10% {
-    clip: rect(97px, 9999px, 93px, 0);
+    clip: rect(84px, 9999px, 94px, 0);
   }
   15% {
-    clip: rect(15px, 9999px, 9px, 0);
+    clip: rect(99px, 9999px, 81px, 0);
   }
   20% {
-    clip: rect(14px, 9999px, 92px, 0);
+    clip: rect(37px, 9999px, 82px, 0);
   }
   25% {
-    clip: rect(18px, 9999px, 94px, 0);
+    clip: rect(43px, 9999px, 87px, 0);
   }
   30% {
-    clip: rect(17px, 9999px, 20px, 0);
+    clip: rect(84px, 9999px, 41px, 0);
   }
   35% {
-    clip: rect(71px, 9999px, 59px, 0);
+    clip: rect(35px, 9999px, 3px, 0);
   }
   40% {
-    clip: rect(42px, 9999px, 84px, 0);
+    clip: rect(23px, 9999px, 47px, 0);
   }
   45% {
-    clip: rect(56px, 9999px, 25px, 0);
+    clip: rect(39px, 9999px, 8px, 0);
   }
   50% {
-    clip: rect(46px, 9999px, 14px, 0);
+    clip: rect(51px, 9999px, 27px, 0);
   }
   55% {
-    clip: rect(47px, 9999px, 1px, 0);
+    clip: rect(81px, 9999px, 92px, 0);
   }
   60% {
-    clip: rect(64px, 9999px, 58px, 0);
+    clip: rect(67px, 9999px, 86px, 0);
   }
   65% {
-    clip: rect(89px, 9999px, 92px, 0);
+    clip: rect(87px, 9999px, 31px, 0);
   }
   70% {
-    clip: rect(56px, 9999px, 39px, 0);
+    clip: rect(23px, 9999px, 32px, 0);
   }
   75% {
-    clip: rect(80px, 9999px, 71px, 0);
+    clip: rect(99px, 9999px, 22px, 0);
   }
   80% {
-    clip: rect(8px, 9999px, 13px, 0);
+    clip: rect(23px, 9999px, 88px, 0);
   }
   85% {
-    clip: rect(66px, 9999px, 68px, 0);
+    clip: rect(45px, 9999px, 61px, 0);
   }
   90% {
-    clip: rect(68px, 9999px, 4px, 0);
+    clip: rect(53px, 9999px, 87px, 0);
   }
   95% {
-    clip: rect(56px, 9999px, 14px, 0);
+    clip: rect(42px, 9999px, 27px, 0);
   }
   100% {
-    clip: rect(28px, 9999px, 53px, 0);
+    clip: rect(21px, 9999px, 70px, 0);
   }
 }
 
@@ -11121,135 +10931,69 @@ form.user .btn-user {
   animation: noise-anim 2s infinite linear alternate-reverse;
 }
 
-@-webkit-keyframes noise-anim-2 {
-  0% {
-    clip: rect(16px, 9999px, 10px, 0);
-  }
-  5% {
-    clip: rect(22px, 9999px, 29px, 0);
-  }
-  10% {
-    clip: rect(6px, 9999px, 68px, 0);
-  }
-  15% {
-    clip: rect(85px, 9999px, 95px, 0);
-  }
-  20% {
-    clip: rect(65px, 9999px, 91px, 0);
-  }
-  25% {
-    clip: rect(93px, 9999px, 68px, 0);
-  }
-  30% {
-    clip: rect(10px, 9999px, 27px, 0);
-  }
-  35% {
-    clip: rect(37px, 9999px, 25px, 0);
-  }
-  40% {
-    clip: rect(12px, 9999px, 23px, 0);
-  }
-  45% {
-    clip: rect(40px, 9999px, 18px, 0);
-  }
-  50% {
-    clip: rect(19px, 9999px, 71px, 0);
-  }
-  55% {
-    clip: rect(2px, 9999px, 35px, 0);
-  }
-  60% {
-    clip: rect(16px, 9999px, 69px, 0);
-  }
-  65% {
-    clip: rect(8px, 9999px, 65px, 0);
-  }
-  70% {
-    clip: rect(30px, 9999px, 57px, 0);
-  }
-  75% {
-    clip: rect(14px, 9999px, 4px, 0);
-  }
-  80% {
-    clip: rect(39px, 9999px, 30px, 0);
-  }
-  85% {
-    clip: rect(22px, 9999px, 35px, 0);
-  }
-  90% {
-    clip: rect(58px, 9999px, 71px, 0);
-  }
-  95% {
-    clip: rect(34px, 9999px, 90px, 0);
-  }
-  100% {
-    clip: rect(67px, 9999px, 68px, 0);
-  }
-}
-
 @keyframes noise-anim-2 {
   0% {
-    clip: rect(16px, 9999px, 10px, 0);
+    clip: rect(1px, 9999px, 14px, 0);
   }
   5% {
-    clip: rect(22px, 9999px, 29px, 0);
+    clip: rect(59px, 9999px, 75px, 0);
   }
   10% {
-    clip: rect(6px, 9999px, 68px, 0);
+    clip: rect(85px, 9999px, 66px, 0);
   }
   15% {
-    clip: rect(85px, 9999px, 95px, 0);
+    clip: rect(5px, 9999px, 35px, 0);
   }
   20% {
-    clip: rect(65px, 9999px, 91px, 0);
+    clip: rect(42px, 9999px, 67px, 0);
   }
   25% {
-    clip: rect(93px, 9999px, 68px, 0);
+    clip: rect(41px, 9999px, 52px, 0);
   }
   30% {
-    clip: rect(10px, 9999px, 27px, 0);
+    clip: rect(87px, 9999px, 78px, 0);
   }
   35% {
-    clip: rect(37px, 9999px, 25px, 0);
+    clip: rect(62px, 9999px, 81px, 0);
   }
   40% {
-    clip: rect(12px, 9999px, 23px, 0);
+    clip: rect(50px, 9999px, 83px, 0);
   }
   45% {
-    clip: rect(40px, 9999px, 18px, 0);
+    clip: rect(78px, 9999px, 98px, 0);
   }
   50% {
-    clip: rect(19px, 9999px, 71px, 0);
+    clip: rect(55px, 9999px, 6px, 0);
   }
   55% {
-    clip: rect(2px, 9999px, 35px, 0);
+    clip: rect(54px, 9999px, 97px, 0);
   }
   60% {
-    clip: rect(16px, 9999px, 69px, 0);
+    clip: rect(67px, 9999px, 12px, 0);
   }
   65% {
-    clip: rect(8px, 9999px, 65px, 0);
+    clip: rect(24px, 9999px, 67px, 0);
   }
   70% {
-    clip: rect(30px, 9999px, 57px, 0);
+    clip: rect(85px, 9999px, 13px, 0);
   }
   75% {
-    clip: rect(14px, 9999px, 4px, 0);
+    clip: rect(36px, 9999px, 42px, 0);
   }
   80% {
-    clip: rect(39px, 9999px, 30px, 0);
+    clip: rect(72px, 9999px, 9px, 0);
   }
   85% {
-    clip: rect(22px, 9999px, 35px, 0);
+    clip: rect(39px, 9999px, 79px, 0);
   }
   90% {
-    clip: rect(58px, 9999px, 71px, 0);
+    clip: rect(13px, 9999px, 7px, 0);
   }
   95% {
-    clip: rect(34px, 9999px, 90px, 0);
+    clip: rect(77px, 9999px, 92px, 0);
   }
   100% {
-    clip: rect(67px, 9999px, 68px, 0);
+    clip: rect(92px, 9999px, 16px, 0);
   }
 }
 
@@ -11280,11 +11024,13 @@ body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
 
-
 .slot {
   padding: 8px;
   border: 1px solid;
   background: gray;
   margin-bottom: 1rem;
 }
-/*# sourceMappingURL=sb-admin-2.css.map */
+
+select[readonly] {
+  pointer-events: none;
+}

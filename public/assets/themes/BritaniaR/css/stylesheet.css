@@ -36,8 +36,6 @@ p,
 figure,
 figcaption,
 button {
-	padding: 0;
-	margin: 0;
 	font-size: inherit;
 	color: inherit;
 	background: transparent;
@@ -84,12 +82,6 @@ strong {
 	font-weight: bold;
 }
 
-ol,
-ul {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
 
 caption,
 th {

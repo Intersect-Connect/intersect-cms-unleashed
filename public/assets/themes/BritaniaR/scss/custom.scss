@@ -211,23 +211,23 @@ main {
 
 /********** FOOTER **********/
 
-footer {
-  width: 100%;
-  height: 85px;
-  background-color: #335580;
-  opacity: 1 !important;
-  color: white;
+// footer {
+//   width: 100%;
+//   height: 85px;
+//   background-color: #335580;
+//   opacity: 1 !important;
+//   color: white;
 
-  @media (max-width: 575.98px) {
+//   @media (max-width: 575.98px) {
 
-    height: 160px;
-  }
+//     height: 160px;
+//   }
 
-}
+// }
 
-footer a {
-  font-family: 'proxima-nova_bold', Helvetica, Arial, sans-serif;
-}
+// footer a {
+//   font-family: 'proxima-nova_bold', Helvetica, Arial, sans-serif;
+// }
 
 #news.read {
 
@@ -262,4 +262,29 @@ padding: 0.2rem;
       color:white;
       opacity: 1;
     }
+}
+
+.list-style-none{
+  list-style: none!important;
+}
+
+.customBTN{
+  text-decoration: none!important;
+}
+
+#shop h2 {
+  z-index: 9;
+  font-family: 'proxima-nova_bold', Helvetica, Arial, sans-serif;
+  width: 100%;
+  position: absolute;
+  bottom: 32px !important;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 5px #000000, 0 0 3px #000000, 0 0 1px #000000;
+  font-size: 20px;
+  line-height: 22px;
+  padding: 15px;
+  background: linear-gradient(to top, #202c24 15%, rgba(0,0,0,0));
+  color: white;
+  left: 0;
 }

@@ -27,34 +27,36 @@
 {% block body %}
 
 <h1>
-    {{ 'news'|trans }}
+	{{ 'news'|trans }}
 </h1>
 
 <ul id="breadcrump">
-    <li>
-        <a href="{{path('home')}}">{{ 'home'|trans }}</a>
-    </li>
-    <li>{{news.title}}</li>
+	<li>
+		<a href="{{path('home')}}">{{ 'Home'|trans }}</a>
+	</li>
+	<li>{{news.title}}</li>
 </ul>
 
 <div id="news" class="read">
-    <article>
-        <div class="header" style="background-image:url('{{asset('assets/general/news/'~ news.imgUrl)}}');">
-            <h2 class="read">
-                <img src="{{asset('assets/themes/' ~ settings.get("theme") ~ '/img/i_news.png' )}}"
-                    alt="Icône des articles" loading="lazy">
-                {{news.title}}
-            </h2>
-        </div>
-        <div class="mb-5">
-            {{news.content|raw }}
-        </div>
-        <div class="footer">
-            {{ 'Publié le'|trans }} <strong>{{ news.date|date('d/m/Y') }}</strong> {{ 'par'|trans }}
-            <strong>
-                {{news.author}}.
-            </strong>
-        </div>
-    </article>
+	<article class="h-100">
+		<div class="header" style="background-image:url('{{asset('assets/general/news/'~ news.imgUrl)}}');">
+			<h2 class="read">
+				<img src="{{asset('assets/themes/' ~ settings.get("theme") ~ '/img/i_news.png' )}}" alt="Icône des articles" loading="lazy">
+				{{news.title}}
+			</h2>
+		</div>
+		<div class="mb-5 h-100">
+			{{news.content|raw }}
+		</div>
+		<div class="footer">
+			{{ 'Publié le'|trans }}
+			<strong>{{ news.date|date('d/m/Y') }}</strong>
+			{{ 'par'|trans }}
+			<strong>
+				{{news.author}}.
+			</strong>
+		</div>
+	</article>
 </div>
+
 {% endblock %}
