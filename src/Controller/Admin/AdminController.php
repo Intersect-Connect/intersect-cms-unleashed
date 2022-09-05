@@ -301,7 +301,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/items/{page}", name="admin.items")
      */
-    public function items(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, $page = 0, CmsSettings $settings): Response
+    public function items(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, CmsSettings $settings, $page = 0): Response
     {
         $items = null;
         $total = null;
@@ -326,7 +326,7 @@ class AdminController extends AbstractController
     /**
      * @Route("admin/accounts/{page}", name="admin.account")
      */
-    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $page = 0, CmsSettings $setting): Response
+    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, CmsSettings $setting, $page = 0): Response
     {
 
         if ($request->isMethod('POST')) {

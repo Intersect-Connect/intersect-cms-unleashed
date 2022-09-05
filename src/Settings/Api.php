@@ -737,7 +737,7 @@ class Api
 
     // Admin Action
 
-    public function banAccount($user_id, $username, $duration = 5, $moderator)
+    public function banAccount($user_id, $username, $moderator, $duration = 5)
     {
         $data = [
             'duration' => $duration,
@@ -777,7 +777,7 @@ class Api
     }
 
 
-    public function MuteAccount($user_id, $username, $duration = 5, $moderator)
+    public function MuteAccount($user_id, $username, $moderator, $duration = 5)
     {
         $data = [
             'duration' => $duration,

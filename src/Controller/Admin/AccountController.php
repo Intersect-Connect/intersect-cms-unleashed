@@ -20,7 +20,7 @@ class AccountController extends AbstractController
     /**
      * @Route("/{page}", name="admin.account")
      */
-    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $page = 0, CmsSettings $setting, PaginatorInterface $paginator): Response
+    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, CmsSettings $setting, PaginatorInterface $paginator, $page = 0): Response
     {
 
         if ($request->isMethod('POST')) {
@@ -32,7 +32,7 @@ class AccountController extends AbstractController
             $unmute = $request->request->get('unmute');
 
             if (isset($ban) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->banAccount($user_id, $username, 5, $this->getUser()->getUsername())) {
+                if ($api->banAccount($user_id, $username, $this->getUser()->getUsername(),5)) {
                     $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été banni.'));
                     return $this->redirectToRoute('admin.account', ['page' => 0]);
                 } else {
@@ -52,7 +52,7 @@ class AccountController extends AbstractController
             }
 
             if (isset($mute) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->MuteAccount($user_id, $username, 5, $this->getUser()->getUsername())) {
+                if ($api->MuteAccount($user_id, $username, $this->getUser()->getUsername(),5)) {
                     $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été mute.'));
                     return $this->redirectToRoute('admin.account', ['page' => 0]);
                 } else {
