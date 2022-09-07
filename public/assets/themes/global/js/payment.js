@@ -1,5 +1,9 @@
 window.onload = () => {
-    const stripe = Stripe('pk_test_51HHSojEazPxq2OFGhzPrh447zuUlnqfJQqF9WhQxH1BXpGvmmicmH6BwNeGGnz1qP4jPEFexydf0rMFtyxHsPW2x0095Et3dpu');
+    // Récupère l'article
+    const article = document.querySelector("article");
+    // Récupère l'attribut data-secret du bouton
+    const public_key = article.dataset.pk;
+    const stripe = Stripe(public_key);
     // Récupère l'élement button
     let cardButton = document.getElementById('card-button');
     // Récupère l'élément qui contiendra le nom du titulaire de la carte

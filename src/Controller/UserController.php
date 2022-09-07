@@ -205,7 +205,8 @@ class UserController extends AbstractController
         return $this->render($settings->get('theme') . '/user/buy_credit.html.twig', [
             'dedipass' => $api->getDedipassPublic(),
             'point' => $point,
-            'intent' => $intent
+            'intent' => $intent,
+            "publicKey" => $_ENV["PAYMENT_PUBLIC_KEY"]
         ]);
     }
 
