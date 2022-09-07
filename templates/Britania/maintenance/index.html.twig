@@ -1,0 +1,16 @@
+{% extends settings.get("theme") ~'/base.html.twig' %}
+
+{% block title %}{{'Page non disponible'|trans}}{% endblock %}
+
+{% block body %}
+<h1>{{'Page non disponible'|trans}}</h1>
+<div id="news" class="read">
+    <article>
+        <div id="middle">
+           <p>
+                {{"Cette page est actuellement non disponible, réessayez plus tard."|trans}}
+           </p>
+        </div>
+    </article>
+</div>
+{% endblock %}
