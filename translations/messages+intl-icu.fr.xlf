@@ -240,7 +240,7 @@
         <target>Liste des joueurs</target>
       </trans-unit>
       <trans-unit id="eZbtT6E" resname="Joueurs connecté">
-        <source>Joueurs connectés</source>
+        <source>Joueurs connecté</source>
         <target>Joueurs connectés</target>
       </trans-unit>
       <trans-unit id="QXsY7GS" resname="Classements">
@@ -833,7 +833,7 @@
         <source>Mentions légales</source>
         <target>Mentions légales</target>
       </trans-unit>
-      <trans-unit id="kwgjsCr" resname="Conditions Générales d'utilisation">
+      <trans-unit id="GCz_ywN" resname="Conditions Générales d'utilisation">
         <source>Conditions Générales d'utilisation</source>
         <target>Conditions Générales d'utilisation</target>
       </trans-unit>
@@ -971,9 +971,97 @@
         <source>CPS</source>
         <target>CPS</target>
       </trans-unit>
-      <trans-unit id="Y6B9jrX" resname="Voir tout">
+      <trans-unit id="akscyP2" resname="Voir tout">
         <source>Voir tout</source>
         <target>Voir tout</target>
+      </trans-unit>
+      <trans-unit id="ZyFT62v" resname="A propos">
+        <source>A propos</source>
+        <target>A propos</target>
+      </trans-unit>
+      <trans-unit id="ZcF5bqu" resname="Mise à jour">
+        <source>Mise à jour</source>
+        <target>Mise à jour</target>
+      </trans-unit>
+      <trans-unit id="AV6.etg" resname="Version actuel">
+        <source>Version actuel</source>
+        <target>Version actuel</target>
+      </trans-unit>
+      <trans-unit id="yoXHVt1" resname="Vérifiez les mises à jours">
+        <source>Vérifiez les mises à jours</source>
+        <target>Vérifiez les mises à jours</target>
+      </trans-unit>
+      <trans-unit id="cN.ZcmM" resname="Télécharger la mise à jour">
+        <source>Télécharger la mise à jour</source>
+        <target>Télécharger la mise à jour</target>
+      </trans-unit>
+      <trans-unit id="UsBsDUA" resname="Message du développeur">
+        <source>Message du développeur</source>
+        <target>Message du développeur</target>
+      </trans-unit>
+      <trans-unit id="bcHVezG" resname="Information sur la guilde">
+        <source>Information sur la guilde</source>
+        <target>Information sur la guilde</target>
+      </trans-unit>
+      <trans-unit id=".0H5Mku" resname="Nom de la guilde">
+        <source>Nom de la guilde</source>
+        <target>Nom de la guilde</target>
+      </trans-unit>
+      <trans-unit id="9WQEbKT" resname="Date de fondation">
+        <source>Date de fondation</source>
+        <target>Date de fondation</target>
+      </trans-unit>
+      <trans-unit id="s.5yu0H" resname="Nombre de membres">
+        <source>Nombre de membres</source>
+        <target>Nombre de membres</target>
+      </trans-unit>
+      <trans-unit id="fYusDuF" resname="Liste des membres de la guilde">
+        <source>Liste des membres de la guilde</source>
+        <target>Liste des membres de la guilde</target>
+      </trans-unit>
+      <trans-unit id="_.bE_L2" resname="Voir le personnage">
+        <source>Voir le personnage</source>
+        <target>Voir le personnage</target>
+      </trans-unit>
+      <trans-unit id="WQr2_Vi" resname="Liste des guildes">
+        <source>Liste des guildes</source>
+        <target>Liste des guildes</target>
+      </trans-unit>
+      <trans-unit id="b.XH5sz" resname="Voir la guilde">
+        <source>Voir la guilde</source>
+        <target>Voir la guilde</target>
+      </trans-unit>
+      <trans-unit id="I00mM4O" resname="Liste des Joueurs connectés">
+        <source>Liste des Joueurs connectés</source>
+        <target>Liste des Joueurs connectés</target>
+      </trans-unit>
+      <trans-unit id="Iwo7jyW" resname="Achetez">
+        <source>Achetez</source>
+        <target>Achetez</target>
+      </trans-unit>
+      <trans-unit id="OnhpU4i" resname="Home">
+        <source>Home</source>
+        <target>Home</target>
+      </trans-unit>
+      <trans-unit id=".14B7mX" resname="Page non disponible">
+        <source>Page non disponible</source>
+        <target>Page non disponible</target>
+      </trans-unit>
+      <trans-unit id="Xbza.bd" resname="Cette page est actuellement non disponible, réessayez plus tard.">
+        <source>Cette page est actuellement non disponible, réessayez plus tard.</source>
+        <target>Cette page est actuellement non disponible, réessayez plus tard.</target>
+      </trans-unit>
+      <trans-unit id="bYnw.Pa" resname="Acheter le">
+        <source>Acheter le</source>
+        <target>Acheter le</target>
+      </trans-unit>
+      <trans-unit id="kwgjsCr" resname="Conditions Générales de Ventes">
+        <source>Conditions Générales de Ventes</source>
+        <target>Conditions Générales de Ventes</target>
+      </trans-unit>
+      <trans-unit id="ava5iPB" resname="An error has occured. Error code R1">
+        <source>An error has occured. Error code R1</source>
+        <target>Une erreur est survenue. Code d'erreur R1</target>
       </trans-unit>
     </body>
   </file>

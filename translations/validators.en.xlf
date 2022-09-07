@@ -389,6 +389,10 @@
         <source>This value is not a valid International Securities Identification Number (ISIN).</source>
         <target>This value is not a valid International Securities Identification Number (ISIN).</target>
       </trans-unit>
+      <trans-unit id="6akW5mb" resname="This value should be a valid expression.">
+        <source>This value should be a valid expression.</source>
+        <target>This value should be a valid expression.</target>
+      </trans-unit>
       <trans-unit id=".SEaaBa" resname="This form should not contain extra fields.">
         <source>This form should not contain extra fields.</source>
         <target>This form should not contain extra fields.</target>
