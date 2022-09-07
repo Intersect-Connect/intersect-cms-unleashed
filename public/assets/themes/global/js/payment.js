@@ -1,5 +1,4 @@
 window.onload = () => {
-
     const stripe = Stripe('pk_test_51HHSojEazPxq2OFGhzPrh447zuUlnqfJQqF9WhQxH1BXpGvmmicmH6BwNeGGnz1qP4jPEFexydf0rMFtyxHsPW2x0095Et3dpu');
     // Récupère l'élement button
     let cardButton = document.getElementById('card-button');

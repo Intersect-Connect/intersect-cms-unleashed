@@ -37,7 +37,7 @@
 								+
 								<strong>{{point.quantity}}</strong>
 								for
-								<strong>{{point.price}}$</strong>
+								<strong>{{point.price}}{{paymentManager.getSign()}}</strong>
 							</div>
 							<div class="col-2">
 								<a href="{{path('account.credit.buy', {'id':key})}}">

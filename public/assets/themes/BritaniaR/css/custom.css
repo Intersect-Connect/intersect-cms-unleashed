@@ -239,3 +239,7 @@ main article.card .card-footer {
   color: white;
   left: 0;
 }
+
+.__PrivateStripeElement {
+  bottom: -13px !important;
+}

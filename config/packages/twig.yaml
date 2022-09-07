@@ -7,3 +7,4 @@ twig:
         settings: '@App\Settings\CmsSettings'
         api: '@App\Settings\Api'
         checkPlugin: '@App\Services\CheckPlugins'
+        paymentManager: '@App\Managers\PaymentManager'

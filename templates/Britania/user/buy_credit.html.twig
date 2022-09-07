@@ -4,6 +4,11 @@
 	{{ 'Acheter le '|trans }} {{point.name}}
 {% endblock %}
 
+{% block javascripts %}
+	<script src="https://js.stripe.com/v3/" defer></script>
+	<script src="{{asset("assets/themes/global/js/payment.js")}}" defer></script>
+{% endblock %}
+
 {% block body %}
 
 	<h1>
@@ -51,9 +56,4 @@
 			</div>            
 		</div>
 	</div>
-{% endblock %}
-
-{% block javascripts %}
-	<script src="https://js.stripe.com/v3/" defer></script>
-	<script src="{{asset("assets/themes/global/js/payment.js")}}"></script>
 {% endblock %}
