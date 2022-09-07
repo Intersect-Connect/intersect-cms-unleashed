@@ -44,6 +44,10 @@ class ShopController extends AbstractController
      */
     public function detail(CmsShopRepository $shopRepo, Request $request, Api $api, $id, TranslatorInterface $translator, UserRepository $userRepo, CmsSettings $settings): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('home.index');
+        }
+
         $shopItem = $shopRepo->find($id);
         $itemData = $api->getObjectDetail($shopItem->getIdItem());
 
@@ -53,13 +57,13 @@ class ShopController extends AbstractController
             $item = ['id' => $id, 'name' => $itemData['Name'], 'description' => $shopItem->getForcedDescription(), 'price' => $shopItem->getPrice(), 'quantity' => $shopItem->getQuantity(), 'icon' => $itemData['Icon'], 'image' => $shopItem->getImage()];
         }
 
-        $personnages = $api->getCharacters($this->getUser()->getId());
+        $characters = $api->getCharacters($this->getUser()->getId());
 
-        foreach ($personnages as $key => $personnage) {
-            if (!$api->isInventoryFull($personnage['Id'])) {
-                $personnages[$key]['inventoryFull'] = false;
+        foreach ($characters as $key => $character) {
+            if (!$api->isInventoryFull($character['Id'])) {
+                $characters[$key]['inventoryFull'] = false;
             } else {
-                $personnages[$key]['inventoryFull'] = true;
+                $characters[$key]['inventoryFull'] = true;
             }
         }
 
@@ -134,7 +138,7 @@ class ShopController extends AbstractController
         }
         return $this->render($settings->get('theme') . '/shop/detail.html.twig', [
             'item' => $item,
-            'personnages' => $personnages
+            'personnages' => $characters
         ]);
     }
 }
