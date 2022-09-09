@@ -376,7 +376,7 @@
       </trans-unit>
       <trans-unit id="4gU.tot" resname="En ligne">
         <source>En ligne</source>
-        <target>Conectados</target>
+        <target>Online</target>
       </trans-unit>
       <trans-unit id="IbuMdd5" resname="Hors ligne">
         <source>Hors ligne</source>
@@ -432,7 +432,7 @@
       </trans-unit>
       <trans-unit id="UzFhc1Y" resname="Accueil">
         <source>Accueil</source>
-        <target>Bem-vindo</target>
+        <target>Início</target>
       </trans-unit>
       <trans-unit id="tVBJvn8" resname="Joueurs">
         <source>Joueurs</source>
@@ -716,11 +716,11 @@
       </trans-unit>
       <trans-unit id="hUy7E2e" resname="join_our_community">
         <source>join_our_community</source>
-        <target>__join_our_community</target>
+        <target>Faça parte da nossa comunidade</target>
       </trans-unit>
       <trans-unit id="wEAA69T" resname="join_our_community_desc">
         <source>join_our_community_desc</source>
-        <target>__join_our_community_desc</target>
+        <target>Você só poderá jogar nosso jogo se tiver um conta. Nenhuma validação por e-mail necessária, porém será com esse e-mail que irá poder resetar sua senha caso a perca.</target>
       </trans-unit>
       <trans-unit id="zrML1ra" resname="Nom de compte">
         <source>Nom de compte</source>
@@ -736,15 +736,15 @@
       </trans-unit>
       <trans-unit id="ZyMJiqQ" resname="register_agree">
         <source>register_agree</source>
-        <target>__register_agree</target>
+        <target>Aceito os termos</target>
       </trans-unit>
       <trans-unit id="R1ccqGM" resname="register_register_button">
         <source>register_register_button</source>
-        <target>__register_register_button</target>
+        <target>Registrar Agora!</target>
       </trans-unit>
       <trans-unit id="QtdMvsP" resname="register_offline">
         <source>register_offline</source>
-        <target>__register_offline</target>
+        <target>Registrar Offline!</target>
       </trans-unit>
       <trans-unit id="eaEIyVd" resname="Se connecter au site">
         <source>Se connecter au site</source>
@@ -882,11 +882,9 @@
         <source>Modifier l'adresse e-mail</source>
         <target>Mude o endereço de email</target>
       </trans-unit>
-      <trans-unit id="nOKiG6e" resname="Votre&#10;                            adresse e-mail actuel">
-        <source>Votre
-                            adresse e-mail actuel</source>
-        <target>Seu
-                             endereço de e-mail atual</target>
+      <trans-unit id="nOKiG6e" resname="Votre&#10;adresse e-mail actuel">
+        <source>Votre adresse e-mail actuel</source>
+        <target>Seu endereço de e-mail atual</target>
       </trans-unit>
       <trans-unit id="q5jrw_G" resname="Votre nouvelle adresse e-mail">
         <source>Votre nouvelle adresse e-mail</source>
