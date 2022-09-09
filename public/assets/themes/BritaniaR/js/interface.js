@@ -17,21 +17,23 @@
 window.onload = () => {
 
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)
     })
 
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
 
+
     let sub = document.querySelectorAll('.sub');
     let button_menu = document.querySelector('[data-nav]');
+    console.log(sub)
 
     /****** ARMURERIE *****/
     if (document.querySelector('[data-item-id]') != null) {
-        document.querySelector('[data-item-id]').addEventListener('click', function () {
+        document.querySelector('[data-item-id]').addEventListener('click', function() {
             var id = document.querySelector(this).data('item-id');
 
             document.querySelector('[data-item-id]').removeClass('active');
@@ -48,6 +50,7 @@ window.onload = () => {
     if (sub != null) {
         sub.forEach(subs => {
             subs.addEventListener('mouseenter', (e) => {
+                console.log(e.target.children)
                 let menu = e.target.children[1];
                 let nbr = menu.children.length;
                 let h = nbr * 42 + 7;
@@ -60,6 +63,14 @@ window.onload = () => {
             })
         })
     }
+
+
+    button_menu.addEventListener("click", e => {
+        let a = null;
+        a = "ico_navicon" === e.target.className ? e.target.parentElement.dataset.nav : e.target.dataset.nav;
+        let nav = document.querySelector("nav");
+        "no" == a ? (animate(nav, "left", "0px", 200), button_menu.setAttribute("data-nav", "yes")) : (console.log("ici"), animate(nav, "left", "-200px", 200), button_menu.setAttribute("data-nav", "no"))
+    })
 
 
     function animate(node, prop, end, duration) {
