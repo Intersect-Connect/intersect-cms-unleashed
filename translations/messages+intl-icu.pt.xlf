@@ -468,15 +468,15 @@
       </trans-unit>
       <trans-unit id="7OZsK72" resname="all_rights_reserved">
         <source>all_rights_reserved</source>
-        <target>all_rights_reserved</target>
+        <target>Todos os direitos reservados</target>
       </trans-unit>
       <trans-unit id="CfIGE7B" resname="graphic_concept_by">
         <source>graphic_concept_by</source>
-        <target>graphic_concept_by</target>
+        <target>Conceitos gráficos por</target>
       </trans-unit>
       <trans-unit id="RTAk7Dj" resname="developped_by">
         <source>developped_by</source>
-        <target>developped_by</target>
+        <target>Desenvolvido por</target>
       </trans-unit>
       <trans-unit id="zOnAobl" resname="Mentions légales">
         <source>Mentions légales</source>
