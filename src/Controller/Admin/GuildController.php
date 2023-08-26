@@ -20,6 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/admin/guilds")
+ * @IsGranted("ROLE_ADMIN")
  */
 class GuildController extends AbstractController
 {
