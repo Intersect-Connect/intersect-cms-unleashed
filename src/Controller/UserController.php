@@ -35,9 +35,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/account", name="account")
-     */
+    #[Route(path: '/account', name: 'account')]
     public function index(Api $api, Request $request, UserRepository $userRepo, TranslatorInterface $translator, CmsSettings $settings): Response
     {
         $data = [
@@ -134,9 +132,7 @@ class UserController extends AbstractController
     }
 
 
-    /**
-     * @Route("/account/credits", name="account.credit.reload")
-     */
+    #[Route(path: '/account/credits', name: 'account.credit.reload')]
     public function credit(Api $api, Request $request, CmsSettings $settings, UserRepository $userRepo, TranslatorInterface $translator, LoginAuthenticator $login, GuardAuthenticatorHandler $guard): Response
     {
         if ($request->isMethod('POST')) {
@@ -183,9 +179,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/account/history", name="account.history",  requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/account/history', name: 'account.history', requirements: ['_locale' => 'en|fr'])]
     public function history(Api $api, Request $request, UserRepository $userRepo, CmsShopHistoryRepository $shopHistory, TranslatorInterface $translator, CmsShopRepository $cmsShopRepo, CmsPointsHistoryRepository $pointsRepo, CmsSettings $settings): Response
     {
 

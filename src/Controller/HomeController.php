@@ -49,9 +49,7 @@ class HomeController extends AbstractController
     }
 
 
-    /**
-     * @Route("/", name="home",  requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/', name: 'home', requirements: ['_locale' => 'en|fr'])]
     public function index(CmsNewsRepository $newsRepo, CmsShopRepository $shopRepo, Api $api, Request $request, SettingsCmsSettings $settings): Response
     {
 
@@ -99,9 +97,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    /**
-     *  @Route("/news", name="home.news",  requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/news', name: 'home.news', requirements: ['_locale' => 'en|fr'])]
     public function newsLists(CmsNewsRepository $newsRepo, PaginatorInterface $paginator, Request $request, SettingsCmsSettings $settings, CmsNewsCategoryRepository $categoryRepo): Response
     {
         if ($request->query->get('category')) {
@@ -126,9 +122,7 @@ class HomeController extends AbstractController
     }
 
 
-    /**
-     *  @Route("/news/{id}-{slug}", name="news.read",  requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/news/{id}-{slug}', name: 'news.read', requirements: ['_locale' => 'en|fr'])]
     public function newsRead(CmsNewsRepository $newsRepo, $id, SettingsCmsSettings $settings): Response
     {
         return $this->render($settings->get('theme') . '/home/read_news.html.twig', [
@@ -136,9 +130,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/download", name="game.download",  requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/download', name: 'game.download', requirements: ['_locale' => 'en|fr'])]
     public function downloadRead(CmsPagesRepository $pageRepo, SettingsCmsSettings $settings): Response
     {
         return $this->render($settings->get('theme') . '/game/download.html.twig', [
@@ -147,9 +139,7 @@ class HomeController extends AbstractController
     }
 
 
-    /**
-     * @Route("/page/{slug}", name="game.pages",  requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/page/{slug}', name: 'game.pages', requirements: ['_locale' => 'en|fr'])]
     public function pageRead(CmsPagesRepository $pageRepo, $slug, SettingsCmsSettings $settings): Response
     {
         return $this->render($settings->get('theme') . '/game/pageRead.html.twig', [
@@ -157,10 +147,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/change_locale/{locale}", name="change_locale")
-     */
-
+    #[Route(path: '/change_locale/{locale}', name: 'change_locale')]
     public function changeLocale($locale, Request $request, SettingsCmsSettings $settings)
     {
         $previous = $request->headers->get('referer');

@@ -31,9 +31,7 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class AdminController extends AbstractController
 {
-    /**
-     * @Route("/admin", name="admin")
-     */
+    #[Route(path: '/admin', name: 'admin')]
     public function index(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, CmsSettings $settings): Response
     {
         $total_users = null;
@@ -98,9 +96,7 @@ class AdminController extends AbstractController
     }
 
 
-    /**
-     * @Route("admin/settings", name="admin.settings")
-     */
+    #[Route(path: 'admin/settings', name: 'admin.settings')]
     public function settings(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, CmsSettings $settingCms): Response
     {
         if ($request->isMethod('POST')) {
@@ -308,9 +304,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/admin/items/{page}", name="admin.items")
-     */
+    #[Route(path: '/admin/items/{page}', name: 'admin.items')]
     public function items(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, $page = 0, CmsSettings $settings): Response
     {
         $items = $api->getAllItems($page);

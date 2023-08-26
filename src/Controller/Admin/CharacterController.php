@@ -13,14 +13,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("admin/character")
  * @IsGranted("ROLE_ADMIN")
  */
+#[Route(path: 'admin/character')]
 class CharacterController extends AbstractController
 {
-    /**
-     * @Route("/detail/{character}", name="admin.character.detail")
-     */
+    #[Route(path: '/detail/{character}', name: 'admin.character.detail')]
     public function characterDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $character, CmsSettings $setting): Response
     {
         if ($request->isMethod('POST')) {

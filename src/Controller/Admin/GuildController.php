@@ -19,9 +19,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/admin/guilds")
  * @IsGranted("ROLE_ADMIN")
  */
+#[Route(path: '/admin/guilds')]
 class GuildController extends AbstractController
 {
     private $settingsCms;
@@ -39,9 +39,7 @@ class GuildController extends AbstractController
     }
 
 
-    /**
-     * @Route("/", name="admin.guilds")
-     */
+    #[Route(path: '/', name: 'admin.guilds')]
     public function index(): Response
     {
         $guildsRequest = $this->api->getAllGuilds();
@@ -51,9 +49,7 @@ class GuildController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="admin_guild.get")
-     */
+    #[Route(path: '/{id}', name: 'admin_guild.get')]
     public function get($id): Response
     {
         $guildRequest = $this->api->getGuild($id);

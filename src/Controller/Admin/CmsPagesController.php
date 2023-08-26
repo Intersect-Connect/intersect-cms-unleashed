@@ -21,13 +21,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @IsGranted("ROLE_ADMIN")
- * @Route("admin/pages")
  */
+#[Route(path: 'admin/pages')]
 class CmsPagesController extends AbstractController
 {
-    /**
-     * @Route("/", name="cms_pages_index", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'cms_pages_index', methods: ['GET'])]
     public function index(CmsSettings $settings): Response
     {
         $cmsPages = $this->getDoctrine()
@@ -39,9 +37,7 @@ class CmsPagesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/new", name="cms_pages_new", methods={"GET","POST"})
-     */
+    #[Route(path: '/new', name: 'cms_pages_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CmsSettings $settings): Response
     {
         $cmsPage = new CmsPages();
@@ -64,9 +60,7 @@ class CmsPagesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="cms_pages_show", methods={"GET"})
-     */
+    #[Route(path: '/{id}', name: 'cms_pages_show', methods: ['GET'])]
     public function show(CmsPages $cmsPage, CmsSettings $setting): Response
     {
         return $this->render($setting->get('theme') . '/admin/cms_pages/show.html.twig', [
@@ -74,9 +68,7 @@ class CmsPagesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="cms_pages_edit", methods={"GET","POST"})
-     */
+    #[Route(path: '/{id}/edit', name: 'cms_pages_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, CmsPages $cmsPage, CmsSettings $setting): Response
     {
         $form = $this->createForm(CmsPagesType::class, $cmsPage);
@@ -97,9 +89,7 @@ class CmsPagesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="cms_pages_delete", methods={"POST"})
-     */
+    #[Route(path: '/{id}', name: 'cms_pages_delete', methods: ['POST'])]
     public function delete(Request $request, CmsPages $cmsPage, CmsSettings $setting): Response
     {
         if ($this->isCsrfTokenValid('delete'.$cmsPage->getId(), $request->request->get('_token'))) {

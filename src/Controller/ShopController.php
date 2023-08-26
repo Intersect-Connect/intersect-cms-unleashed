@@ -25,9 +25,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ShopController extends AbstractController
 {
-    /**
-     * @Route("/shop", name="shop.index",  requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/shop', name: 'shop.index', requirements: ['_locale' => 'en|fr'])]
     public function index(CmsShopRepository $shopRepo, Api $api, PaginatorInterface $paginator, Request $request, CmsSettings $settings): Response
     {
 
@@ -77,9 +75,7 @@ class ShopController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/shop/detail/{id}", name="shop.detail",  requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/shop/detail/{id}', name: 'shop.detail', requirements: ['_locale' => 'en|fr'])]
     public function detail(CmsShopRepository $shopRepo, Request $request, Api $api, $id, TranslatorInterface $translator, UserRepository $userRepo, CmsSettings $settings): Response
     {
         $shopItem = $shopRepo->find($id);

@@ -24,23 +24,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class GuildController extends AbstractController
 {
 
-    private $settings;
-    private $api;
-    private $cache;
-    private $paginator;
     
 
-    public function __construct(CmsSettings $setting, Api $api, CacheInterface $cache, PaginatorInterface $paginator)
+    public function __construct(
+        protected CmsSettings $settings, 
+        protected Api $api, 
+        protected CacheInterface $cache, 
+        protected PaginatorInterface $paginator)
     {
-        $this->settings = $setting;
-        $this->api = $api;
-        $this->cache = $cache;
-        $this->paginator = $paginator;
     }
 
-    /**
-     * @Route("/guilds", name="guilds")
-     */
+    #[Route(path: '/guilds', name: 'guilds')]
     public function index(Request $request): Response
     {
         $guildsRequest = $this->cache->get('guilds', function (ItemInterface $item)  {

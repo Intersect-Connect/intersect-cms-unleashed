@@ -29,9 +29,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @Route("/login", name="app_login",  requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/login', name: 'app_login', requirements: ['_locale' => 'en|fr'])]
     public function login(AuthenticationUtils $authenticationUtils, CmsSettings $settings): Response
     {
         if ($this->getUser()) {
@@ -46,17 +44,13 @@ class SecurityController extends AbstractController
         return $this->render($settings->get('theme') . '/security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
-    /**
-     * @Route("/logout", name="app_logout")
-     */
+    #[Route(path: '/logout', name: 'app_logout')]
     public function logout()
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    /**
-     * @Route("/password-reset", name="passwordResetRequest", requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/password-reset', name: 'passwordResetRequest', requirements: ['_locale' => 'en|fr'])]
     public function passwordResetRequest(Request $request, UserRepository $userRepo, TranslatorInterface $translator, MailerInterface $mailer, CmsSettings $settings)
     {
         if ($request->isMethod('POST')) {
@@ -101,9 +95,7 @@ class SecurityController extends AbstractController
         return $this->render($settings->get('theme') . '/security/password-reset.html.twig', []);
     }
 
-    /**
-     * @Route("/password-reset/new/{token}", name="passwordResetRequest.new", requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/password-reset/new/{token}', name: 'passwordResetRequest.new', requirements: ['_locale' => 'en|fr'])]
     public function passwordReset(Request $request, UserRepository $userRepo, TranslatorInterface $translator, MailerInterface $mailer, $token, Api $api, CmsSettings $settings)
     {
         if ($request->isMethod('POST')) {
@@ -158,9 +150,7 @@ class SecurityController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/login/game/{token}", name="login.game")
-     */
+    #[Route(path: '/login/game/{token}', name: 'login.game')]
     public function gameLoginTest(Request $request, UserRepository $userRepo, TranslatorInterface $translator, MailerInterface $mailer, $token, Api $api, LoginAuthenticator $login, GuardAuthenticatorHandler $guard)
     {
         $character =  $api->getCharacter($token);

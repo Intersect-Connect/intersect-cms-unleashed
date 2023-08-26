@@ -22,14 +22,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @IsGranted("ROLE_ADMIN")
- * @Route("admin/news/category")
  */
-
+#[Route(path: 'admin/news/category')]
 class CmsNewsCategoryController extends AbstractController
 {
-    /**
-     * @Route("/", name="cms_news_category")
-     */
+    #[Route(path: '/', name: 'cms_news_category')]
     public function index(CmsSettings $setting, CmsNewsCategoryRepository $categoryRepo): Response
     {
         return $this->render($setting->get('theme') . '/admin/cms_news_category/index.html.twig', [
@@ -37,9 +34,7 @@ class CmsNewsCategoryController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/new", name="cms_news_category.new")
-     */
+    #[Route(path: '/new', name: 'cms_news_category.new')]
     public function new(CmsSettings $setting, Request $request, TranslatorInterface $translator): Response
     {
         if ($request->isMethod('POST')) {
@@ -60,9 +55,7 @@ class CmsNewsCategoryController extends AbstractController
         return $this->render($setting->get('theme') . '/admin/cms_news_category/new.html.twig', []);
     }
 
-    /**
-     * @Route("/edit/{id}", name="cms_news_category.edit")
-     */
+    #[Route(path: '/edit/{id}', name: 'cms_news_category.edit')]
     public function edit(CmsSettings $setting, Request $request, TranslatorInterface $translator, CmsNewsCategory $category): Response
     {
         if ($request->isMethod('POST')) {
@@ -84,9 +77,7 @@ class CmsNewsCategoryController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/delete/{id}", name="cms_news_category.delete")
-     */
+    #[Route(path: '/delete/{id}', name: 'cms_news_category.delete')]
     public function delete(CmsSettings $setting, Request $request, TranslatorInterface $translator, CmsNewsCategory $category): Response
     {
         if ($category) {

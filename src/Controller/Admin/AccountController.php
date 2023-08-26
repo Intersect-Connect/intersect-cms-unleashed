@@ -14,14 +14,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("admin/accounts")
  * @IsGranted("ROLE_ADMIN")
  */
+#[Route(path: 'admin/accounts')]
 class AccountController extends AbstractController
 {
-    /**
-     * @Route("/{page}", name="admin.account")
-     */
+    #[Route(path: '/{page}', name: 'admin.account')]
     public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $page = 0, CmsSettings $setting, PaginatorInterface $paginator): Response
     {
 
@@ -92,9 +90,7 @@ class AccountController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/detail/{user}", name="admin.account.detail")
-     */
+    #[Route(path: '/detail/{user}', name: 'admin.account.detail')]
     public function accountDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $user, CmsSettings $setting): Response
     {
         if ($request->isMethod('POST')) {

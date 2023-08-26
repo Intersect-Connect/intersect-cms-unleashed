@@ -22,13 +22,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @IsGranted("ROLE_ADMIN")
- * @Route("admin/shop")
  */
+#[Route(path: 'admin/shop')]
 class CmsShopController extends AbstractController
 {
-    /**
-     * @Route("/", name="cms_shop_index", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'cms_shop_index', methods: ['GET'])]
     public function index(CmsSettings $settings): Response
     {
         $cmsShops = $this->getDoctrine()
@@ -40,9 +38,7 @@ class CmsShopController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/new", name="cms_shop_new", methods={"GET","POST"})
-     */
+    #[Route(path: '/new', name: 'cms_shop_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Api $api, CmsSettings $settings): Response
     {
         $cmsShop = new CmsShop();
@@ -88,9 +84,7 @@ class CmsShopController extends AbstractController
     }
 
 
-    /**
-     * @Route("/{id}/edit", name="cms_shop_edit", methods={"GET","POST"})
-     */
+    #[Route(path: '/{id}/edit', name: 'cms_shop_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, CmsShop $cmsShop, CmsSettings $settings): Response
     {
         $form = $this->createForm(CmsShopType::class, $cmsShop);
@@ -124,9 +118,7 @@ class CmsShopController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="cms_shop_delete", methods={"POST"})
-     */
+    #[Route(path: '/{id}', name: 'cms_shop_delete', methods: ['POST'])]
     public function delete(Request $request, CmsShop $cmsShop): Response
     {
         if ($this->isCsrfTokenValid('delete' . $cmsShop->getId(), $request->request->get('_token'))) {

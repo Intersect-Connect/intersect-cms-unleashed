@@ -13,52 +13,33 @@ namespace App\Entity;
 use App\Repository\CmsNewsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="cms_news")
- * @ORM\Entity(repositoryClass=CmsNewsRepository::class)
- */
+#[ORM\Table(name: 'cms_news')]
 class CmsNews
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $content;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $date;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $author;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $img_url;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $slug;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=CmsNewsCategory::class, inversedBy="cmsNews")
-     */
+    #[ORM\ManyToOne(targetEntity: CmsNewsCategory::class, inversedBy: 'cmsNews')]
     private $category;
 
     public function getId(): ?int

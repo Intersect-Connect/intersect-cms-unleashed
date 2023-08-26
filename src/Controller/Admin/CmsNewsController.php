@@ -25,13 +25,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @IsGranted("ROLE_ADMIN")
- * @Route("admin/news/")
  */
+#[Route(path: 'admin/news/')]
 class CmsNewsController extends AbstractController
 {
-    /**
-     * @Route("/", name="cms_news_index", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'cms_news_index', methods: ['GET'])]
     public function index(CmsSettings $setting): Response
     {
         $cmsNews = $this->getDoctrine()
@@ -43,9 +41,7 @@ class CmsNewsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/new", name="cms_news_new", methods={"GET","POST"})
-     */
+    #[Route(path: '/new', name: 'cms_news_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Api $api, Packages $assetPackage, CmsSettings $setting): Response
     {
         $cmsNews = new CmsNews();
@@ -83,9 +79,7 @@ class CmsNewsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="cms_news_edit", methods={"GET","POST"})
-     */
+    #[Route(path: '/{id}/edit', name: 'cms_news_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, CmsNews $cmsNews, CmsSettings $setting): Response
     {
         $image = $cmsNews->getImgUrl();
@@ -122,9 +116,7 @@ class CmsNewsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="cms_news_delete", methods={"POST"})
-     */
+    #[Route(path: '/{id}', name: 'cms_news_delete', methods: ['POST'])]
     public function delete(Request $request, CmsNews $cmsNews, CmsSettings $setting): Response
     {
         if ($this->isCsrfTokenValid('delete' . $cmsNews->getId(), $request->request->get('_token'))) {

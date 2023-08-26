@@ -14,38 +14,32 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CmsSettings
- *
- * @ORM\Table(name="cms_settings", uniqueConstraints={@ORM\UniqueConstraint(name="setting", columns={"setting"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'cms_settings')]
+#[ORM\UniqueConstraint(name: 'setting', columns: ['setting'])]
 class CmsSettings
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="setting", type="string", length=255, nullable=false)
      */
+    #[ORM\Column(name: 'setting', type: 'string', length: 255, nullable: false)]
     private $setting;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="default_value", type="text", length=65535, nullable=false)
      */
+    #[ORM\Column(name: 'default_value', type: 'text', length: 65535, nullable: false)]
     private $defaultValue;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
+    #[ORM\Column(name: 'description', type: 'text', length: 65535, nullable: false)]
     private $description;
 
 

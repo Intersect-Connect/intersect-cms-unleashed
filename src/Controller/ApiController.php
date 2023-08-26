@@ -20,9 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * @Route("/api/v1")
- */
+#[Route(path: '/api/v1')]
 class ApiController extends AbstractController
 {
     private $apiManager;
@@ -37,9 +35,7 @@ class ApiController extends AbstractController
         $this->router = $router;
     }
 
-    /**
-     * @Route("/news", name="api.news", methods={"GET"})
-     */
+    #[Route(path: '/news', name: 'api.news', methods: ['GET'])]
     public function index(CmsNewsRepository $newsRepo, Request $request): Response
     {
         $news = $newsRepo->findAll();
