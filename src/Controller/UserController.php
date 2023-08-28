@@ -10,33 +10,32 @@
 
 namespace App\Controller;
 
-use App\Entity\CmsPointsHistory;
-use App\Repository\CmsPointsHistoryRepository;
-use App\Repository\CmsShopHistoryRepository;
-use App\Repository\CmsShopRepository;
-use App\Repository\UserRepository;
-use App\Security\LoginAuthenticator;
+use DateTime;
+use App\Entity\User;
 use App\Settings\Api;
 use App\Settings\CmsSettings;
-use DateTime;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\CmsPointsHistory;
+use App\Repository\UserRepository;
+use App\Security\LoginAuthenticator;
+use App\Repository\CmsShopRepository;
+use App\Repository\CmsShopHistoryRepository;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\CmsPointsHistoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * @IsGranted("ROLE_USER")
- */
 
 class UserController extends AbstractController
 {
     /**
      * @Route("/account", name="account")
+     * @IsGranted("ROLE_USER")
      */
     public function index(Api $api, Request $request, UserRepository $userRepo, TranslatorInterface $translator, CmsSettings $settings): Response
     {
@@ -137,54 +136,57 @@ class UserController extends AbstractController
     /**
      * @Route("/account/credits", name="account.credit.reload")
      */
-    public function credit(Api $api, Request $request, CmsSettings $settings, UserRepository $userRepo, TranslatorInterface $translator, LoginAuthenticator $login, GuardAuthenticatorHandler $guard): Response
-    {
+    public function creditReload(
+        Api $api,
+        Request $request,
+        CmsSettings $settings,
+        UserRepository $userRepo,
+        TranslatorInterface $translator,
+        LoginAuthenticator $login,
+        GuardAuthenticatorHandler $guard
+    ): Response {
         if ($request->isMethod('POST')) {
             $code = $request->request->get('code');
+            $custom = $request->request->get('custom');
 
-            if (!empty($code)) {
-                $dedipass = file_get_contents('http://api.dedipass.com/v1/pay/?public_key=' . $api->getDedipassPublic() . '&private_key=' . $api->getDedipassPrivate() . '&code=' . $code);
-                $dedipass = json_decode($dedipass);
+            if (empty($code) || empty($custom)) {
+                return $this->handleError($translator, 'Une erreur est survenue lors du rechargement de votre compte');
+            }
 
-                if ($dedipass->status == 'success') {
-                    $virtual_currency = $dedipass->virtual_currency;
-                    $user = $userRepo->find($request->request->get('custom'));
+            $dedipassData = $this->callDedipassApi($api, $code);
 
-                    if ($user) {
-                        $user->setPoints($user->getPoints() + $virtual_currency);
-                        $entityManager = $this->getDoctrine()->getManager();
-                        $entityManager->persist($user);
-                        $entityManager->flush();
+            if ($dedipassData && $dedipassData->status === 'success') {
+                $virtualCurrency = $dedipassData->virtual_currency;
+                $user = $userRepo->find($custom);
 
-                        $pointHistorique = new CmsPointsHistory();
-                        $pointHistorique->setDate(new DateTime());
-                        $pointHistorique->setUserId($user->getId());
-                        $pointHistorique->setCode($code);
-                        $pointHistorique->setPointsAmount($virtual_currency);
-                        $entityManager = $this->getDoctrine()->getManager();
-                        $entityManager->persist($pointHistorique);
-                        $entityManager->flush();
+                if ($user) {
+                    $this->updateUserPointsAndHistory($user, $virtualCurrency, $code);
 
-                        $res = new Response();
-                        $res->headers->clearCookie('user');
-                        $res->send();
+                    // Clear the user cookie securely
+                    $this->clearUserCookie();
 
-                        $this->addFlash('success', $translator->trans('Votre compte a été rechargé en points boutique'));
+                    // Add success flash message
+                    $this->addFlash('success', $translator->trans('Votre compte a été rechargé en points boutique'));
 
-                        // Pas la meilleure façon mais pas le choix.
-                        $guard->authenticateUserAndHandleSuccess($user, $request, $login, 'main');
-                        return $this->redirectToRoute('account');
-                    }
+                    // Reauthenticate the user
+                    $guard->authenticateUserAndHandleSuccess($user, $request, $login, 'main');
+
+                    return $this->redirectToRoute('account');
                 }
             }
+
+            return $this->handleError($translator, 'Une erreur est survenue lors du rechargement de votre compte');
         }
+
         return $this->render($settings->get('theme') . '/user/credit.html.twig', [
             'dedipass' => $api->getDedipassPublic()
         ]);
     }
 
+
     /**
      * @Route("/account/history", name="account.history",  requirements={"_locale": "en|fr"})
+     * @IsGranted("ROLE_USER")
      */
     public function history(Api $api, Request $request, UserRepository $userRepo, CmsShopHistoryRepository $shopHistory, TranslatorInterface $translator, CmsShopRepository $cmsShopRepo, CmsPointsHistoryRepository $pointsRepo, CmsSettings $settings): Response
     {
@@ -222,5 +224,49 @@ class UserController extends AbstractController
         return $this->render($settings->get('theme') . '/user/history.html.twig', [
             'history' => $history
         ]);
+    }
+
+
+
+    private function handleError(TranslatorInterface $translator, string $errorMessage): Response
+    {
+        $this->addFlash('error', $translator->trans($errorMessage));
+        return $this->redirectToRoute('account'); // Or another appropriate action
+    }
+
+    private function callDedipassApi(Api $api, string $code)
+    {
+        $dedipassUrl = 'http://api.dedipass.com/v1/pay/?public_key=' . $api->getDedipassPublic() . '&private_key=' . $api->getDedipassPrivate() . '&code=' . $code;
+
+        $curl = curl_init($dedipassUrl);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $dedipassResponse = curl_exec($curl);
+        curl_close($curl);
+
+        return json_decode($dedipassResponse);
+    }
+
+    private function updateUserPointsAndHistory(User $user, int $virtualCurrency, string $code): void
+    {
+        $user->setPoints($user->getPoints() + $virtualCurrency);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+
+        $pointHistory = new CmsPointsHistory();
+        $pointHistory->setDate(new DateTime());
+        $pointHistory->setUserId($user->getId());
+        $pointHistory->setCode($code);
+        $pointHistory->setPointsAmount($virtualCurrency);
+        $entityManager->persist($pointHistory);
+
+        $entityManager->flush();
+    }
+
+    private function clearUserCookie(): void
+    {
+        $response = new Response();
+        $response->headers->clearCookie('user');
+        $response->send();
     }
 }

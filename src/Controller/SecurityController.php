@@ -32,10 +32,17 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="app_login",  requirements={"_locale": "en|fr"})
      */
-    public function login(AuthenticationUtils $authenticationUtils, CmsSettings $settings): Response
+    public function login(Request $request, AuthenticationUtils $authenticationUtils, CmsSettings $settings): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('home.index');
+            $code = $request->request->get('code');
+            $custom = $request->request->get('custom');
+
+            dd([
+                'code' => $code,
+                'custom' => $custom
+            ]);
+            return $this->redirectToRoute('home');
         }
 
         // get the login error if there is one
