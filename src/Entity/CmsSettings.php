@@ -10,12 +10,11 @@
 
 namespace App\Entity;
 
+use App\Repository\CmsSettingsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CmsSettings
- */
 #[ORM\Table(name: 'cms_settings')]
+#[ORM\Entity(repositoryClass: CmsSettingsRepository::class)]
 #[ORM\UniqueConstraint(name: 'setting', columns: ['setting'])]
 class CmsSettings
 {
@@ -48,7 +47,7 @@ class CmsSettings
      * Get the value of id
      *
      * @return  int
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -60,7 +59,7 @@ class CmsSettings
      * @param  int  $id
      *
      * @return  self
-     */ 
+     */
     public function setId(int $id)
     {
         $this->id = $id;
@@ -72,7 +71,7 @@ class CmsSettings
      * Get the value of setting
      *
      * @return  string
-     */ 
+     */
     public function getSetting()
     {
         return $this->setting;
@@ -84,7 +83,7 @@ class CmsSettings
      * @param  string  $setting
      *
      * @return  self
-     */ 
+     */
     public function setSetting(string $setting)
     {
         $this->setting = $setting;
@@ -97,7 +96,7 @@ class CmsSettings
      * Get the value of defaultValue
      *
      * @return  string
-     */ 
+     */
     public function getDefaultValue()
     {
         return $this->defaultValue;
@@ -109,7 +108,7 @@ class CmsSettings
      * @param  string  $defaultValue
      *
      * @return  self
-     */ 
+     */
     public function setDefaultValue(string $defaultValue)
     {
         $this->defaultValue = $defaultValue;
@@ -121,7 +120,7 @@ class CmsSettings
      * Get the value of description
      *
      * @return  string
-     */ 
+     */
     public function getDescription()
     {
         return $this->description;
@@ -133,7 +132,7 @@ class CmsSettings
      * @param  string  $description
      *
      * @return  self
-     */ 
+     */
     public function setDescription(string $description)
     {
         $this->description = $description;

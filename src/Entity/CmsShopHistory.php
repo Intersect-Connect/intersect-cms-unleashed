@@ -10,12 +10,11 @@
 
 namespace App\Entity;
 
+use App\Repository\CmsShopHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CmsShopHistory
- */
 #[ORM\Table(name: 'cms_shop_history')]
+#[ORM\Entity(repositoryClass: CmsShopHistoryRepository::class)]
 class CmsShopHistory
 {
     #[ORM\Id]

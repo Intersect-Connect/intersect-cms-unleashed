@@ -14,7 +14,7 @@ use App\Entity\CmsShopHistory;
 use App\Repository\CmsShopRepository;
 use App\Repository\UserRepository;
 use App\Settings\Api;
-use App\Settings\CmsSettings;
+use App\Settings\Settings as CmsSettings;
 use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

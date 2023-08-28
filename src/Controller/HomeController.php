@@ -17,7 +17,7 @@ use App\Repository\CmsPagesRepository;
 use App\Repository\CmsSettingsRepository;
 use App\Repository\CmsShopRepository;
 use App\Settings\Api;
-use App\Settings\CmsSettings as SettingsCmsSettings;
+use App\Settings\Settings as SettingsCmsSettings;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

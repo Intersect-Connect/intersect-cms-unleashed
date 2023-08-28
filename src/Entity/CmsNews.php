@@ -14,6 +14,7 @@ use App\Repository\CmsNewsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'cms_news')]
+#[ORM\Entity(repositoryClass: CmsNewsRepository::class)]
 class CmsNews
 {
     #[ORM\Id]

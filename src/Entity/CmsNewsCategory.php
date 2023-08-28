@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'cms_news_category')]
+#[ORM\Entity(repositoryClass: CmsNewsCategoryRepository::class)]
 class CmsNewsCategory
 {
     #[ORM\Id]

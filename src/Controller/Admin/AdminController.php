@@ -14,7 +14,7 @@ use App\Repository\CmsNewsRepository;
 use App\Repository\CmsSettingsRepository;
 use App\Repository\CmsShopRepository;
 use App\Settings\Api;
-use App\Settings\CmsSettings;
+use App\Settings\Settings as CmsSettings;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,13 +22,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Knp\Component\Pager\PaginatorInterface;
 
-/**
- * @IsGranted("ROLE_ADMIN")
- */
-
+#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
 class AdminController extends AbstractController
 {
     #[Route(path: '/admin', name: 'admin')]

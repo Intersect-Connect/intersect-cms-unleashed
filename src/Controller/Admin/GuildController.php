@@ -11,16 +11,16 @@
 namespace App\Controller\Admin;
 
 use App\Settings\Api;
-use App\Settings\CmsSettings;
+use App\Settings\Settings as CmsSettings;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/**
- * @IsGranted("ROLE_ADMIN")
- */
+use Symfony\Component\ExpressionLanguage\Expression;
+#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
 #[Route(path: '/admin/guilds')]
 class GuildController extends AbstractController
 {

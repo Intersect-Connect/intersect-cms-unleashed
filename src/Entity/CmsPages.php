@@ -10,12 +10,11 @@
 
 namespace App\Entity;
 
+use App\Repository\CmsPagesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CmsPages
- */
 #[ORM\Table(name: 'cms_pages')]
+#[ORM\Entity(repositoryClass: CmsPagesRepository::class)]
 class CmsPages
 {
     #[ORM\Id]
@@ -176,7 +175,7 @@ class CmsPages
      *
      * @return  bool
      */ 
-    public function getIsVisible(): ?bool
+    public function getIsVisible(): bool
     {
         return $this->isVisible;
     }
@@ -188,7 +187,7 @@ class CmsPages
      *
      * @return  self
      */ 
-    public function setIsVisible(bool $isVisible): self
+    public function setIsVisible(bool $isVisible): \App\Entity\CmsPages
     {
         $this->isVisible = $isVisible;
 

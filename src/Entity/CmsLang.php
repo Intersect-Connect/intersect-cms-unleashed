@@ -12,9 +12,6 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CmsLang
- */
 #[ORM\Table(name: 'cms_lang')]
 class CmsLang
 {

@@ -11,7 +11,7 @@
 namespace App\Controller;
 
 use App\Services\ApiManager;
-use App\Settings\CmsSettings;
+use App\Settings\Settings as CmsSettings;
 use App\Repository\CmsNewsRepository;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;

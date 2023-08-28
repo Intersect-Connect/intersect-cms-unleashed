@@ -11,7 +11,7 @@
 namespace App\Controller;
 
 use App\Settings\Api;
-use App\Settings\CmsSettings;
+use App\Settings\Settings as CmsSettings;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Knp\Component\Pager\PaginatorInterface;

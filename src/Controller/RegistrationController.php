@@ -15,7 +15,7 @@ use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\LoginAuthenticator;
 use App\Settings\Api;
-use App\Settings\CmsSettings;
+use App\Settings\Settings as CmsSettings;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

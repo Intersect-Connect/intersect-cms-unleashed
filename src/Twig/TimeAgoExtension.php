@@ -10,10 +10,9 @@
 
 namespace App\Twig;
 
+use Twig\TwigFilter;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
-
 
 class TimeAgoExtension extends AbstractExtension
 {
@@ -24,7 +23,7 @@ class TimeAgoExtension extends AbstractExtension
         $this->request = $requestStack;
     }
 
-    public function getFilters()
+    public function getFilters():array
     {
         return [
             new TwigFilter('ago', [$this, 'timeAgo']),

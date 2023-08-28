@@ -17,22 +17,18 @@ use App\Repository\CmsShopRepository;
 use App\Repository\UserRepository;
 use App\Security\LoginAuthenticator;
 use App\Settings\Api;
-use App\Settings\CmsSettings;
+use App\Settings\Settings as CmsSettings;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
-use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\ExpressionLanguage\Expression;
 
-/**
- * @IsGranted("ROLE_USER")
- */
-
+#[IsGranted(new Expression('is_granted("ROLE_USER")'))]
 class UserController extends AbstractController
 {
     #[Route(path: '/account', name: 'account')]

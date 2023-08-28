@@ -10,6 +10,7 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,6 +21,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Table(name: 'cms_users')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -159,7 +162,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @return  string
      */
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -264,7 +267,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials():void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;

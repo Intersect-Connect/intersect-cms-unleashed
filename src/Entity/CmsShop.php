@@ -10,12 +10,11 @@
 
 namespace App\Entity;
 
+use App\Repository\CmsShopRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CmsShop
- */
 #[ORM\Table(name: 'cms_shop')]
+#[ORM\Entity(repositoryClass: CmsShopRepository::class)]
 class CmsShop
 {
     #[ORM\Id]
@@ -222,7 +221,7 @@ class CmsShop
      *
      * @return  bool
      */
-    public function getVisible(): ?bool
+    public function getVisible(): bool
     {
         return $this->visible;
     }

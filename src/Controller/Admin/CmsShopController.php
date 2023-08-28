@@ -13,16 +13,15 @@ namespace App\Controller\Admin;
 use App\Entity\CmsShop;
 use App\Form\CmsShopType;
 use App\Settings\Api;
-use App\Settings\CmsSettings;
+use App\Settings\Settings as CmsSettings;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\ExpressionLanguage\Expression;
 
-/**
- * @IsGranted("ROLE_ADMIN")
- */
+#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
 #[Route(path: 'admin/shop')]
 class CmsShopController extends AbstractController
 {

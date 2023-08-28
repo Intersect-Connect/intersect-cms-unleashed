@@ -13,7 +13,7 @@ namespace App\Controller\Admin;
 use App\Entity\CmsNews;
 use App\Form\CmsNewsType;
 use App\Settings\Api;
-use App\Settings\CmsSettings;
+use App\Settings\Settings as CmsSettings;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Asset\Packages;
@@ -21,11 +21,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\ExpressionLanguage\Expression;
 
-/**
- * @IsGranted("ROLE_ADMIN")
- */
+#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
 #[Route(path: 'admin/news/')]
 class CmsNewsController extends AbstractController
 {

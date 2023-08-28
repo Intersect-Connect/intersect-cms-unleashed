@@ -188,18 +188,6 @@ class Api
         return $user;
     }
 
-    public function giveNationRank($id)
-    {
-        $nationPoint = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/variables/global/' . $id);
-
-        if (isset($user['Message']) && $user['Message'] == "Authorization has been denied for this request.") {
-            $this->setToken();
-            $nationPoint = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/variables/global/' . $id);
-        }
-
-        return $nationPoint;
-    }
-
     /**
      * Permet de récupérer tout les utilisateurs
      */

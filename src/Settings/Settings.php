@@ -15,7 +15,7 @@ use App\Entity\CmsSettings as EntityCmsSettings;
 use Doctrine\ORM\EntityManagerInterface;
 
 
-class CmsSettings
+class Settings
 {
     private $em;
 
