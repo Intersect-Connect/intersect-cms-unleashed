@@ -1,0 +1,103 @@
+{% extends 'Admin/admin.html.twig' %}
+
+{% block title %}
+	{{"Information sur la guilde"|trans}}
+	:
+	{{guild.guildInfo.Name}}
+{% endblock %}
+
+{% block body %}
+	<div class="card shadow mb-4">
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">
+				{{"Information sur la guilde"|trans}}
+				:
+				{{guild.guildInfo.Name}}
+			</h6>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="card-header py-3">
+						<h6 class="m-0 font-weight-bold text-primary">
+							{{"Information sur la guilde"|trans}}
+						</h6>
+					</div>
+					<table class="ladder table py-3">
+						<tbody>
+							<tr>
+								<td class="item_id">
+									{{"Nom de la guilde"|trans}}
+									:
+									<strong>{{ guild.guildInfo.Name }}</strong>
+								</td>
+							</tr>
+							<tr>
+								<td class="item_id">
+									{{"Date de fondation"|trans}}
+									:
+									<strong>{{ guild.guildInfo.FoundingDate|date("m/d/Y") }}</strong>
+								</td>
+							</tr>
+							<tr>
+								<td class="item_id">
+									{{"Nombre de membres"|trans}}
+									:
+									<strong>{{ guild.members|length }}</strong>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-8">
+					<div class="table-responsive">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">
+								{{"Liste des membres de la guilde"|trans}}
+							</h6>
+						</div>
+						<table class="ladder table py-3">
+							<thead>
+								<tr>
+									<th>{{"#"|trans}}</th>
+									<th class="c">{{"Nom"|trans}}</th>
+									<th class="c">{{"Niveau"|trans}}</th>
+									<th class="c">{{"Classe"|trans}}</th>
+									<th class="c">{{"Status"|trans}}</th>
+									<th class="c">{{"Action"|trans}}</th>
+
+								</tr>
+							</thead>
+							<tbody>
+								{% for member in guild.members %}
+									<tr>
+										<td class="item_id">
+											{{ member.Id }}
+										</td>
+										<td class="c">{{ member.Name }}</td>
+										<td class="c">
+											{{member.Level}}
+										</td>
+										<td class="c">
+											{{member.ClassName}}
+										</td>
+										<td>
+											{% if member.Online %}
+												<span class="badge rounded-pill bg-success text-white">{{"En ligne"|trans}}</span>
+												{% else %}
+												<span class="badge rounded-pill bg-danger text-white">{{"Hors ligne"|trans}}</span>
+											{% endif %}
+										</td>
+										<td>
+											<a href="{{path("admin.character.detail", {"character":member.Id})}}">{{"Voir le personnage"|trans}}</a>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

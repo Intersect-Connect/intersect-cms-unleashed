@@ -113,7 +113,7 @@ class CharacterController extends AbstractController
             }
         }
 
-        return $this->render($setting->get('theme') . '/admin/account/character.html.twig', [
+        return $this->render('Admin/account/character.html.twig', [
             'player' => $api->getCharacter($character),
             'inventory' => $inventory_list,
             'bank' => $bank_list,

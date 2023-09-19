@@ -1,0 +1,110 @@
+{% extends 'Admin/admin.html.twig' %}
+
+{% block title %}{{"Liste des comptes"|trans}}{% endblock %}
+
+{% block body %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">{{'Liste des comptes'|trans}}</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <div class="alert alert-warning text-dark" role="alert">
+                <h4 class="alert-heading text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                        class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                        <path
+                            d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
+                        <path
+                            d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z" />
+                    </svg>
+                </h4>
+                <p class="text-center">
+                    {{"Attention sur les versions 6.2 de Intersect, l'option unban ne fonctionne pas !"}}
+                </p>
+            </div>
+            {% for message in app.flashes('success') %}
+            <div class="alert alert-success text-dark">
+                {{ message }}
+            </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+            <div class="alert alert-danger text-dark">
+                {{ message }}
+            </div>
+            {% endfor %}
+
+            <table class="ladder table py-3">
+                <thead>
+                    <tr>
+                        <th>{{"#"|trans}}</th>
+                        <th class="c">{{"Nom du compte"|trans}}</th>
+                        <th class="c">{{"Status"|trans}}</th>
+                        <th class="c">{{"Action"|trans}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td class="item_id">
+                            {{ item.Id }}
+                        </td>
+                        <td class="c">{{ item.Name }}</td>
+                        <td class="c">
+                            {% if item.IsBanned %}
+                            <span class="badge bg-danger text-white">{{"Banni"|trans}}</span>
+                            {% else %}
+                            {% if item.IsMuted %}
+                            <span class="badge bg-danger text-white">{{"En sourdine"|trans}}</span>
+                            {% else %}
+                            <span class="badge bg-success text-white">{{"Normal"|trans}}</span>
+                            {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form method="POST">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <input type="hidden" name="user_id" value="{{item.Id}}">
+                                    <input type="hidden" name="username" value="{{item.Name}}">
+                                    {% if item.IsBanned %}
+                                    <button name="unban" type="submit" class="btn btn-info btn-sm">unBan</button>
+                                    {% else %}
+                                    <button name="ban" type="submit" class="btn btn-danger btn-sm">Ban</button>
+                                    {% endif %}
+
+                                    {% if item.IsMuted %}
+                                    <button name="unmute" type="submit" class="btn btn-info btn-sm">unMute</button>
+                                    {% else %}
+                                    <button name="mute" type="submit" class="btn btn-danger btn-sm">Mute</button>
+                                    {% endif %}
+                                    <a href="{{path('admin.account.detail', {'user':item.Id})}}"
+                                        class="btn btn-primary btn-sm">{{"Détail"|trans}}</a>
+                                </div>
+                            </form>
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="bg-white p-3">
+                {{ knp_pagination_render(items) }}
+            </div>
+
+            {# <nav aria-label="Pagination de la liste des joueurs" class="">
+                <ul class="pagination p-3 overflow-auto">
+                    {% for i in 0..total_page %}
+                    <li class="page-item  {% if page_actuel == i %}active{% endif %}">
+                        <a class="page-link" data-page="{{i}}" href="{{path('admin.account', {"page":i})}}">{{ i + 1}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </nav> #}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

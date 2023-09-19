@@ -38,7 +38,7 @@ class CmsNewsController extends AbstractController
             ->getRepository(CmsNews::class)
             ->findAll();
 
-        return $this->render($setting->get('theme') . '/admin/cms_news/index.html.twig', [
+        return $this->render('Admin/cms_news/index.html.twig', [
             'cms_news' => $cmsNews,
         ]);
     }
@@ -77,7 +77,7 @@ class CmsNewsController extends AbstractController
             return $this->redirectToRoute('cms_news_index');
         }
 
-        return $this->render($setting->get('theme') . '/admin/cms_news/new.html.twig', [
+        return $this->render('Admin/cms_news/new.html.twig', [
             'cms_news' => $cmsNews,
             'form' => $form->createView(),
         ]);
@@ -116,7 +116,7 @@ class CmsNewsController extends AbstractController
             return $this->redirectToRoute('cms_news_index');
         }
 
-        return $this->render($setting->get('theme') . '/admin/cms_news/edit.html.twig', [
+        return $this->render('Admin/cms_news/edit.html.twig', [
             'cms_news' => $cmsNews,
             'form' => $form->createView(),
         ]);

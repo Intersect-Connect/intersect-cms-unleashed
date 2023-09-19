@@ -47,7 +47,7 @@ class GuildController extends AbstractController
     {
         $guildsRequest = $this->api->getAllGuilds();
         
-        return $this->render($this->settingsCms->get('theme') . '/admin/guild/index.html.twig', [
+        return $this->render('Admin/guild/index.html.twig', [
             'guilds' => $guildsRequest["Values"],
         ]);
     }
@@ -60,7 +60,7 @@ class GuildController extends AbstractController
         $guildRequest = $this->api->getGuild($id);
         // dd($guildRequest);
 
-        return $this->render($this->settingsCms->get('theme') . '/admin/guild/get.html.twig', [
+        return $this->render('Admin/guild/get.html.twig', [
             'guild' => $guildRequest,
         ]);
     }

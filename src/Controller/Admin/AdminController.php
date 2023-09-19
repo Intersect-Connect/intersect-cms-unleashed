@@ -10,20 +10,22 @@
 
 namespace App\Controller\Admin;
 
-use App\Repository\CmsNewsRepository;
-use App\Repository\CmsSettingsRepository;
-use App\Repository\CmsShopRepository;
+use DateTime;
 use App\Settings\Api;
 use App\Settings\CmsSettings;
-use DateTime;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\CmsNewsRepository;
+use App\Repository\CmsShopRepository;
+use App\Repository\CmsSettingsRepository;
+use Symfony\Contracts\Cache\ItemInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @IsGranted("ROLE_ADMIN")
@@ -31,6 +33,14 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class AdminController extends AbstractController
 {
+
+    public function __construct(
+        protected Api $api,
+        protected TranslatorInterface $translator,
+        protected CacheInterface $cache
+    ) {
+    }
+
     /**
      * @Route("/admin", name="admin")
      */
@@ -84,7 +94,7 @@ class AdminController extends AbstractController
         //    $total_users['Total'] != null ? $total_users['Total'] : null;
 
 
-        return $this->render($settings->get('theme') . '/admin/index.html.twig', [
+        return $this->render('Admin/index.html.twig', [
             'total_users' => $total_users != null ? $total_users['Total'] : null,
             'total_players' => $total_players,
             'total_shop' => count($shop->findAll()),
@@ -270,6 +280,7 @@ class AdminController extends AbstractController
         $folders = scandir($dir);
         array_splice($folders, array_search('.', $folders), 1);
         array_splice($folders, array_search('..', $folders), 1);
+        
         $settingsCat = [
             "website" => [
                 "base_url",
@@ -300,8 +311,7 @@ class AdminController extends AbstractController
             ]
         ];
 
-
-        return $this->render($settingCms->get('theme') . '/admin/cms_settings/index.html.twig', [
+        return $this->render('Admin/cms_settings/index.html.twig', [
             'params' => $settings->findAll(),
             'folders' => $folders,
             "settingsCat" => $settingsCat
@@ -313,14 +323,24 @@ class AdminController extends AbstractController
      */
     public function items(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, $page = 0, CmsSettings $settings): Response
     {
-        $items = $api->getAllItems($page);
-        $total = $items['total'];
-        $total_page = floor($total / 20);
 
 
-        return $this->render($settings->get('theme') . '/admin/items_list/index.html.twig', [
-            'total_page' => $total_page,
-            'items' => $items['entries'],
+        $itemsData = $this->cache->get('items_' . $page, function (ItemInterface $item) use ($page) {
+            $items = $this->api->getAllItems($page);
+            $total = $items['total'];
+            $total_page = floor($total / 20);
+
+            return [
+                'items' => $items['entries'],
+                'total' => $total,
+                'total_page' => $total_page
+            ];
+        });
+
+
+        return $this->render('Admin/items_list/index.html.twig', [
+            'total_page' => $itemsData['total_page'],
+            'items' => $itemsData['items'],
             'page_actuel' => $page
         ]);
     }

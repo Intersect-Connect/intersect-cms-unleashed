@@ -32,7 +32,7 @@ class CmsNewsCategoryController extends AbstractController
      */
     public function index(CmsSettings $setting, CmsNewsCategoryRepository $categoryRepo): Response
     {
-        return $this->render($setting->get('theme') . '/admin/cms_news_category/index.html.twig', [
+        return $this->render('Admin/cms_news_category/index.html.twig', [
             'categorys' => $categoryRepo->findAll(),
         ]);
     }
@@ -57,7 +57,7 @@ class CmsNewsCategoryController extends AbstractController
                 return $this->redirectToRoute('cms_news_category');
             }
         }
-        return $this->render($setting->get('theme') . '/admin/cms_news_category/new.html.twig', []);
+        return $this->render('Admin/cms_news_category/new.html.twig', []);
     }
 
     /**
@@ -79,7 +79,7 @@ class CmsNewsCategoryController extends AbstractController
                 return $this->redirectToRoute('cms_news_category');
             }
         }
-        return $this->render($setting->get('theme') . '/admin/cms_news_category/edit.html.twig', [
+        return $this->render('Admin/cms_news_category/edit.html.twig', [
             'category' => $category
         ]);
     }
@@ -94,6 +94,8 @@ class CmsNewsCategoryController extends AbstractController
             $entityManager->remove($category);
             $entityManager->flush();
             $this->addFlash('success', $translator->trans('Votre catégorie à bien été enregistré.'));
+            return $this->redirectToRoute('cms_news_category');
+        }else{
             return $this->redirectToRoute('cms_news_category');
         }
     }

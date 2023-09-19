@@ -1,0 +1,47 @@
+{% extends 'Admin/admin.html.twig' %}
+
+{% block title %}{{'Liste des pages'|trans}}{% endblock %}
+
+{% block body %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">{{'Liste des pages'|trans}}</h6>
+    </div>
+    <div class="card-body">
+        <a class="btn btn-sm btn-primary mb-3" href="{{ path('cms_pages_new') }}">{{'Créer une nouvelle
+            page'|trans}}</a>
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>{{"Catégorie"|trans}}</th>
+                        <th>{{"Titre"|trans}}</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cms_page in cms_pages %}
+                    <tr>
+                        <td>{{ cms_page.id }}</td>
+                        <td>{{ cms_page.category }}</td>
+                        <td>{{ cms_page.name }}</td>
+                        <td>
+                            <a href="{{ path('cms_pages_edit', {'id': cms_page.id}) }}">{{"Modifier"|trans}}</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6">no records found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

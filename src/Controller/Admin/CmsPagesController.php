@@ -34,7 +34,7 @@ class CmsPagesController extends AbstractController
             ->getRepository(CmsPages::class)
             ->findAll();
 
-        return $this->render($settings->get('theme') . '/admin/cms_pages/index.html.twig', [
+        return $this->render('Admin/cms_pages/index.html.twig', [
             'cms_pages' => $cmsPages,
         ]);
     }
@@ -58,7 +58,7 @@ class CmsPagesController extends AbstractController
             return $this->redirectToRoute('cms_pages_index');
         }
 
-        return $this->render($settings->get('theme') . '/admin/cms_pages/new.html.twig', [
+        return $this->render('Admin/cms_pages/new.html.twig', [
             'cms_page' => $cmsPage,
             'form' => $form->createView(),
         ]);
@@ -69,7 +69,7 @@ class CmsPagesController extends AbstractController
      */
     public function show(CmsPages $cmsPage, CmsSettings $setting): Response
     {
-        return $this->render($setting->get('theme') . '/admin/cms_pages/show.html.twig', [
+        return $this->render($setting->get('theme') . 'Admin/cms_pages/show.html.twig', [
             'cms_page' => $cmsPage,
         ]);
     }
@@ -91,7 +91,7 @@ class CmsPagesController extends AbstractController
             return $this->redirectToRoute('cms_pages_index');
         }
 
-        return $this->render($setting->get('theme') . '/admin/cms_pages/edit.html.twig', [
+        return $this->render('Admin/cms_pages/edit.html.twig', [
             'cms_page' => $cmsPage,
             'form' => $form->createView(),
         ]);
