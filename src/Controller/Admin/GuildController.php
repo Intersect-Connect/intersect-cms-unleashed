@@ -16,11 +16,10 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-use Symfony\Component\ExpressionLanguage\Expression;
-#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
+#[IsGranted('ROLE_ADMIN')]
 #[Route(path: '/admin/guilds')]
 class GuildController extends AbstractController
 {
@@ -53,7 +52,6 @@ class GuildController extends AbstractController
     public function get($id): Response
     {
         $guildRequest = $this->api->getGuild($id);
-        // dd($guildRequest);
 
         return $this->render($this->settingsCms->get('theme') . '/admin/guild/get.html.twig', [
             'guild' => $guildRequest,

@@ -11,26 +11,38 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Settings\Api;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\LoginAuthenticator;
-use App\Settings\Api;
+use Symfony\Component\Routing\Annotation\Route;
 use App\Settings\Settings as CmsSettings;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
-use Symfony\Component\Validator\Constraints\Json;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RegistrationController extends AbstractController
 {
+    public function __construct(
+        protected SettingsCmsSettings $settings,
+        protected Api $api,
+        protected UserRepository $userRepo,
+        protected GuardAuthenticatorHandler $guard,
+        protected LoginAuthenticator $login,
+        protected UserPasswordEncoderInterface $passwordEncoder,
+        protected EntityManagerInterface $entityManager
+    ){
+
+    }
+
     #[Route(path: '/register', name: 'app_register', requirements: ['_locale' => 'en|fr'])]
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, Api $api, LoginAuthenticator $login, GuardAuthenticatorHandler $guard, CmsSettings $settings, UserRepository $userRepo): Response
     {
-        $serveur_statut = $api->ServeurStatut();
+        $serveur_statut = $this->api->ServeurStatut();
 
         if ($serveur_statut['success']) {
             $user = new User();
@@ -38,7 +50,7 @@ class RegistrationController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $user_infos = $api->getUser($form->get('username')->getData());
+                $user_infos = $this->api->getUser($form->get('username')->getData());
                 $userEmailExist = $userRepo->findOneBy(['email' => $form->get('email')->getData()]);
 
 
@@ -50,10 +62,10 @@ class RegistrationController extends AbstractController
                         'email' => $form->get('email')->getData()
                     );
 
-                    $register = $api->registerUser($userData);
+                    $register = $this->api->registerUser($userData);
 
                     if (isset($register['Username']) && $register['Username'] == $form->get('username')->getData()) {
-                        $user_infos = $api->getUser($form->get('username')->getData());
+                        $user_infos = $this->api->getUser($form->get('username')->getData());
 
                         // encode the plain password
                         $user->setPassword(
@@ -66,8 +78,8 @@ class RegistrationController extends AbstractController
                         $user->setPoints(0);
 
                         $entityManager = $this->getDoctrine()->getManager();
-                        $entityManager->persist($user);
-                        $entityManager->flush();
+                        $this->entityManager->persist($user);
+                        $this->entityManager->flush();
 
                         return $guard->authenticateUserAndHandleSuccess($user, $request, $login, 'main');
                     }
@@ -78,11 +90,11 @@ class RegistrationController extends AbstractController
                 return $this->redirectToRoute('home');
             }
 
-            return $this->render($settings->get('theme') . '/registration/register.html.twig', [
+            return $this->render($this->settings->get('theme') . '/registration/register.html.twig', [
                 'registrationForm' => $form->createView(),
             ]);
         } else {
-            return $this->render($settings->get('theme') . '/registration/register.html.twig', [
+            return $this->render($this->settings->get('theme') . '/registration/register.html.twig', [
                 'serveur_statut' => false,
             ]);
         }

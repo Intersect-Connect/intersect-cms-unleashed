@@ -10,30 +10,39 @@
 
 namespace App\Controller\Admin;
 
+use App\Settings\Api;
 use App\Entity\CmsShop;
 use App\Form\CmsShopType;
-use App\Settings\Api;
+use App\Repository\CmsShopRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Settings\Settings as CmsSettings;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
+#[IsGranted('ROLE_ADMIN')]
 #[Route(path: 'admin/shop')]
 class CmsShopController extends AbstractController
 {
+    public function __construct(
+        protected CmsSettings $settings,
+        protected Api $api,
+        protected CacheInterface $cache,
+        protected EntityManagerInterface $entityManager,
+        protected TranslatorInterface $translator,
+        protected CmsShopRepository $cmsShopRepository
+    ) {
+    }
+
     #[Route(path: '/', name: 'cms_shop_index', methods: ['GET'])]
     public function index(CmsSettings $settings): Response
     {
-        $cmsShops = $this->getDoctrine()
-            ->getRepository(CmsShop::class)
-            ->findAll();
-
-        return $this->render($settings->get('theme') . '/admin/cms_shop/index.html.twig', [
-            'cms_shops' => $cmsShops,
+        return $this->render($this->settings->get('theme') . '/admin/cms_shop/index.html.twig', [
+            'cms_shops' => $this->cmsShopRepository->findAll(),
         ]);
     }
 
@@ -61,7 +70,7 @@ class CmsShopController extends AbstractController
 
 
             $item_id = $form->get('idItem')->getData();
-            $objet_detail = $api->getObjectDetail($item_id);
+            $objet_detail = $this->api->getObjectDetail($item_id);
             $cmsShop->setName($objet_detail['Name']);
 
             // Si la description n'est pas remplis / if description is empty use game description
@@ -69,14 +78,13 @@ class CmsShopController extends AbstractController
                 $cmsShop->setForceddescription($objet_detail['Description']);
             }
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($cmsShop);
-            $entityManager->flush();
+            $this->entityManager->persist($cmsShop);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('cms_shop_index');
         }
 
-        return $this->render($settings->get('theme') . '/admin/cms_shop/new.html.twig', [
+        return $this->render($this->settings->get('theme') . '/admin/cms_shop/new.html.twig', [
             'cms_shop' => $cmsShop,
             'form' => $form->createView(),
         ]);
@@ -106,12 +114,13 @@ class CmsShopController extends AbstractController
                     $cmsShop->setImage(null);
                 }
             }
-            $this->getDoctrine()->getManager()->flush();
+
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('cms_shop_index');
         }
 
-        return $this->render($settings->get('theme') . '/admin/cms_shop/edit.html.twig', [
+        return $this->render($this->settings->get('theme') . '/admin/cms_shop/edit.html.twig', [
             'cms_shop' => $cmsShop,
             'form' => $form->createView(),
         ]);
@@ -124,9 +133,8 @@ class CmsShopController extends AbstractController
             $nom = $cmsShop->getImage();
             unlink($this->getParameter('images_items') . '/' . $nom);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($cmsShop);
-            $entityManager->flush();
+            $this->entityManager->remove($cmsShop);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('cms_shop_index');

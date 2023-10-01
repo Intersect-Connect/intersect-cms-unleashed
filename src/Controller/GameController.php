@@ -12,7 +12,7 @@ namespace App\Controller;
 
 use App\Settings\Api;
 use App\Settings\Settings as CmsSettings;
-use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Cache\ItemInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Cache\CacheInterface;

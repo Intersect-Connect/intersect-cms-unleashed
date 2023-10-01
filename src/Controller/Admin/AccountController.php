@@ -3,24 +3,34 @@
 namespace App\Controller\Admin;
 
 use App\Settings\Api;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CmsSettingsRepository;
 use App\Settings\Settings as CmsSettings;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
-
+#[IsGranted('ROLE_ADMIN')]
 #[Route(path: 'admin/accounts')]
 class AccountController extends AbstractController
 {
+    public function __construct(
+        protected CmsSettings $settings, 
+        protected Api $api, 
+        protected CacheInterface $cache, 
+        protected PaginatorInterface $paginator,
+        protected EntityManagerInterface $entityManager,
+        protected TranslatorInterface $translator
+        ){}
+
     #[Route(path: '/{page}', name: 'admin.account')]
-    public function account(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $page = 0, CmsSettings $setting, PaginatorInterface $paginator): Response
+    public function account(Request $request, PaginatorInterface $paginator, int $page = 0): Response
     {
 
         if ($request->isMethod('POST')) {
@@ -32,58 +42,58 @@ class AccountController extends AbstractController
             $unmute = $request->request->get('unmute');
 
             if (isset($ban) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->banAccount($user_id, $username, 5, $this->getUser()->getUsername())) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été banni.'));
+                if ($this->api->banAccount($user_id, $username, 5, $this->getUser()->getUsername())) {
+                    $this->addFlash('success', $this->translator->trans('Le compte ' . $username . ' a bien été banni.'));
                     return $this->redirectToRoute('admin.account', ['page' => 0]);
                 } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
+                    $this->addFlash('error', $this->translator->trans('Une erreur s\'est produit.'));
                     return $this->redirectToRoute('admin.account', ['page' => 0]);
                 }
             }
 
             if (isset($unban) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->unBanAccount($user_id, $username)) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été débanni.'));
+                if ($this->api->unBanAccount($user_id, $username)) {
+                    $this->addFlash('success', $this->translator->trans('Le compte ' . $username . ' a bien été débanni.'));
                     return $this->redirectToRoute('admin.account', ['page' => 0]);
                 } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
+                    $this->addFlash('error', $this->translator->trans('Une erreur s\'est produit.'));
                     return $this->redirectToRoute('admin.account', ['page' => 0]);
                 }
             }
 
             if (isset($mute) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->MuteAccount($user_id, $username, 5, $this->getUser()->getUsername())) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été mute.'));
+                if ($this->api->MuteAccount($user_id, $username, 5, $this->getUser()->getUsername())) {
+                    $this->addFlash('success', $this->translator->trans('Le compte ' . $username . ' a bien été mute.'));
                     return $this->redirectToRoute('admin.account', ['page' => 0]);
                 } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
+                    $this->addFlash('error', $this->translator->trans('Une erreur s\'est produit.'));
                     return $this->redirectToRoute('admin.account', ['page' => 0]);
                 }
             }
 
             if (isset($unmute) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->unMuteAccount($user_id, $username)) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été unmuted.'));
+                if ($this->api->unMuteAccount($user_id, $username)) {
+                    $this->addFlash('success', $this->translator->trans('Le compte ' . $username . ' a bien été unmuted.'));
                     return $this->redirectToRoute('admin.account', ['page' => 0]);
                 } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
+                    $this->addFlash('error', $this->translator->trans('Une erreur s\'est produit.'));
                     return $this->redirectToRoute('admin.account', ['page' => 0]);
                 }
             }
         }
 
-        $users = $api->getAllUsers($page);
+        $users = $this->api->getAllUsers($page);
         $total = $users['Total'];
         $total_page = floor($total / 30);
 
         $users = $paginator->paginate(
-            $api->multipleGetUsers(), // Requête contenant les données à paginer (ici nos articles)
+            $this->api->multipleGetUsers(), // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             10 // Nombre de résultats par page
         );
 
 
-        return $this->render($setting->get('theme') . '/admin/account/index.html.twig', [
+        return $this->render($this->settings->get('theme') . '/admin/account/index.html.twig', [
             'total_page' => $total_page,
             'items' => $users,
             'page_actuel' => $page
@@ -91,7 +101,7 @@ class AccountController extends AbstractController
     }
 
     #[Route(path: '/detail/{user}', name: 'admin.account.detail')]
-    public function accountDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $user, CmsSettings $setting): Response
+    public function accountDetail(Request $request, $user): Response
     {
         if ($request->isMethod('POST')) {
             $user_id = $request->request->get('user_id');
@@ -102,53 +112,53 @@ class AccountController extends AbstractController
             $unmute = $request->request->get('unmute');
 
             if (isset($ban) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->banAccount($user_id, $username, 5, $this->getUser()->getUsername())) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été banni.'));
+                if ($this->api->banAccount($user_id, $username, 5, $this->getUser()->getUsername())) {
+                    $this->addFlash('success', $this->translator->trans('Le compte ' . $username . ' a bien été banni.'));
                     return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
                 } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
+                    $this->addFlash('error', $this->translator->trans('Une erreur s\'est produit.'));
                     return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
                 }
             }
 
             if (isset($unban) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->unBanAccount($user_id, $username)) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été débanni.'));
+                if ($this->api->unBanAccount($user_id, $username)) {
+                    $this->addFlash('success', $this->translator->trans('Le compte ' . $username . ' a bien été débanni.'));
                     return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
                 } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
+                    $this->addFlash('error', $this->translator->trans('Une erreur s\'est produit.'));
                     return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
                 }
             }
 
             if (isset($mute) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->MuteAccount($user_id, $username, 5, $this->getUser()->getUsername())) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été mute.'));
+                if ($this->api->MuteAccount($user_id, $username, 5, $this->getUser()->getUsername())) {
+                    $this->addFlash('success', $this->translator->trans('Le compte ' . $username . ' a bien été mute.'));
                     return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
                 } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
+                    $this->addFlash('error', $this->translator->trans('Une erreur s\'est produit.'));
                     return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
                 }
             }
 
             if (isset($unmute) && isset($username) && !empty($username) && isset($user_id) && !empty($user_id)) {
-                if ($api->unMuteAccount($user_id, $username)) {
-                    $this->addFlash('success', $translator->trans('Le compte ' . $username . ' a bien été unmuted.'));
+                if ($this->api->unMuteAccount($user_id, $username)) {
+                    $this->addFlash('success', $this->translator->trans('Le compte ' . $username . ' a bien été unmuted.'));
                     return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
                 } else {
-                    $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
+                    $this->addFlash('error', $this->translator->trans('Une erreur s\'est produit.'));
                     return $this->redirectToRoute('admin.account.detail', ['user' => $user]);
                 }
             }
         }
 
-        // dd($api->getUser($user));
+        // dd($this->api->getUser($user));
 
 
-        return $this->render($setting->get('theme') . '/admin/account/detail.html.twig', [
-            'user' => $api->getUser($user),
-            'characters' => $api->getCharacters($user),
-            'maxCharacters' => $api->getServerConfig()['Player']['MaxCharacters']
+        return $this->render($this->settings->get('theme') . '/admin/account/detail.html.twig', [
+            'user' => $this->api->getUser($user),
+            'characters' => $this->api->getCharacters($user),
+            'maxCharacters' => $this->api->getServerConfig()['Player']['MaxCharacters']
         ]);
     }
 }

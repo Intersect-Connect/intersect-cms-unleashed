@@ -13,7 +13,6 @@ namespace App\Controller;
 use App\Services\ApiManager;
 use App\Settings\Settings as CmsSettings;
 use App\Repository\CmsNewsRepository;
-use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

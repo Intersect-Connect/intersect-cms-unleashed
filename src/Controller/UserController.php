@@ -10,27 +10,36 @@
 
 namespace App\Controller;
 
+use DateTime;
+use App\Settings\Api;
 use App\Entity\CmsPointsHistory;
-use App\Repository\CmsPointsHistoryRepository;
-use App\Repository\CmsShopHistoryRepository;
-use App\Repository\CmsShopRepository;
 use App\Repository\UserRepository;
 use App\Security\LoginAuthenticator;
-use App\Settings\Api;
+use App\Repository\CmsShopRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Settings\Settings as CmsSettings;
-use DateTime;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Cache\CacheInterface;
+use App\Repository\CmsShopHistoryRepository;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\CmsPointsHistoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[IsGranted(new Expression('is_granted("ROLE_USER")'))]
+#[IsGranted('ROLE_USER')]
 class UserController extends AbstractController
 {
+    public function __construct(
+        protected CmsSettings $settings, 
+        protected Api $api, 
+        protected CacheInterface $cache, 
+        protected EntityManagerInterface $entityManager,
+        protected TranslatorInterface $translator
+        ){}
+
     #[Route(path: '/account', name: 'account')]
     public function index(Api $api, Request $request, UserRepository $userRepo, TranslatorInterface $translator, CmsSettings $settings): Response
     {
@@ -61,15 +70,14 @@ class UserController extends AbstractController
                                 'authorization' => hash("sha256", $emailPassword)
                             ];
 
-                            if ($api->changeEmailAccount($data, $this->getUser()->getId())) {
+                            if ($this->api->changeEmailAccount($data, $this->getUser()->getId())) {
                                 $user->setEmail($emailConfirm);
-                                $entityManager = $this->getDoctrine()->getManager();
-                                $entityManager->persist($user);
-                                $entityManager->flush();
-                                $this->addFlash('success', $translator->trans('Votre adresse e-mail a été modifier'));
+                                $this->entityManager->persist($user);
+                                $this->entityManager->flush();
+                                $this->addFlash('success', $this->translator->trans('Votre adresse e-mail a été modifier'));
                                 return $this->redirectToRoute('account');
                             } else {
-                                $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
+                                $this->addFlash('error', $this->translator->trans('Une erreur s\'est produit.'));
                                 return $this->redirectToRoute('account');
                             }
                         }
@@ -89,15 +97,15 @@ class UserController extends AbstractController
                             ];
 
 
-                            if ($api->changePasswordAccount($data, $this->getUser()->getId())) {
+                            if ($this->api->changePasswordAccount($data, $this->getUser()->getId())) {
                                 $user->setPassword(password_hash($passwordConfirm, PASSWORD_ARGON2ID));
                                 $entityManager = $this->getDoctrine()->getManager();
-                                $entityManager->persist($user);
-                                $entityManager->flush();
-                                $this->addFlash('success', $translator->trans('Votre mot de passe a bien été modifié.'));
+                                $this->entityManager->persist($user);
+                                $this->entityManager->flush();
+                                $this->addFlash('success', $this->translator->trans('Votre mot de passe a bien été modifié.'));
                                 return $this->redirectToRoute('account');
                             } else {
-                                $this->addFlash('error', $translator->trans('Une erreur s\'est produit.'));
+                                $this->addFlash('error', $this->translator->trans('Une erreur s\'est produit.'));
                                 return $this->redirectToRoute('account');
                             }
                         }
@@ -106,14 +114,14 @@ class UserController extends AbstractController
             }
         }
 
-        $classes_array = $api->getGameClass($data);
+        $classes_array = $this->api->getGameClass($data);
         $classes = [];
 
         if (isset($classes_array['entries'])) {
             $classes = $classes_array['entries'];
         }
 
-        $players_array = $api->getCharacters($this->getUser()->getId());
+        $players_array = $this->api->getCharacters($this->getUser()->getId());
         $players = [];
 
         if (!isset($players_array['error'])) {
@@ -121,7 +129,7 @@ class UserController extends AbstractController
         }
 
 
-        return $this->render($settings->get('theme') . '/user/index.html.twig', [
+        return $this->render($this->settings->get('theme') . '/user/index.html.twig', [
             'classes' => $classes,
             'players' => $players
         ]);
@@ -129,13 +137,13 @@ class UserController extends AbstractController
 
 
     #[Route(path: '/account/credits', name: 'account.credit.reload')]
-    public function credit(Api $api, Request $request, CmsSettings $settings, UserRepository $userRepo, TranslatorInterface $translator, LoginAuthenticator $login, GuardAuthenticatorHandler $guard): Response
+    public function credit(Request $request,UserRepository $userRepo, TranslatorInterface $translator, LoginAuthenticator $login, GuardAuthenticatorHandler $guard): Response
     {
         if ($request->isMethod('POST')) {
             $code = $request->request->get('code');
 
             if (!empty($code)) {
-                $dedipass = file_get_contents('http://api.dedipass.com/v1/pay/?public_key=' . $api->getDedipassPublic() . '&private_key=' . $api->getDedipassPrivate() . '&code=' . $code);
+                $dedipass = file_get_contents('http://api.dedipass.com/v1/pay/?public_key=' . $this->api->getDedipassPublic() . '&private_key=' . $this->api->getDedipassPrivate() . '&code=' . $code);
                 $dedipass = json_decode($dedipass);
 
                 if ($dedipass->status == 'success') {
@@ -145,8 +153,8 @@ class UserController extends AbstractController
                     if ($user) {
                         $user->setPoints($user->getPoints() + $virtual_currency);
                         $entityManager = $this->getDoctrine()->getManager();
-                        $entityManager->persist($user);
-                        $entityManager->flush();
+                        $this->entityManager->persist($user);
+                        $this->entityManager->flush();
 
                         $pointHistorique = new CmsPointsHistory();
                         $pointHistorique->setDate(new DateTime());
@@ -154,14 +162,14 @@ class UserController extends AbstractController
                         $pointHistorique->setCode($code);
                         $pointHistorique->setPointsAmount($virtual_currency);
                         $entityManager = $this->getDoctrine()->getManager();
-                        $entityManager->persist($pointHistorique);
-                        $entityManager->flush();
+                        $this->entityManager->persist($pointHistorique);
+                        $this->entityManager->flush();
 
                         $res = new Response();
                         $res->headers->clearCookie('user');
                         $res->send();
 
-                        $this->addFlash('success', $translator->trans('Votre compte a été rechargé en points boutique'));
+                        $this->addFlash('success', $this->translator->trans('Votre compte a été rechargé en points boutique'));
 
                         // Pas la meilleure façon mais pas le choix.
                         $guard->authenticateUserAndHandleSuccess($user, $request, $login, 'main');
@@ -170,8 +178,8 @@ class UserController extends AbstractController
                 }
             }
         }
-        return $this->render($settings->get('theme') . '/user/credit.html.twig', [
-            'dedipass' => $api->getDedipassPublic()
+        return $this->render($this->settings->get('theme') . '/user/credit.html.twig', [
+            'dedipass' => $this->api->getDedipassPublic()
         ]);
     }
 
@@ -199,7 +207,7 @@ class UserController extends AbstractController
 
         foreach ($point_history as $point_history) {
             $history[] = [
-                'name' => $translator->trans('Achat points boutique VIP'),
+                'name' => $this->translator->trans('Achat points boutique VIP'),
                 'date' => $point_history->getDate()->format('d/m/Y à h:i:s'),
                 'type' => 'points_vip',
                 'code' => $point_history->getCode(),
@@ -209,7 +217,7 @@ class UserController extends AbstractController
 
 
 
-        return $this->render($settings->get('theme') . '/user/history.html.twig', [
+        return $this->render($this->settings->get('theme') . '/user/history.html.twig', [
             'history' => $history
         ]);
     }

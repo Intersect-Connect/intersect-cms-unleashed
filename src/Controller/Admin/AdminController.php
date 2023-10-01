@@ -10,41 +10,50 @@
 
 namespace App\Controller\Admin;
 
-use App\Repository\CmsNewsRepository;
-use App\Repository\CmsSettingsRepository;
-use App\Repository\CmsShopRepository;
-use App\Settings\Api;
-use App\Settings\Settings as CmsSettings;
 use DateTime;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Settings\Api;
+use App\Repository\CmsNewsRepository;
+use App\Repository\CmsShopRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\CmsSettingsRepository;
+use App\Settings\Settings as CmsSettings;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\ExpressionLanguage\Expression;
-use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
+#[IsGranted('ROLE_ADMIN')]
 class AdminController extends AbstractController
 {
+    public function __construct(
+        protected CmsSettings $settings, 
+        protected Api $api, 
+        protected CacheInterface $cache, 
+        protected PaginatorInterface $paginator,
+        protected EntityManagerInterface $entityManager,
+        protected TranslatorInterface $translator
+        ){}
+        
     #[Route(path: '/admin', name: 'admin')]
-    public function index(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, CmsSettings $settings): Response
+    public function index(CmsShopRepository $shop, CmsNewsRepository $news,): Response
     {
         $total_users = null;
         $total_players = null;
         $moyenne_play = [];
         $last_register = [];
 
-        if (isset($api->getAllUsers(0)['Total'])) {
-            $total_users = $api->getAllUsers(0);
+        if (isset($this->api->getAllUsers(0)['Total'])) {
+            $total_users = $this->api->getAllUsers(0);
 
             $par_page = 30;
             $total_page = floor($total_users['Total'] / $par_page);
 
             for ($i = 0; $i <= $total_page; $i++) {
-                $users = $api->getAllUsers($i);
+                $users = $this->api->getAllUsers($i);
                 foreach ($users['Values'] as $user) {
                     $last_register[] = ['id' => $user['Id'], 'username' => $user['Name'], 'date' => $user['RegistrationDate']];
                     $moyenne_play[] = $user['PlayTimeSeconds'];
@@ -61,11 +70,11 @@ class AdminController extends AbstractController
 
 
 
-        if (isset($api->getAllPlayers(0)['Total'])) {
-            $total_players = $api->getAllPlayers(0)['Total'];
+        if (isset($this->api->getAllPlayers(0)['Total'])) {
+            $total_players = $this->api->getAllPlayers(0)['Total'];
         }
 
-        $server_request = $api->getServerInfo();
+        $server_request = $this->api->getServerInfo();
         $server_info = [];
 
         if (!isset($server_request['error'])) {
@@ -80,7 +89,7 @@ class AdminController extends AbstractController
         //    $total_users['Total'] != null ? $total_users['Total'] : null;
 
 
-        return $this->render($settings->get('theme') . '/admin/index.html.twig', [
+        return $this->render($this->settings->get('theme') . '/admin/index.html.twig', [
             'total_users' => $total_users != null ? $total_users['Total'] : null,
             'total_players' => $total_players,
             'total_shop' => count($shop->findAll()),
@@ -89,16 +98,15 @@ class AdminController extends AbstractController
             'total_playTime' => array_sum($moyenne_play),
             'moyenne_play' => array_sum($moyenne_play) > 0 ? array_sum($moyenne_play) / count($moyenne_play) : null,
             'last_register' => $last_register,
-            'online_players' => $api->onlinePlayers(0)
+            'online_players' => $this->api->onlinePlayers(0)
         ]);
     }
 
 
     #[Route(path: 'admin/settings', name: 'admin.settings')]
-    public function settings(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, CmsSettings $settingCms): Response
+    public function settings(CmsSettingsRepository $settings, Request $request): Response
     {
         if ($request->isMethod('POST')) {
-            $entityManager = $this->getDoctrine()->getManager();
 
             $api_password = $request->request->get('api_password');
             $api_server = $request->request->get('api_server');
@@ -124,139 +132,139 @@ class AdminController extends AbstractController
             if (isset($api_password) && !empty($api_password)) {
                 $param = $settings->findOneBy(['setting' => 'api_password']);
                 $param->setDefaultValue($api_password);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($api_server) && !empty($api_server)) {
                 $param = $settings->findOneBy(['setting' => 'api_server']);
                 $param->setDefaultValue($api_server);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($api_token) && !empty($api_token)) {
                 $param = $settings->findOneBy(['setting' => 'api_token']);
                 $param->setDefaultValue($api_token);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($api_username) && !empty($api_username)) {
                 $param = $settings->findOneBy(['setting' => 'api_username']);
                 $param->setDefaultValue($api_username);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($credit_dedipass_private_key) && !empty($credit_dedipass_private_key)) {
                 $param = $settings->findOneBy(['setting' => 'credit_dedipass_private_key']);
                 $param->setDefaultValue($credit_dedipass_private_key);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($credit_dedipass_public_key) && !empty($credit_dedipass_public_key)) {
                 $param = $settings->findOneBy(['setting' => 'credit_dedipass_public_key']);
                 $param->setDefaultValue($credit_dedipass_public_key);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($game_title) && !empty($game_title)) {
                 $param = $settings->findOneBy(['setting' => 'game_title']);
                 $param->setDefaultValue($game_title);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($seo_description) && !empty($seo_description)) {
                 $param = $settings->findOneBy(['setting' => 'seo_description']);
                 $param->setDefaultValue($seo_description);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
             if (isset($use_nav_community) && !empty($use_nav_community)) {
                 $param = $settings->findOneBy(['setting' => 'use_nav_community']);
                 $param->setDefaultValue($use_nav_community);
 
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($use_right_community_button) && !empty($use_right_community_button)) {
                 $param = $settings->findOneBy(['setting' => 'use_right_community_button']);
                 $param->setDefaultValue($use_right_community_button);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($use_wiki) && !empty($use_wiki)) {
                 $param = $settings->findOneBy(['setting' => 'use_wiki']);
                 $param->setDefaultValue($use_wiki);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($facebook_link) && !empty($facebook_link)) {
                 $param = $settings->findOneBy(['setting' => 'facebook_link']);
                 $param->setDefaultValue($facebook_link);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($twitter_link) && !empty($twitter_link)) {
                 $param = $settings->findOneBy(['setting' => 'twitter_link']);
                 $param->setDefaultValue($twitter_link);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($youtube_link) && !empty($youtube_link)) {
                 $param = $settings->findOneBy(['setting' => 'youtube_link']);
                 $param->setDefaultValue($youtube_link);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($instagram_link) && !empty($instagram_link)) {
                 $param = $settings->findOneBy(['setting' => 'instagram_link']);
                 $param->setDefaultValue($instagram_link);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($discord_link) && !empty($discord_link)) {
                 $param = $settings->findOneBy(['setting' => 'discord_link']);
                 $param->setDefaultValue($discord_link);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($theme) && !empty($theme)) {
                 $param = $settings->findOneBy(['setting' => 'theme']);
                 $param->setDefaultValue($theme);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($max_level) && !empty($max_level)) {
                 $param = $settings->findOneBy(['setting' => 'max_level']);
                 $param->setDefaultValue($max_level);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
             if (isset($tinymce_key) && !empty($tinymce_key)) {
                 $param = $settings->findOneBy(['setting' => 'tinymce_key']);
                 $param->setDefaultValue($tinymce_key);
-                $entityManager->persist($param);
-                $entityManager->flush();
+                $this->entityManager->persist($param);
+                $this->entityManager->flush();
             }
 
 
 
-            $this->addFlash('success', $translator->trans('Vos paramètres ont bien été mis à jour.'));
+            $this->addFlash('success', $this->translator->trans('Vos paramètres ont bien été mis à jour.'));
             return $this->redirectToRoute('admin.settings');
         }
 
@@ -295,7 +303,7 @@ class AdminController extends AbstractController
         ];
 
 
-        return $this->render($settingCms->get('theme') . '/admin/cms_settings/index.html.twig', [
+        return $this->render($this->settings->get('theme') . '/admin/cms_settings/index.html.twig', [
             'params' => $settings->findAll(),
             'folders' => $folders,
             "settingsCat" => $settingsCat
@@ -303,14 +311,14 @@ class AdminController extends AbstractController
     }
 
     #[Route(path: '/admin/items/{page}', name: 'admin.items')]
-    public function items(Api $api, CmsShopRepository $shop, CmsNewsRepository $news, $page = 0, CmsSettings $settings): Response
+    public function items(int $page = 0): Response
     {
-        $items = $api->getAllItems($page);
+        $items = $this->api->getAllItems($page);
         $total = $items['total'];
         $total_page = floor($total / 20);
 
 
-        return $this->render($settings->get('theme') . '/admin/items_list/index.html.twig', [
+        return $this->render($this->settings->get('theme') . '/admin/items_list/index.html.twig', [
             'total_page' => $total_page,
             'items' => $items['entries'],
             'page_actuel' => $page

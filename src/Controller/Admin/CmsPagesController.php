@@ -12,32 +12,35 @@ namespace App\Controller\Admin;
 
 use App\Entity\CmsPages;
 use App\Form\CmsPagesType;
+use App\Repository\CmsPagesRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Settings\Settings as CmsSettings;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
+#[IsGranted('ROLE_ADMIN')]
 #[Route(path: 'admin/pages')]
 class CmsPagesController extends AbstractController
 {
-    #[Route(path: '/', name: 'cms_pages_index', methods: ['GET'])]
-    public function index(CmsSettings $settings): Response
-    {
-        $cmsPages = $this->getDoctrine()
-            ->getRepository(CmsPages::class)
-            ->findAll();
+    public function __construct(
+        protected CmsSettings $settings, 
+        protected EntityManagerInterface $entityManager,
+        protected CmsPagesRepository $cmsPagesRepository
+        ){}
 
-        return $this->render($settings->get('theme') . '/admin/cms_pages/index.html.twig', [
-            'cms_pages' => $cmsPages,
+    #[Route(path: '/', name: 'cms_pages_index', methods: ['GET'])]
+    public function index(): Response
+    {
+        return $this->render($this->settings->get('theme') . '/admin/cms_pages/index.html.twig', [
+            'cms_pages' => $this->cmsPagesRepository->findAll(),
         ]);
     }
 
     #[Route(path: '/new', name: 'cms_pages_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CmsSettings $settings): Response
+    public function new(Request $request): Response
     {
         $cmsPage = new CmsPages();
         $form = $this->createForm(CmsPagesType::class, $cmsPage);
@@ -46,23 +49,22 @@ class CmsPagesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $cmsPage->setUniqueSlug($this->format_uri($form->get('name')->getData()));
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($cmsPage);
-            $entityManager->flush();
+            $this->entityManager->persist($cmsPage);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('cms_pages_index');
         }
 
-        return $this->render($settings->get('theme') . '/admin/cms_pages/new.html.twig', [
+        return $this->render($this->settings->get('theme') . '/admin/cms_pages/new.html.twig', [
             'cms_page' => $cmsPage,
             'form' => $form->createView(),
         ]);
     }
 
     #[Route(path: '/{id}', name: 'cms_pages_show', methods: ['GET'])]
-    public function show(CmsPages $cmsPage, CmsSettings $setting): Response
+    public function show(CmsPages $cmsPage): Response
     {
-        return $this->render($setting->get('theme') . '/admin/cms_pages/show.html.twig', [
+        return $this->render($this->settings->get('theme') . '/admin/cms_pages/show.html.twig', [
             'cms_page' => $cmsPage,
         ]);
     }
@@ -75,26 +77,24 @@ class CmsPagesController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $cmsPage->setUniqueSlug($this->format_uri($form->get('name')->getData()));
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($cmsPage);
-            $this->getDoctrine()->getManager()->flush();
+            $this->entityManager->persist($cmsPage);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('cms_pages_index');
         }
 
-        return $this->render($setting->get('theme') . '/admin/cms_pages/edit.html.twig', [
+        return $this->render($this->settings->get('theme') . '/admin/cms_pages/edit.html.twig', [
             'cms_page' => $cmsPage,
             'form' => $form->createView(),
         ]);
     }
 
     #[Route(path: '/{id}', name: 'cms_pages_delete', methods: ['POST'])]
-    public function delete(Request $request, CmsPages $cmsPage, CmsSettings $setting): Response
+    public function delete(Request $request, CmsPages $cmsPage): Response
     {
         if ($this->isCsrfTokenValid('delete'.$cmsPage->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($cmsPage);
-            $entityManager->flush();
+            $this->entityManager->remove($cmsPage);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('cms_pages_index');

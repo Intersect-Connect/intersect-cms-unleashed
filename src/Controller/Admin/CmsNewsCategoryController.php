@@ -11,33 +11,40 @@
 namespace App\Controller\Admin;
 
 use App\Entity\CmsNewsCategory;
-use App\Repository\CmsNewsCategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Settings\Settings as CmsSettings;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\CmsNewsCategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
+#[IsGranted('ROLE_ADMIN')]
 #[Route(path: 'admin/news/category')]
 class CmsNewsCategoryController extends AbstractController
 {
+    public function __construct(
+        protected CmsSettings $settings,
+        protected EntityManagerInterface $entityManager,
+        protected CmsNewsCategoryRepository $cmsNewsCategoryRepository,
+        protected TranslatorInterface $translator
+    ) {
+    }
+
     #[Route(path: '/', name: 'cms_news_category')]
-    public function index(CmsSettings $setting, CmsNewsCategoryRepository $categoryRepo): Response
+    public function index(CmsNewsCategoryRepository $categoryRepo): Response
     {
-        return $this->render($setting->get('theme') . '/admin/cms_news_category/index.html.twig', [
+        return $this->render($this->settings->get('theme') . '/admin/cms_news_category/index.html.twig', [
             'categorys' => $categoryRepo->findAll(),
         ]);
     }
 
     #[Route(path: '/new', name: 'cms_news_category.new')]
-    public function new(CmsSettings $setting, Request $request, TranslatorInterface $translator): Response
+    public function new(Request $request): Response
     {
         if ($request->isMethod('POST')) {
-            $entityManager = $this->getDoctrine()->getManager();
             $name = $request->request->get('name');
             $color = $request->request->get('color');
 
@@ -45,46 +52,42 @@ class CmsNewsCategoryController extends AbstractController
                 $newCategory = new CmsNewsCategory();
                 $newCategory->setName($name);
                 $newCategory->setColor($color);
-                $entityManager->persist($newCategory);
-                $entityManager->flush();
-                $this->addFlash('success', $translator->trans('Votre catégorie à bien été enregistré.'));
+                $this->entityManager->persist($newCategory);
+                $this->entityManager->flush();
+                $this->addFlash('success', $this->translator->trans('Votre catégorie à bien été enregistré.'));
                 return $this->redirectToRoute('cms_news_category');
             }
         }
-        return $this->render($setting->get('theme') . '/admin/cms_news_category/new.html.twig', []);
+        return $this->render($this->settings->get('theme') . '/admin/cms_news_category/new.html.twig', []);
     }
 
     #[Route(path: '/edit/{id}', name: 'cms_news_category.edit')]
-    public function edit(CmsSettings $setting, Request $request, TranslatorInterface $translator, CmsNewsCategory $category): Response
+    public function edit(Request $request, CmsNewsCategory $category): Response
     {
         if ($request->isMethod('POST')) {
-            $entityManager = $this->getDoctrine()->getManager();
             $name = $request->request->get('name');
             $color = $request->request->get('color');
 
             if (isset($name) && !empty($name) && isset($color) && !empty($color)) {
                 $category->setName($name);
                 $category->setColor($color);
-                $entityManager->persist($category);
-                $entityManager->flush();
-                $this->addFlash('success', $translator->trans('Votre catégorie à bien été enregistré.'));
+                $this->entityManager->persist($category);
+                $this->entityManager->flush();
+                $this->addFlash('success', $this->translator->trans('Votre catégorie à bien été enregistré.'));
                 return $this->redirectToRoute('cms_news_category');
             }
         }
-        return $this->render($setting->get('theme') . '/admin/cms_news_category/edit.html.twig', [
+        return $this->render($this->settings->get('theme') . '/admin/cms_news_category/edit.html.twig', [
             'category' => $category
         ]);
     }
 
     #[Route(path: '/delete/{id}', name: 'cms_news_category.delete')]
-    public function delete(CmsSettings $setting, Request $request, TranslatorInterface $translator, CmsNewsCategory $category): Response
+    public function delete(CmsNewsCategory $category): Response
     {
-        if ($category) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($category);
-            $entityManager->flush();
-            $this->addFlash('success', $translator->trans('Votre catégorie à bien été enregistré.'));
-            return $this->redirectToRoute('cms_news_category');
-        }
+        $this->entityManager->remove($category);
+        $this->entityManager->flush();
+        $this->addFlash('success', $this->translator->trans('Votre catégorie à bien été enregistré.'));
+        return $this->redirectToRoute('cms_news_category');
     }
 }
