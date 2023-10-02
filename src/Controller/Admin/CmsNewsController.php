@@ -2,10 +2,10 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.2 Update
- * Last modify : 24/08/2021 at 20:21
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller\Admin;
@@ -39,7 +39,7 @@ class CmsNewsController extends AbstractController
     #[Route(path: '/', name: 'cms_news_index', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->render($this->settings->get('theme') . '/admin/cms_news/index.html.twig', [
+        return $this->render('Admin/cms_news/index.html.twig', [
             'cms_news' => $this->cmsNewsRepository->findAll(),
         ]);
     }
@@ -75,7 +75,7 @@ class CmsNewsController extends AbstractController
             return $this->redirectToRoute('cms_news_index');
         }
 
-        return $this->render($this->settings->get('theme') . '/admin/cms_news/new.html.twig', [
+        return $this->render('Admin/cms_news/new.html.twig', [
             'cms_news' => $cmsNews,
             'form' => $form->createView(),
         ]);
@@ -112,7 +112,7 @@ class CmsNewsController extends AbstractController
             return $this->redirectToRoute('cms_news_index');
         }
 
-        return $this->render($this->settings->get('theme') . '/admin/cms_news/edit.html.twig', [
+        return $this->render('Admin/cms_news/edit.html.twig', [
             'cms_news' => $cmsNews,
             'form' => $form->createView(),
         ]);

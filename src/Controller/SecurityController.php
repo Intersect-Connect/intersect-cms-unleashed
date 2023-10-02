@@ -2,10 +2,10 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.2 Update
- * Last modify : 24/08/2021 at 20:21
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller;
@@ -52,7 +52,7 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render($this->settings->get('theme') . '/security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('Application/' . $this->settings->get('theme') . '/security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
@@ -72,7 +72,7 @@ class SecurityController extends AbstractController
                 isset($username) && !empty($username) &&
                 isset($email) && !empty($email)
             ) {
-                $user = $userRepo->findOneBy(['username' => $username, 'email' => $email]);
+                $user = $this->userRepo->findOneBy(['username' => $username, 'email' => $email]);
 
                 if ($user) {
                     $token = bin2hex(random_bytes(12));
@@ -86,7 +86,7 @@ class SecurityController extends AbstractController
                         ->from(new Address("hello@example.com", "Your Name"))
                         ->to($user->getEmail())
                         ->subject($this->translator->trans('Demande de nouveau mot de passe'))
-                        ->htmlTemplate($this->settings->get('theme') . '/emails/password-reset.html.twig')
+                        ->htmlTemplate('Application/' . $this->settings->get('theme') . '/emails/password-reset.html.twig')
                         ->context([
                             'username' => $user->getUsername(),
                             'url' => $url,
@@ -102,7 +102,7 @@ class SecurityController extends AbstractController
             }
         }
 
-        return $this->render($this->settings->get('theme') . '/security/password-reset.html.twig', []);
+        return $this->render('Application/' . $this->settings->get('theme') . '/security/password-reset.html.twig', []);
     }
 
     #[Route(path: '/password-reset/new/{token}', name: 'passwordResetRequest.new', requirements: ['_locale' => 'en|fr'])]
@@ -149,11 +149,11 @@ class SecurityController extends AbstractController
 
         $users = $userRepo->findBy(['passwordToken' => $token]);
         if ($users) {
-            return $this->render($this->settings->get('theme') . '/security/password-reset-new.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/security/password-reset-new.html.twig', [
                 'confirm' => true
             ]);
         } else {
-            return $this->render($this->settings->get('theme') . '/security/password-reset-new.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/security/password-reset-new.html.twig', [
                 'confirm' => false
             ]);
         }

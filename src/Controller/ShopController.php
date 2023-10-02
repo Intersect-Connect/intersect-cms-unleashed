@@ -2,15 +2,16 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.2 Update
- * Last modify : 24/08/2021 at 20:21
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller;
 
 use DateTime;
+use App\Entity\User;
 use App\Settings\Api;
 use App\Entity\CmsShopHistory;
 use App\Repository\UserRepository;
@@ -24,6 +25,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ShopController extends AbstractController
 {
@@ -33,7 +36,7 @@ class ShopController extends AbstractController
         protected CacheInterface $cache, 
         protected PaginatorInterface $paginator,
         protected EntityManagerInterface $entityManager,
-        protected TranslatorInterface $translator
+        protected TranslatorInterface $translator,
         ){}
         
     #[Route(path: '/shop', name: 'shop.index', requirements: ['_locale' => 'en|fr'])]
@@ -81,7 +84,7 @@ class ShopController extends AbstractController
             6 // Nombre de résultats par page
         );
 
-        return $this->render($this->settings->get('theme') . '/shop/index.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/shop/index.html.twig', [
             'shop' => $items,
         ]);
     }
@@ -91,6 +94,7 @@ class ShopController extends AbstractController
     {
         $shopItem = $shopRepo->find($id);
         $itemData = $this->api->getObjectDetail($shopItem->getIdItem());
+        $user = $userRepo->find($this->getUser());
 
         if ($shopItem->getPromotion()) {
             $item = ['id' => $id, 'name' => $itemData['Name'], 'description' => $shopItem->getForcedDescription(), 'price' => $shopItem->getPrice() * (1 - ($shopItem->getPromotion() / 100)), 'quantity' => $shopItem->getQuantity(), 'icon' => $itemData['Icon'], 'image' => $shopItem->getImage()];
@@ -98,7 +102,7 @@ class ShopController extends AbstractController
             $item = ['id' => $id, 'name' => $itemData['Name'], 'description' => $shopItem->getForcedDescription(), 'price' => $shopItem->getPrice(), 'quantity' => $shopItem->getQuantity(), 'icon' => $itemData['Icon'], 'image' => $shopItem->getImage()];
         }
 
-        $personnages = $this->api->getCharacters($this->getUser()->getId());
+        $personnages = $this->api->getCharacters($user->getId());
 
         foreach ($personnages as $key => $personnage) {
             if (!$this->api->isInventoryFull($personnage['Id'])) {
@@ -134,7 +138,7 @@ class ShopController extends AbstractController
                 }
 
                 // Si le nombre de point est supérieur ou égal au prix de l'objet
-                if ($this->getUser()->getPoints() >= $item['price'] * $quantity) {
+                if ($user->getPoints() >= $item['price'] * $quantity) {
                     //  alors on lance la requête d'achat, l'objet est envoyez dans l'inventaire et la requête doit retourner true
                     if ($this->api->giveItem($data, $character)) {
                         // Si la requête on retourne true, on récupère l'utilisateur actuel
@@ -149,16 +153,14 @@ class ShopController extends AbstractController
                             $user->setPoints($user->getPoints() - $prix_objet_q);
                         }
 
-                        $entityManager = $this->getDoctrine()->getManager();
                         $this->entityManager->persist($user);
                         $this->entityManager->flush();
 
                         $boutiqueHistorique = new CmsShopHistory();
                         $boutiqueHistorique->setDate(new DateTime());
                         $boutiqueHistorique->setShopId($id);
-                        $boutiqueHistorique->setUserId($this->getUser()->getId());
+                        $boutiqueHistorique->setUserId($user->getId());
                         $boutiqueHistorique->setCreditsNow($user->getPoints());
-                        $entityManager = $this->getDoctrine()->getManager();
                         $this->entityManager->persist($boutiqueHistorique);
                         $this->entityManager->flush();
 
@@ -177,7 +179,7 @@ class ShopController extends AbstractController
                 return $this->redirectToRoute('shop.detail', ['id' => $id]);
             }
         }
-        return $this->render($this->settings->get('theme') . '/shop/detail.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/shop/detail.html.twig', [
             'item' => $item,
             'personnages' => $personnages
         ]);

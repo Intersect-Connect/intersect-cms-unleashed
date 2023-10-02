@@ -29,101 +29,87 @@ use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationExc
 use Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 
-class LoginAuthenticator extends FormLoginAuthenticator
+class LoginAuthenticator
 {
-    use TargetPathTrait;
+    // use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_login';
+    // public const LOGIN_ROUTE = 'app_login';
 
-    private $username;
+    // private $username;
 
-    public function __construct(
-        protected EntityManagerInterface $entityManager,
-        protected UrlGeneratorInterface $urlGenerator,
-        protected CsrfTokenManagerInterface $csrfTokenManager,
-        protected Api $api
-    ) {}
+    // public function __construct(
+    //     protected EntityManagerInterface $entityManager,
+    //     protected UrlGeneratorInterface $urlGenerator,
+    //     protected CsrfTokenManagerInterface $csrfTokenManager,
+    //     protected Api $api
+    // ) {}
 
-    public function authenticate(Request $request): Passport
-    {
-        $username = $request->request->get('username', '');
-        $password = $request->request->get('password', '');
-        $csrfToken = $request->request->get('_csrf_token');
-        $this->username = $username;
-
-
-        return new Passport(
-            new UserBadge($username, function ($userIdentifier) use ($username, $password) {
-
-                $userData = array(
-                    'username' => $this->username,
-                    'password' => hash('sha256', $password)
-                );
-                $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $userIdentifier]);
-
-                if (!$user) {
-
-                    if ($this->api->passwordVerify($userData, $userIdentifier)) {
-
-                        $user_infos = $this->api->APIcall_GET($this->api->getServer(), $this->api->getToken(), '/api/v1/users/' . $username);
-
-                        $newUser = new User();
-                        $newUser->setId($user_infos['Id']);
-                        $newUser->setUsername($this->username);
-                        $newUser->setPassword(password_hash($password, PASSWORD_ARGON2I));
-                        $newUser->setPasswordToken(null);
-                        $newUser->setPoints(0);
-                        $newUser->setAdmin(0);
-                        $newUser->setRoles([]);
-                        $newUser->setEmail($user_infos['Email']);
-                        $this->entityManager->persist($newUser);
-                        $this->entityManager->flush();
-                    }
-                }
-
-                $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
-
-
-                if (!$user) {
-                    // fail authentication with a custom error
-                    throw new CustomUserMessageAuthenticationException('Username could not be found.');
-                }
-
-                return $user;
-            }),
-            new PasswordCredentials($password),
-            [
-                new CsrfTokenBadge('authenticate', $csrfToken),
-            ]
-        );
-    }
-
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
-    public function getPassword($credentials): ?string
-    {
-        return $credentials['password'];
-    }
-
-    // public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
+    // public function authenticate(Request $request): Passport
     // {
-    //     if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
-    //         return new RedirectResponse($targetPath);
-    //     }
+    //     $username = $request->request->get('username', '');
+    //     $password = $request->request->get('password', '');
+    //     $csrfToken = $request->request->get('_csrf_token');
+    //     $this->username = $username;
 
-    //     return new RedirectResponse($this->urlGenerator->generate('home'));
-    //     // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+
+    //     return new Passport(
+    //         new UserBadge($username, function ($userIdentifier) use ($username, $password) {
+
+    //             $userData = array(
+    //                 'username' => $this->username,
+    //                 'password' => hash('sha256', $password)
+    //             );
+    //             $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $userIdentifier]);
+
+    //             if (!$user) {
+
+    //                 if ($this->api->passwordVerify($userData, $userIdentifier)) {
+
+    //                     $user_infos = $this->api->APIcall_GET($this->api->getServer(), $this->api->getToken(), '/api/v1/users/' . $username);
+
+    //                     $newUser = new User();
+    //                     $newUser->setId($user_infos['Id']);
+    //                     $newUser->setUsername($this->username);
+    //                     $newUser->setPassword(password_hash($password, PASSWORD_ARGON2I));
+    //                     $newUser->setPasswordToken(null);
+    //                     $newUser->setPoints(0);
+    //                     $newUser->setAdmin(0);
+    //                     $newUser->setRoles([]);
+    //                     $newUser->setEmail($user_infos['Email']);
+    //                     $this->entityManager->persist($newUser);
+    //                     $this->entityManager->flush();
+    //                 }
+    //             }
+
+    //             $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
+
+
+    //             if (!$user) {
+    //                 // fail authentication with a custom error
+    //                 throw new CustomUserMessageAuthenticationException('Username could not be found.');
+    //             }
+
+    //             return $user;
+    //         }),
+    //         new PasswordCredentials($password),
+    //         [
+    //             new CsrfTokenBadge('authenticate', $csrfToken),
+    //         ]
+    //     );
     // }
 
-    // public function getLoginUrl():string
+    // /**
+    //  * Used to upgrade (rehash) the user's password automatically over time.
+    //  */
+    // public function getPassword($credentials): ?string
     // {
-    //     return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+    //     return $credentials['password'];
     // }
 
-    public function supports(Request $request): bool
-    {
-        return self::LOGIN_ROUTE === $request->attributes->get('_route')
-            && $request->isMethod('POST');
-    }
+
+    // public function supports(Request $request): bool
+    // {
+    //     return self::LOGIN_ROUTE === $request->attributes->get('_route')
+    //         && $request->isMethod('POST');
+    // }
 }

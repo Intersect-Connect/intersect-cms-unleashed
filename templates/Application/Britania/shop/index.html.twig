@@ -1,0 +1,99 @@
+{% extends 'Application/' ~ settings.get("theme") ~'/base.html.twig' %}
+
+
+{% block title %}{{'Boutique VIP'|trans}}{% endblock %}
+
+{% block body %}
+<h1>{{'Boutique VIP'|trans}}</h1>
+
+<ul id="breadcrump">
+    <li><a href="/">{{"Accueil"|trans}}</a></li>
+    <li>{{'Boutique VIP'|trans}}</li>
+</ul>
+
+<div id="shop" class="row">
+
+    {% for item in shop %}
+    {% if item.image is not null %}
+    <div class="col-md-6">
+        <article class="card rounded-0">
+            <img src="{{asset('assets/general/items/'~ item.image)|imagine_filter('general')}}"
+                class="card-img-top rounded-0"
+                alt="{{item.name}} | Hôtel des ventes - {{settings.get('game_title')}} | {{settings.get('seo_description')}}">
+
+            <div class="card-header p-0 rounded-0">
+                <h2>
+                    {{item.name}} {% if item.quantity > 1 %} (x{{item.quantity}}) {% endif %}
+                    {% if (item.promotion > 0) %} <span class="text-danger">-{{ item.promotion }}%</span>{% endif %}
+                </h2>
+            </div>
+
+            <div class="card-body">
+                <p>
+                    {{ (item.description|striptags|length) > 150 ? ((item.description|striptags|slice(0, 150)) ~
+                    '...')|raw :
+                    (item.description|striptags|raw) }}
+                </p>
+            </div>
+
+            <div class="card-footer border-0">
+                <div class="row">
+                    <div class="col-10">
+                        <strong>{{item.price}} {{"credits"|trans}}</strong>
+                    </div>
+                    <div class="col-2">
+                        {% if app.user %}
+                        <a href="{{path('shop.detail', {'id':item.id})}}">
+                            <img src="{{asset('assets/themes/Britania/img/i_basket.png')}}" width="25px">
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+    {% endif %}
+
+    {% if item.image is null %}
+    <div class="col-md-6">
+        <article class="mt-3 shop w-100">
+            <div class="header" style="height: 60px;">
+                <img src="{{asset('assets/general/gamedata/items/' ~ item.itemData.Icon )}}"
+                    style="width: 50px;height: 50px;margin: 5px 10px 0px 5px;float: left;" loading="lazy"
+                    alt="{{item.name}} | Hôtel des ventes - {{settings.get('game_title')}} | {{settings.get('seo_description')}}">
+
+                <span class="title-card">
+                    {{item.name}} {% if item.quantity > 1 %} (x{{item.quantity}}) {% endif %}
+                    {% if (item.promotion > 0) %} <span class="text-danger">-{{ item.promotion }}%</span>{% endif %}
+                </span>
+
+            </div>
+            <p class="h-100">
+                {{item.description|striptags|raw}}
+            </p>
+            <div class="footer">
+                <strong>{{item.price}} {{"credits"|trans}}</strong>
+                {% if app.user %}
+                <a href="{{path('shop.detail', {'id':item.id})}}">
+                    <img src="{{asset('assets/themes/Britania/img/i_basket.png')}}" width="25px">
+                </a>
+                {% endif %}
+            </div>
+        </article>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="alert alert-info text-dark">
+        {{"Aucun enregistrement trouvé"|trans}}
+    </div>
+    {% endfor %}
+
+    <div class="p-3">
+        {{ knp_pagination_render(shop) }}
+    </div>
+
+    <div class="clear"></div>
+
+</div>
+{% endblock %}

@@ -2,10 +2,10 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.2 Update
- * Last modify : 24/08/2021 at 20:21
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller\Admin;
@@ -36,7 +36,7 @@ class CmsNewsCategoryController extends AbstractController
     #[Route(path: '/', name: 'cms_news_category')]
     public function index(CmsNewsCategoryRepository $categoryRepo): Response
     {
-        return $this->render($this->settings->get('theme') . '/admin/cms_news_category/index.html.twig', [
+        return $this->render('Admin/cms_news_category/index.html.twig', [
             'categorys' => $categoryRepo->findAll(),
         ]);
     }
@@ -58,7 +58,7 @@ class CmsNewsCategoryController extends AbstractController
                 return $this->redirectToRoute('cms_news_category');
             }
         }
-        return $this->render($this->settings->get('theme') . '/admin/cms_news_category/new.html.twig', []);
+        return $this->render('Admin/cms_news_category/new.html.twig', []);
     }
 
     #[Route(path: '/edit/{id}', name: 'cms_news_category.edit')]
@@ -77,7 +77,7 @@ class CmsNewsCategoryController extends AbstractController
                 return $this->redirectToRoute('cms_news_category');
             }
         }
-        return $this->render($this->settings->get('theme') . '/admin/cms_news_category/edit.html.twig', [
+        return $this->render('Admin/cms_news_category/edit.html.twig', [
             'category' => $category
         ]);
     }

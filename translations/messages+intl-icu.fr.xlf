@@ -487,7 +487,7 @@
       </trans-unit>
       <trans-unit id="R1ccqGM" resname="register_register_button">
         <source>register_register_button</source>
-        <target>register_register_button</target>
+        <target>Inscription</target>
       </trans-unit>
       <trans-unit id="QtdMvsP" resname="register_offline">
         <source>register_offline</source>
@@ -1014,6 +1014,18 @@
       <trans-unit id="qlKx9wS" resname="Membres">
         <source>Membres</source>
         <target>Membres</target>
+      </trans-unit>
+      <trans-unit id="fI61iib" resname="Vérifiez vos informations, code d'erreur : R001">
+        <source>Vérifiez vos informations, code d'erreur : R001</source>
+        <target>Vérifiez vos informations, code d'erreur : R001</target>
+      </trans-unit>
+      <trans-unit id="m0W1gjz" resname="Vérifiez vos informations, code d'erreur : R002">
+        <source>Vérifiez vos informations, code d'erreur : R002</source>
+        <target>Vérifiez vos informations, code d'erreur : R002</target>
+      </trans-unit>
+      <trans-unit id="2uIUh1y" resname="Vérifiez vos informations, code d'erreur : R003">
+        <source>Vérifiez vos informations, code d'erreur : R003</source>
+        <target>Vérifiez vos informations, code d'erreur : R003</target>
       </trans-unit>
     </body>
   </file>

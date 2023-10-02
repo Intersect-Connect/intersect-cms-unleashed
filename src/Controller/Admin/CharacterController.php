@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Intersect CMS Unleashed
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
+ * Author : XFallSeane
+ * Website : https://intersect-connect.tk
+ */
+
 namespace App\Controller\Admin;
 
 use App\Settings\Api;
@@ -121,7 +129,7 @@ class CharacterController extends AbstractController
             }
         }
 
-        return $this->render($this->settings->get('theme') . '/admin/account/character.html.twig', [
+        return $this->render('Admin/account/character.html.twig', [
             'player' => $this->api->getCharacter($character),
             'inventory' => $inventory_list,
             'bank' => $bank_list,

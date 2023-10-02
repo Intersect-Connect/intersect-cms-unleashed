@@ -2,12 +2,11 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.2 Update
- * Last modify : 24/08/2021 at 20:21
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
-
 namespace App\Controller\Admin;
 
 use App\Settings\Api;
@@ -41,7 +40,7 @@ class CmsShopController extends AbstractController
     #[Route(path: '/', name: 'cms_shop_index', methods: ['GET'])]
     public function index(CmsSettings $settings): Response
     {
-        return $this->render($this->settings->get('theme') . '/admin/cms_shop/index.html.twig', [
+        return $this->render('Admin/cms_shop/index.html.twig', [
             'cms_shops' => $this->cmsShopRepository->findAll(),
         ]);
     }
@@ -84,7 +83,7 @@ class CmsShopController extends AbstractController
             return $this->redirectToRoute('cms_shop_index');
         }
 
-        return $this->render($this->settings->get('theme') . '/admin/cms_shop/new.html.twig', [
+        return $this->render('Admin/cms_shop/new.html.twig', [
             'cms_shop' => $cmsShop,
             'form' => $form->createView(),
         ]);
@@ -120,7 +119,7 @@ class CmsShopController extends AbstractController
             return $this->redirectToRoute('cms_shop_index');
         }
 
-        return $this->render($this->settings->get('theme') . '/admin/cms_shop/edit.html.twig', [
+        return $this->render('Admin/cms_shop/edit.html.twig', [
             'cms_shop' => $cmsShop,
             'form' => $form->createView(),
         ]);

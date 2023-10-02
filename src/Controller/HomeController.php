@@ -2,10 +2,10 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.2 Update
- * Last modify : 24/08/2021 at 20:21
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller;
@@ -42,14 +42,14 @@ class HomeController extends AbstractController
         if ($serveur_statut['success']) {
             $serveur_online = true;
 
-            return $this->render($this->settings->get('theme') . '/includes/aside.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/includes/aside.html.twig', [
                 'serveur_online' => $serveur_online,
                 'players_count' => $serveur_statut['online'],
                 'news' => $newRepo->findBy([], ['id' => 'DESC'], 5)
             ]);
         } else {
             $serveur_online = false;
-            return $this->render($this->settings->get('theme') . '/includes/aside.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/includes/aside.html.twig', [
                 'serveur_online' => $serveur_online,
                 'news' => $newRepo->findBy([], ['id' => 'DESC'], 5)
             ]);
@@ -99,7 +99,7 @@ class HomeController extends AbstractController
             }
         }
 
-        return $this->render($this->settings->get('theme') . '/home/index.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/home/index.html.twig', [
             'news' => $newsRepo->findBy([], ['id' => 'DESC'], 2),
             'shop' => $shop,
         ]);
@@ -123,7 +123,7 @@ class HomeController extends AbstractController
         }
 
 
-        return $this->render($this->settings->get('theme') . '/home/news.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/home/news.html.twig', [
             'news' => $news,
             'categorys' => $categoryRepo->findAll()
         ]);
@@ -133,7 +133,7 @@ class HomeController extends AbstractController
     #[Route(path: '/news/{id}-{slug}', name: 'news.read', requirements: ['_locale' => 'en|fr'])]
     public function newsRead(CmsNewsRepository $newsRepo, $id, SettingsCmsSettings $settings): Response
     {
-        return $this->render($this->settings->get('theme') . '/home/read_news.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/home/read_news.html.twig', [
             'news' => $newsRepo->find($id),
         ]);
     }
@@ -141,7 +141,7 @@ class HomeController extends AbstractController
     #[Route(path: '/download', name: 'game.download', requirements: ['_locale' => 'en|fr'])]
     public function downloadRead(CmsPagesRepository $pageRepo, SettingsCmsSettings $settings): Response
     {
-        return $this->render($this->settings->get('theme') . '/game/download.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/game/download.html.twig', [
             'news' => $pageRepo->findOneBy(['uniqueSlug' => 'download']),
         ]);
     }
@@ -150,7 +150,7 @@ class HomeController extends AbstractController
     #[Route(path: '/page/{slug}', name: 'game.pages', requirements: ['_locale' => 'en|fr'])]
     public function pageRead(CmsPagesRepository $pageRepo, $slug, SettingsCmsSettings $settings): Response
     {
-        return $this->render($this->settings->get('theme') . '/game/pageRead.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/game/pageRead.html.twig', [
             'news' => $pageRepo->findOneBy(['uniqueSlug' => $slug]),
         ]);
     }

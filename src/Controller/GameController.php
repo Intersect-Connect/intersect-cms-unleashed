@@ -2,10 +2,10 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.2 Update
- * Last modify : 24/08/2021 at 20:21
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller;
@@ -57,11 +57,11 @@ class GameController extends AbstractController
                 10 // Nombre de résultats par page
             );
 
-            return $this->render($this->settings->get('theme') . '/game/players.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/game/players.html.twig', [
                 'players' => $playersArray
             ]);
         } else {
-            return $this->render($this->settings->get('theme') . '/game/players.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/game/players.html.twig', [
                 'serveur_statut' => false
             ]);
         }
@@ -80,7 +80,7 @@ class GameController extends AbstractController
                 $joueurs_liste[] = ['name' => $joueur['Name'], 'level' => $joueur['Level'], 'exp' => $joueur['Exp'], 'expNext' => $joueur['ExperienceToNextLevel']];
             }
 
-            $response = new Response($this->renderView($this->settings->get('theme') . '/game/online.html.twig', [
+            $response = new Response($this->renderView('Application/' . $this->settings->get('theme') . '/game/online.html.twig', [
                 'joueurs' => $joueurs_liste,
             ]));
 
@@ -90,7 +90,7 @@ class GameController extends AbstractController
 
             return $response;
         } else {
-            return $this->render($this->settings->get('theme') . '/game/online.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/game/online.html.twig', [
                 'serveur_statut' => false
             ]);
         }
@@ -118,11 +118,11 @@ class GameController extends AbstractController
                 return $players_lists;
             });
 
-            return $this->render($this->settings->get('theme') . '/game/level_rank.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/game/level_rank.html.twig', [
                 'players' => $players
             ]);
         } else {
-            return $this->render($this->settings->get('theme') . '/game/level_rank.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/game/level_rank.html.twig', [
                 'serveur_statut' => false
             ]);
         }

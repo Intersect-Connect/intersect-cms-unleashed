@@ -11,11 +11,13 @@
 namespace App\Controller;
 
 use DateTime;
+use App\Entity\User;
 use App\Settings\Api;
 use App\Entity\CmsPointsHistory;
 use App\Repository\UserRepository;
 use App\Security\LoginAuthenticator;
 use App\Repository\CmsShopRepository;
+use App\Security\IntersectAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Settings\Settings as CmsSettings;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -28,25 +30,31 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 #[IsGranted('ROLE_USER')]
 class UserController extends AbstractController
 {
     public function __construct(
-        protected CmsSettings $settings, 
-        protected Api $api, 
-        protected CacheInterface $cache, 
+        protected CmsSettings $settings,
+        protected Api $api,
+        protected CacheInterface $cache,
         protected EntityManagerInterface $entityManager,
-        protected TranslatorInterface $translator
-        ){}
+        protected TranslatorInterface $translator,
+        protected UserRepository $userRepo,
+        private TokenStorageInterface $tokenStorage
+    ) {
+    }
 
     #[Route(path: '/account', name: 'account')]
-    public function index(Api $api, Request $request, UserRepository $userRepo, TranslatorInterface $translator, CmsSettings $settings): Response
+    public function index(Request $request, UserRepository $userRepo): Response
     {
         $data = [
             'page' => 0,
             'count' => 10
         ];
+        $user = $this->userRepo->find($this->getUser());
 
 
         if ($request->isMethod('POST')) {
@@ -58,10 +66,10 @@ class UserController extends AbstractController
             $password = $request->request->get('password');
             $newPassword = $request->request->get('newPassword');
             $passwordConfirm = $request->request->get('passwordConfirm');
+            $user = $this->userRepo->find($this->getUser());
 
             if (isset($email) && !empty($email) && isset($emailConfirm) && !empty($emailConfirm)) {
-                if ($email == $this->getUser()->getEmail()) {
-                    $user = $userRepo->find($this->getUser());
+                if ($email == $user->getEmail()) {
 
                     if ($user) {
                         if ($newEmail === $emailConfirm && password_verify($emailPassword, $user->getPassword())) {
@@ -70,7 +78,7 @@ class UserController extends AbstractController
                                 'authorization' => hash("sha256", $emailPassword)
                             ];
 
-                            if ($this->api->changeEmailAccount($data, $this->getUser()->getId())) {
+                            if ($this->api->changeEmailAccount($data, $user->getId())) {
                                 $user->setEmail($emailConfirm);
                                 $this->entityManager->persist($user);
                                 $this->entityManager->flush();
@@ -87,7 +95,7 @@ class UserController extends AbstractController
 
             if (isset($password) && !empty($password) && isset($newPassword) && !empty($newPassword)) {
                 if (password_verify($password, $this->getUser()->getPassword())) {
-                    $user = $userRepo->find($this->getUser());
+                    $user = $this->userRepo->find($this->getUser());
 
                     if ($user) {
                         if ($newPassword === $passwordConfirm) {
@@ -97,9 +105,8 @@ class UserController extends AbstractController
                             ];
 
 
-                            if ($this->api->changePasswordAccount($data, $this->getUser()->getId())) {
+                            if ($this->api->changePasswordAccount($data, $user->getId())) {
                                 $user->setPassword(password_hash($passwordConfirm, PASSWORD_ARGON2ID));
-                                $entityManager = $this->getDoctrine()->getManager();
                                 $this->entityManager->persist($user);
                                 $this->entityManager->flush();
                                 $this->addFlash('success', $this->translator->trans('Votre mot de passe a bien été modifié.'));
@@ -121,7 +128,7 @@ class UserController extends AbstractController
             $classes = $classes_array['entries'];
         }
 
-        $players_array = $this->api->getCharacters($this->getUser()->getId());
+        $players_array = $this->api->getCharacters($user->getId());
         $players = [];
 
         if (!isset($players_array['error'])) {
@@ -129,7 +136,7 @@ class UserController extends AbstractController
         }
 
 
-        return $this->render($this->settings->get('theme') . '/user/index.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/user/index.html.twig', [
             'classes' => $classes,
             'players' => $players
         ]);
@@ -137,7 +144,7 @@ class UserController extends AbstractController
 
 
     #[Route(path: '/account/credits', name: 'account.credit.reload')]
-    public function credit(Request $request,UserRepository $userRepo, TranslatorInterface $translator, LoginAuthenticator $login, GuardAuthenticatorHandler $guard): Response
+    public function credit(Request $request): Response
     {
         if ($request->isMethod('POST')) {
             $code = $request->request->get('code');
@@ -148,11 +155,10 @@ class UserController extends AbstractController
 
                 if ($dedipass->status == 'success') {
                     $virtual_currency = $dedipass->virtual_currency;
-                    $user = $userRepo->find($request->request->get('custom'));
+                    $user = $this->userRepo->find($request->request->get('custom'));
 
                     if ($user) {
                         $user->setPoints($user->getPoints() + $virtual_currency);
-                        $entityManager = $this->getDoctrine()->getManager();
                         $this->entityManager->persist($user);
                         $this->entityManager->flush();
 
@@ -161,35 +167,30 @@ class UserController extends AbstractController
                         $pointHistorique->setUserId($user->getId());
                         $pointHistorique->setCode($code);
                         $pointHistorique->setPointsAmount($virtual_currency);
-                        $entityManager = $this->getDoctrine()->getManager();
                         $this->entityManager->persist($pointHistorique);
                         $this->entityManager->flush();
 
-                        $res = new Response();
-                        $res->headers->clearCookie('user');
-                        $res->send();
+
 
                         $this->addFlash('success', $this->translator->trans('Votre compte a été rechargé en points boutique'));
 
-                        // Pas la meilleure façon mais pas le choix.
-                        $guard->authenticateUserAndHandleSuccess($user, $request, $login, 'main');
+                        $this->autoLoginUser($user);
                         return $this->redirectToRoute('account');
                     }
                 }
             }
         }
-        return $this->render($this->settings->get('theme') . '/user/credit.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/user/credit.html.twig', [
             'dedipass' => $this->api->getDedipassPublic()
         ]);
     }
 
     #[Route(path: '/account/history', name: 'account.history', requirements: ['_locale' => 'en|fr'])]
-    public function history(Api $api, Request $request, UserRepository $userRepo, CmsShopHistoryRepository $shopHistory, TranslatorInterface $translator, CmsShopRepository $cmsShopRepo, CmsPointsHistoryRepository $pointsRepo, CmsSettings $settings): Response
+    public function history(Request $request, CmsShopHistoryRepository $shopHistory, CmsShopRepository $cmsShopRepo, CmsPointsHistoryRepository $pointsRepo): Response
     {
-
-        $shop_history = $shopHistory->findBy(['userId' => $this->getUser()->getId()]);
-        $point_history = $pointsRepo->findBy(['userId' => $this->getUser()->getId()]);
-
+        $user = $this->userRepo->find($this->getUser());
+        $shop_history = $shopHistory->findBy(['userId' => $user->getId()]);
+        $point_history = $pointsRepo->findBy(['userId' => $user->getId()]);
         $history = [];
 
         foreach ($shop_history as $shop_history) {
@@ -217,8 +218,14 @@ class UserController extends AbstractController
 
 
 
-        return $this->render($this->settings->get('theme') . '/user/history.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/user/history.html.twig', [
             'history' => $history
         ]);
+    }
+
+    private function autoLoginUser(User $user): void
+    {
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
+        $this->tokenStorage->setToken($token);
     }
 }

@@ -2,10 +2,10 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.3 Update
- * Last modify : 04/04/2022 at 11:28
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller;
@@ -44,7 +44,7 @@ class GuildController extends AbstractController
         );
 
 
-        return $this->render($this->settings->get('theme') . '/guild/index.html.twig', [
+        return $this->render('Application/' .$this->settings->get('theme') . '/guild/index.html.twig', [
             'guilds' => $guilds,
         ]);
     }

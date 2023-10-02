@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Intersect CMS Unleashed
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
+ * Author : XFallSeane
+ * Website : https://intersect-connect.tk
+ */
+
 namespace App\Controller\Admin;
 
 use App\Settings\Api;
@@ -93,7 +101,7 @@ class AccountController extends AbstractController
         );
 
 
-        return $this->render($this->settings->get('theme') . '/admin/account/index.html.twig', [
+        return $this->render('Admin/account/index.html.twig', [
             'total_page' => $total_page,
             'items' => $users,
             'page_actuel' => $page
@@ -155,7 +163,7 @@ class AccountController extends AbstractController
         // dd($this->api->getUser($user));
 
 
-        return $this->render($this->settings->get('theme') . '/admin/account/detail.html.twig', [
+        return $this->render('Admin/account/detail.html.twig', [
             'user' => $this->api->getUser($user),
             'characters' => $this->api->getCharacters($user),
             'maxCharacters' => $this->api->getServerConfig()['Player']['MaxCharacters']

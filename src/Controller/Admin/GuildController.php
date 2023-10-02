@@ -2,10 +2,10 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.3 Update
- * Last modify : 04/04/2022 at 11:28
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller\Admin;
@@ -43,7 +43,7 @@ class GuildController extends AbstractController
     {
         $guildsRequest = $this->api->getAllGuilds();
         
-        return $this->render($this->settingsCms->get('theme') . '/admin/guild/index.html.twig', [
+        return $this->render('Admin/guild/index.html.twig', [
             'guilds' => $guildsRequest["Values"],
         ]);
     }
@@ -53,7 +53,7 @@ class GuildController extends AbstractController
     {
         $guildRequest = $this->api->getGuild($id);
 
-        return $this->render($this->settingsCms->get('theme') . '/admin/guild/get.html.twig', [
+        return $this->render('Admin/guild/get.html.twig', [
             'guild' => $guildRequest,
         ]);
     }

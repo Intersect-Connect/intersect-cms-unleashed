@@ -19,8 +19,7 @@ security:
             remember_me:
                 secret:   '%kernel.secret%' # required
                 lifetime: 15778800
-            custom_authenticator: App\Security\LoginAuthenticator
-
+            custom_authenticator: App\Security\IntersectAuthenticator
             logout:
                 path: app_logout
                 # where to redirect after logout

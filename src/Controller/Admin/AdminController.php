@@ -2,10 +2,10 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.3 Update
- * Last modify : 29/03/2022 at 13:23
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller\Admin;
@@ -86,10 +86,8 @@ class AdminController extends AbstractController
             $server_info = null;
         }
 
-        //    $total_users['Total'] != null ? $total_users['Total'] : null;
 
-
-        return $this->render($this->settings->get('theme') . '/admin/index.html.twig', [
+        return $this->render('Admin/index.html.twig', [
             'total_users' => $total_users != null ? $total_users['Total'] : null,
             'total_players' => $total_players,
             'total_shop' => count($shop->findAll()),
@@ -268,7 +266,7 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('admin.settings');
         }
 
-        $dir    = '../templates';
+        $dir    = '../templates/Application';
         $folders = scandir($dir);
         array_splice($folders, array_search('.', $folders), 1);
         array_splice($folders, array_search('..', $folders), 1);
@@ -303,7 +301,7 @@ class AdminController extends AbstractController
         ];
 
 
-        return $this->render($this->settings->get('theme') . '/admin/cms_settings/index.html.twig', [
+        return $this->render('Admin/cms_settings/index.html.twig', [
             'params' => $settings->findAll(),
             'folders' => $folders,
             "settingsCat" => $settingsCat
@@ -318,7 +316,7 @@ class AdminController extends AbstractController
         $total_page = floor($total / 20);
 
 
-        return $this->render($this->settings->get('theme') . '/admin/items_list/index.html.twig', [
+        return $this->render('Admin/items_list/index.html.twig', [
             'total_page' => $total_page,
             'items' => $items['entries'],
             'page_actuel' => $page

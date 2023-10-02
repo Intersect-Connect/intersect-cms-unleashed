@@ -2,10 +2,10 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.2 Update
- * Last modify : 24/08/2021 at 20:21
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller\Admin;
@@ -34,7 +34,7 @@ class CmsPagesController extends AbstractController
     #[Route(path: '/', name: 'cms_pages_index', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->render($this->settings->get('theme') . '/admin/cms_pages/index.html.twig', [
+        return $this->render('Admin/cms_pages/index.html.twig', [
             'cms_pages' => $this->cmsPagesRepository->findAll(),
         ]);
     }
@@ -55,7 +55,7 @@ class CmsPagesController extends AbstractController
             return $this->redirectToRoute('cms_pages_index');
         }
 
-        return $this->render($this->settings->get('theme') . '/admin/cms_pages/new.html.twig', [
+        return $this->render('Admin/cms_pages/new.html.twig', [
             'cms_page' => $cmsPage,
             'form' => $form->createView(),
         ]);
@@ -64,7 +64,7 @@ class CmsPagesController extends AbstractController
     #[Route(path: '/{id}', name: 'cms_pages_show', methods: ['GET'])]
     public function show(CmsPages $cmsPage): Response
     {
-        return $this->render($this->settings->get('theme') . '/admin/cms_pages/show.html.twig', [
+        return $this->render('Admin/cms_pages/show.html.twig', [
             'cms_page' => $cmsPage,
         ]);
     }
@@ -83,7 +83,7 @@ class CmsPagesController extends AbstractController
             return $this->redirectToRoute('cms_pages_index');
         }
 
-        return $this->render($this->settings->get('theme') . '/admin/cms_pages/edit.html.twig', [
+        return $this->render('Admin/cms_pages/edit.html.twig', [
             'cms_page' => $cmsPage,
             'form' => $form->createView(),
         ]);
