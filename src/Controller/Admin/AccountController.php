@@ -14,6 +14,7 @@ use App\Settings\Api;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CmsSettingsRepository;
 use App\Settings\Settings as CmsSettings;
+use Symfony\Contracts\Cache\ItemInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -94,6 +95,12 @@ class AccountController extends AbstractController
         $total = $users['Total'];
         $total_page = floor($total / 30);
 
+
+        $allUser =  $this->cache->get('users', function (ItemInterface $item) {
+            $item->expiresAfter(86400);
+            return $this->api->multipleGetUsers();
+        });
+
         $users = $paginator->paginate(
             $this->api->multipleGetUsers(), // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
@@ -104,7 +111,7 @@ class AccountController extends AbstractController
         return $this->render('Admin/account/index.html.twig', [
             'total_page' => $total_page,
             'items' => $users,
-            'page_actuel' => $page
+            // 'page_actuel' => $page
         ]);
     }
 

@@ -41,12 +41,8 @@ class SecurityController extends AbstractController
     }
     
     #[Route(path: '/login', name: 'app_login', requirements: ['_locale' => 'en|fr'])]
-    public function login(AuthenticationUtils $authenticationUtils, CmsSettings $settings): Response
+    public function login(Request $request, AuthenticationUtils $authenticationUtils, CmsSettings $settings): Response
     {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('home.index');
-        }
-
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user

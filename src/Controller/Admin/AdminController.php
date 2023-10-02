@@ -270,6 +270,7 @@ class AdminController extends AbstractController
         $folders = scandir($dir);
         array_splice($folders, array_search('.', $folders), 1);
         array_splice($folders, array_search('..', $folders), 1);
+        
         $settingsCat = [
             "website" => [
                 "base_url",
@@ -299,7 +300,6 @@ class AdminController extends AbstractController
                 "discord_link"
             ]
         ];
-
 
         return $this->render('Admin/cms_settings/index.html.twig', [
             'params' => $settings->findAll(),

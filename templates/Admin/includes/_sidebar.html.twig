@@ -100,18 +100,18 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="{{path('admin.items')}}">
+        <a class="nav-link" href="{{path('admin.items', { 'page': 1 })}}">
             <i class="fas fa-database"></i>
             <span>{{"Voir la liste des items"|trans}}</span>
         </a>
     </li>
 
-    <li class="nav-item d-none">
+    {# <li class="nav-item d-none">
         <a class="nav-link" href="{{path('admin.items')}}">
             <i class="fas fa-users"></i>
             <span>{{"Liste des transactions"|trans}}</span>
         </a>
-    </li>
+    </li> #}
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

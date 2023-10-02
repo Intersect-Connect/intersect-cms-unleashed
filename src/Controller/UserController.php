@@ -148,6 +148,7 @@ class UserController extends AbstractController
     {
         if ($request->isMethod('POST')) {
             $code = $request->request->get('code');
+            $custom = $request->request->get('custom');
 
             if (!empty($code)) {
                 $dedipass = file_get_contents('http://api.dedipass.com/v1/pay/?public_key=' . $this->api->getDedipassPublic() . '&private_key=' . $this->api->getDedipassPrivate() . '&code=' . $code);
@@ -179,6 +180,8 @@ class UserController extends AbstractController
                     }
                 }
             }
+
+            return $this->handleError($translator, 'Une erreur est survenue lors du rechargement de votre compte');
         }
         return $this->render('Application/' . $this->settings->get('theme') . '/user/credit.html.twig', [
             'dedipass' => $this->api->getDedipassPublic()

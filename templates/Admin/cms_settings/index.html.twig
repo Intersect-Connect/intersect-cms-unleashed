@@ -62,12 +62,13 @@
 									<label for="{{param.setting}}">{{param.description}}</label>
 									<select name="{{param.setting}}" id="{{param.setting}}" class="form-control">
 										{% for folder in folders %}
-											<option value="{{folder}}" {% if param.defaultValue==folder %} selected {% endif %}>
-												{{folder}}
-											</option>
+											{% if folder != "Admin"  %}
+												<option value="{{folder}}" {% if param.defaultValue==folder %} selected {% endif %}>
+													{{folder}}
+												</option>
+											{% endif %}
 										{% endfor %}
 									</select>
-
 								{% endif %}
 							{% endif %}
 						{% endfor %}
