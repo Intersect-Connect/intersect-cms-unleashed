@@ -180,8 +180,8 @@ class UserController extends AbstractController
                     }
                 }
             }
-
-            return $this->handleError($translator, 'Une erreur est survenue lors du rechargement de votre compte');
+            $this->addFlash('error', $this->translator->trans('Une erreur est survenue lors du rechargement de votre compte'));
+            return $this->redirectToRoute('account');
         }
         return $this->render('Application/' . $this->settings->get('theme') . '/user/credit.html.twig', [
             'dedipass' => $this->api->getDedipassPublic()
