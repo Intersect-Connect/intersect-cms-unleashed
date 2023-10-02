@@ -2,27 +2,25 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.3 Update
- * Last modify : 04/04/2022 at 11:28
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller\Admin;
 
 use App\Settings\Api;
-use App\Settings\CmsSettings;
+use App\Settings\Settings as CmsSettings;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * @Route("/admin/guilds")
- * @IsGranted("ROLE_ADMIN")
- */
+#[IsGranted('ROLE_ADMIN')]
+#[Route(path: '/admin/guilds')]
 class GuildController extends AbstractController
 {
     private $settingsCms;
@@ -40,9 +38,7 @@ class GuildController extends AbstractController
     }
 
 
-    /**
-     * @Route("/", name="admin.guilds")
-     */
+    #[Route(path: '/', name: 'admin.guilds')]
     public function index(): Response
     {
         $guildsRequest = $this->api->getAllGuilds();
@@ -52,13 +48,10 @@ class GuildController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="admin_guild.get")
-     */
+    #[Route(path: '/{id}', name: 'admin_guild.get')]
     public function get($id): Response
     {
         $guildRequest = $this->api->getGuild($id);
-        // dd($guildRequest);
 
         return $this->render('Admin/guild/get.html.twig', [
             'guild' => $guildRequest,

@@ -2,51 +2,50 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.2 Update
- * Last modify : 24/08/2021 at 20:21
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller\Admin;
 
+use DateTime;
+use App\Settings\Api;
 use App\Entity\CmsNews;
 use App\Form\CmsNewsType;
-use App\Settings\Api;
-use App\Settings\CmsSettings;
-use DateTime;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\CmsNewsRepository;
 use Symfony\Component\Asset\Packages;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Settings\Settings as CmsSettings;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGenerator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * @IsGranted("ROLE_ADMIN")
- * @Route("admin/news/")
- */
+#[IsGranted('ROLE_ADMIN')]
+#[Route(path: 'admin/news/')]
 class CmsNewsController extends AbstractController
 {
-    /**
-     * @Route("/", name="cms_news_index", methods={"GET"})
-     */
-    public function index(CmsSettings $setting): Response
-    {
-        $cmsNews = $this->getDoctrine()
-            ->getRepository(CmsNews::class)
-            ->findAll();
+    public function __construct(
+        protected CmsSettings $settings,
+        protected Api $api,
+        protected EntityManagerInterface $entityManager,
+        protected CmsNewsRepository $cmsNewsRepository
+    ) {
+    }
 
+    #[Route(path: '/', name: 'cms_news_index', methods: ['GET'])]
+    public function index(): Response
+    {
         return $this->render('Admin/cms_news/index.html.twig', [
-            'cms_news' => $cmsNews,
+            'cms_news' => $this->cmsNewsRepository->findAll(),
         ]);
     }
 
-    /**
-     * @Route("/new", name="cms_news_new", methods={"GET","POST"})
-     */
-    public function new(Request $request, Api $api, Packages $assetPackage, CmsSettings $setting): Response
+    #[Route(path: '/new', name: 'cms_news_new', methods: ['GET', 'POST'])]
+    public function new(Request $request): Response
     {
         $cmsNews = new CmsNews();
         $form = $this->createForm(CmsNewsType::class, $cmsNews);
@@ -70,9 +69,8 @@ class CmsNewsController extends AbstractController
             $cmsNews->setAuthor($this->getUser()->getUsername());
             $cmsNews->setSlug($this->format_uri($form->get('title')->getData()));
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($cmsNews);
-            $entityManager->flush();
+            $this->entityManager->persist($cmsNews);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('cms_news_index');
         }
@@ -83,10 +81,8 @@ class CmsNewsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="cms_news_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, CmsNews $cmsNews, CmsSettings $setting): Response
+    #[Route(path: '/{id}/edit', name: 'cms_news_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, CmsNews $cmsNews): Response
     {
         $image = $cmsNews->getImgUrl();
         $form = $this->createForm(CmsNewsType::class, $cmsNews);
@@ -111,7 +107,7 @@ class CmsNewsController extends AbstractController
             } else {
                 $cmsNews->setImgUrl($image);
             }
-            $this->getDoctrine()->getManager()->flush();
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('cms_news_index');
         }
@@ -122,17 +118,14 @@ class CmsNewsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="cms_news_delete", methods={"POST"})
-     */
-    public function delete(Request $request, CmsNews $cmsNews, CmsSettings $setting): Response
+    #[Route(path: '/{id}', name: 'cms_news_delete', methods: ['POST'])]
+    public function delete(Request $request, CmsNews $cmsNews): Response
     {
         if ($this->isCsrfTokenValid('delete' . $cmsNews->getId(), $request->request->get('_token'))) {
             $nom = $cmsNews->getImgUrl();
             unlink($this->getParameter('images_articles') . '/' . $nom);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($cmsNews);
-            $entityManager->flush();
+            $this->entityManager->remove($cmsNews);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('cms_news_index');

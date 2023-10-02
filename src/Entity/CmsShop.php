@@ -10,77 +10,64 @@
 
 namespace App\Entity;
 
+use App\Repository\CmsShopRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CmsShop
- *
- * @ORM\Table(name="cms_shop")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'cms_shop')]
+#[ORM\Entity(repositoryClass: CmsShopRepository::class)]
 class CmsShop
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="id_item", type="string", length=255, nullable=false)
      */
+    #[ORM\Column(name: 'id_item', type: 'string', length: 255, nullable: false)]
     private $idItem;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="price", type="integer", nullable=false)
      */
+    #[ORM\Column(name: 'price', type: 'integer', nullable: false)]
     private $price = '0';
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="forceddescription", type="text", length=65535, nullable=false)
      */
+    #[ORM\Column(name: 'forceddescription', type: 'text', length: 65535, nullable: false)]
     private $forceddescription;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="quantity", type="integer", nullable=false, options={"default"="1"})
      */
+    #[ORM\Column(name: 'quantity', type: 'integer', nullable: false, options: ['default' => 1])]
     private $quantity = 1;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="promotion", type="integer", nullable=false)
      */
+    #[ORM\Column(name: 'promotion', type: 'integer', nullable: false)]
     private $promotion = '0';
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="visible", type="integer", nullable=false, options={"default"="1"})
      */
+    #[ORM\Column(name: 'visible', type: 'integer', nullable: false, options: ['default' => 1])]
     private $visible = 1;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: false)]
     private $name;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
+    #[ORM\Column(name: 'image', type: 'string', length: 255, nullable: true)]
     private $image;
 
 
@@ -234,7 +221,7 @@ class CmsShop
      *
      * @return  bool
      */
-    public function getVisible(): ?bool
+    public function getVisible(): bool
     {
         return $this->visible;
     }

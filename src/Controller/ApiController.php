@@ -2,27 +2,24 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.3 Update
- * Last modify : 04/04/2022 at 12:03
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller;
 
 use App\Services\ApiManager;
-use App\Settings\CmsSettings;
+use App\Settings\Settings as CmsSettings;
 use App\Repository\CmsNewsRepository;
-use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * @Route("/api/v1")
- */
+#[Route(path: '/api/v1')]
 class ApiController extends AbstractController
 {
     private $apiManager;
@@ -37,9 +34,7 @@ class ApiController extends AbstractController
         $this->router = $router;
     }
 
-    /**
-     * @Route("/news", name="api.news", methods={"GET"})
-     */
+    #[Route(path: '/news', name: 'api.news', methods: ['GET'])]
     public function index(CmsNewsRepository $newsRepo, Request $request): Response
     {
         $news = $newsRepo->findAll();

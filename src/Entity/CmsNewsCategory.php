@@ -15,32 +15,22 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="cms_news_category")
- * @ORM\Entity(repositoryClass=CmsNewsCategoryRepository::class)
- */
+#[ORM\Table(name: 'cms_news_category')]
+#[ORM\Entity(repositoryClass: CmsNewsCategoryRepository::class)]
 class CmsNewsCategory
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity=CmsNews::class, mappedBy="category")
-     */
+    #[ORM\OneToMany(targetEntity: CmsNews::class, mappedBy: 'category')]
     private $cmsNews;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $color;
 
     public function __construct()

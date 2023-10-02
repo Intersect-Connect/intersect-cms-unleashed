@@ -995,6 +995,18 @@
         <source>Membres</source>
         <target>Members</target>
       </trans-unit>
+      <trans-unit id="fI61iib" resname="Vérifiez vos informations, code d'erreur : R001">
+        <source>Vérifiez vos informations, code d'erreur : R001</source>
+        <target>Check your information, error code: R001</target>
+      </trans-unit>
+      <trans-unit id="m0W1gjz" resname="Vérifiez vos informations, code d'erreur : R002">
+        <source>Vérifiez vos informations, code d'erreur : R002</source>
+        <target>Check your information, error code: R002</target>
+      </trans-unit>
+      <trans-unit id="2uIUh1y" resname="Vérifiez vos informations, code d'erreur : R003">
+        <source>Vérifiez vos informations, code d'erreur : R003</source>
+        <target>Check your information, error code: R003</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

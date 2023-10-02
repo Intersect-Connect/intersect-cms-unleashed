@@ -2,39 +2,45 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.2 Update
- * Last modify : 24/08/2021 at 20:21
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller;
 
 use App\Settings\Api;
-use App\Settings\CmsSettings;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use App\Settings\Settings as CmsSettings;
 use Symfony\Component\Routing\Annotation\Route;
-use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
-use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 
 class GameController extends AbstractController
 {
-    /**
-     * @Route("/players", name="game.players.liste",  requirements={"_locale": "en|fr"})
-     */
-    public function listeJoueurs(Api $api, $page = 0, PaginatorInterface $paginator, Request $request, CmsSettings $settings, CacheInterface $cache): Response
+
+    public function __construct(
+        protected CacheInterface $cache,
+        protected CmsSettings $settings,
+        protected Api $api
+    ) {
+    }
+
+    #[Route(path: '/players', name: 'game.players.liste', requirements: ['_locale' => 'en|fr'])]
+    public function listeJoueurs(PaginatorInterface $paginator, Request $request): Response
     {
-        $serveur_statut = $api->ServeurStatut();
+        $serveur_statut = $this->api->ServeurStatut();
 
         if ($serveur_statut['success']) {
 
-            $players = $cache->get('players', function (ItemInterface $item) use ($api, $paginator, $request) {
+            $players = $this->cache->get('players', function (ItemInterface $item) {
                 $item->expiresAfter(86400);
-                $playersRequests = $api->multipleGetPlayers();
+                $playersRequests = $this->api->multipleGetPlayers();
                 $players_lists = [];
 
                 foreach ($playersRequests as $player) {
@@ -51,24 +57,22 @@ class GameController extends AbstractController
                 10 // Nombre de résultats par page
             );
 
-            return $this->render($settings->get('theme') . '/game/players.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/game/players.html.twig', [
                 'players' => $playersArray
             ]);
         } else {
-            return $this->render($settings->get('theme') . '/game/players.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/game/players.html.twig', [
                 'serveur_statut' => false
             ]);
         }
     }
 
-    /**
-     * @Route("/online-players", name="game.players.liste.online",  requirements={"_locale": "en|fr"})
-     */
-    public function listeJoueursEnLigne(Api $api, $page = 0, CmsSettings $settings): Response
+    #[Route(path: '/online-players', name: 'game.players.liste.online', requirements: ['_locale' => 'en|fr'])]
+    public function listeJoueursEnLigne(): Response
     {
-        $serveur_statut = $api->ServeurStatut();
+        $serveur_statut = $this->api->ServeurStatut();
         if ($serveur_statut['success']) {
-            $joueurs = $api->onlinePlayers(0);
+            $joueurs = $this->api->onlinePlayers(0);
 
             $joueurs_liste = [];
 
@@ -76,7 +80,7 @@ class GameController extends AbstractController
                 $joueurs_liste[] = ['name' => $joueur['Name'], 'level' => $joueur['Level'], 'exp' => $joueur['Exp'], 'expNext' => $joueur['ExperienceToNextLevel']];
             }
 
-            $response = new Response($this->renderView($settings->get('theme') . '/game/online.html.twig', [
+            $response = new Response($this->renderView('Application/' . $this->settings->get('theme') . '/game/online.html.twig', [
                 'joueurs' => $joueurs_liste,
             ]));
 
@@ -86,23 +90,21 @@ class GameController extends AbstractController
 
             return $response;
         } else {
-            return $this->render($settings->get('theme') . '/game/online.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/game/online.html.twig', [
                 'serveur_statut' => false
             ]);
         }
     }
 
-    /**
-     * @Route("/rank/level", name="game.rank.level",  requirements={"_locale": "en|fr"})
-     */
-    public function rankNiveau(Api $api, CmsSettings $settings, CacheInterface $cache, PaginatorInterface $paginator, Request $request): Response
+    #[Route(path: '/rank/level', name: 'game.rank.level', requirements: ['_locale' => 'en|fr'])]
+    public function rankNiveau(): Response
     {
-        $serveur_statut = $api->ServeurStatut();
+        $serveur_statut = $this->api->ServeurStatut();
         if ($serveur_statut['success']) {
 
-            $players = $cache->get('ranked_players', function (ItemInterface $item) use ($api, $paginator, $request) {
+            $players = $this->cache->get('ranked_players', function (ItemInterface $item) {
                 $item->expiresAfter(86400);
-                $rankRequests = $api->getRank(0);
+                $rankRequests = $this->api->getRank(0);
 
                 $players_lists = [];
 
@@ -116,11 +118,11 @@ class GameController extends AbstractController
                 return $players_lists;
             });
 
-            return $this->render($settings->get('theme') . '/game/level_rank.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/game/level_rank.html.twig', [
                 'players' => $players
             ]);
         } else {
-            return $this->render($settings->get('theme') . '/game/level_rank.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/game/level_rank.html.twig', [
                 'serveur_statut' => false
             ]);
         }

@@ -1,0 +1,63 @@
+{% extends 'Application/' ~ settings.get("theme") ~'/base.html.twig' %}
+
+{% block title %}{{ 'Historique de transaction'|trans }}{% endblock %}
+
+{% block body %}
+
+<h1>
+    {{'Historique de transaction'|trans }}
+</h1>
+<ul id="breadcrump">
+    <li>
+        <a href="{{path('home')}}">{{ 'Accueil'|trans }}</a>
+    </li>
+    <li>
+        <a href="{{path('account')}}">{{ 'Mon compte'|trans }}</a>
+    </li>
+    <li>{{ 'Historique de transaction'|trans }}</li>
+</ul>
+
+<div id="middle" class="p-0">
+     <table class="table table-hover text-center">
+                        <thead class="text-center bg-table">
+                            <tr>
+                                <th class="text-center">{{'Nom'|trans}}</th>
+                                <th class="text-center">{{'Date'|trans}}</th>
+                                <th class="text-center">{{'Type'|trans}}</th>
+                                <th class="text-center">{{'Quantité'|trans}}</th>
+                                <th class="text-center">{{'Prix/code'|trans}}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            {% for item in history %}
+                            <tr>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.date }}</td>
+                                <td>
+                                    {% if item.type == "item_shop" %}
+                                        {{"Achat boutique VIP"|trans}}
+                                    {% endif %}
+
+                                       {% if item.type == "points_vip" %}
+                                        {{"Rechargement crédits"|trans}}
+                                    {% endif %}
+                                </td>
+                                <td>{{ item.quantity }}</td>
+                                {% if item.price is defined %}
+                                 <td>{{ item.price }}</td>
+                                {% endif %}
+                                 {% if item.code is defined %}
+                                 <td>{{ item.code }}</td>
+                                {% endif %}
+                               
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="//api.dedipass.com/v1/pay.js"></script>
+{% endblock %}

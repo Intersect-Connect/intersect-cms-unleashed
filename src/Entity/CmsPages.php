@@ -10,54 +10,43 @@
 
 namespace App\Entity;
 
+use App\Repository\CmsPagesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CmsPages
- *
- * @ORM\Table(name="cms_pages")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'cms_pages')]
+#[ORM\Entity(repositoryClass: CmsPagesRepository::class)]
 class CmsPages
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="category", type="string", length=255, nullable=false)
      */
+    #[ORM\Column(name: 'category', type: 'string', length: 255, nullable: false)]
     private $category;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="unique_slug", type="string", length=255, nullable=false)
      */
+    #[ORM\Column(name: 'unique_slug', type: 'string', length: 255, nullable: false)]
     private $uniqueSlug;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="text", length=65535, nullable=false)
      */
+    #[ORM\Column(name: 'name', type: 'text', length: 65535, nullable: false)]
     private $name;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="content", type="text", length=65535, nullable=false)
      */
+    #[ORM\Column(name: 'content', type: 'text', length: 65535, nullable: false)]
     private $content;
 
-    /**
-     * @ORM\Column(name="is_visible", type="integer")
-     */
+    #[ORM\Column(name: 'is_visible', type: 'integer')]
     private $isVisible;
 
 
@@ -186,7 +175,7 @@ class CmsPages
      *
      * @return  bool
      */ 
-    public function getIsVisible(): ?bool
+    public function getIsVisible(): bool
     {
         return $this->isVisible;
     }
@@ -198,7 +187,7 @@ class CmsPages
      *
      * @return  self
      */ 
-    public function setIsVisible(bool $isVisible): self
+    public function setIsVisible(bool $isVisible): \App\Entity\CmsPages
     {
         $this->isVisible = $isVisible;
 

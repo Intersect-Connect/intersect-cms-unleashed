@@ -1,5 +1,5 @@
 twig:
     default_path: '%kernel.project_dir%/templates/'
     globals:
-        settings: '@App\Settings\CmsSettings'
+        settings: '@App\Settings\Settings'
         api: '@App\Settings\Api'

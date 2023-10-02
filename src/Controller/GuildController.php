@@ -2,45 +2,35 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.3 Update
- * Last modify : 04/04/2022 at 11:28
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller;
 
 use App\Settings\Api;
-use App\Settings\CmsSettings;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Routing\Annotation\Route;
+use App\Settings\Settings as CmsSettings;
 use Symfony\Contracts\Cache\ItemInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GuildController extends AbstractController
 {
-
-    private $settings;
-    private $api;
-    private $cache;
-    private $paginator;
-    
-
-    public function __construct(CmsSettings $setting, Api $api, CacheInterface $cache, PaginatorInterface $paginator)
+    public function __construct(
+        protected CmsSettings $settings, 
+        protected Api $api, 
+        protected CacheInterface $cache, 
+        protected PaginatorInterface $paginator)
     {
-        $this->settings = $setting;
-        $this->api = $api;
-        $this->cache = $cache;
-        $this->paginator = $paginator;
     }
 
-    /**
-     * @Route("/guilds", name="guilds")
-     */
+    #[Route(path: '/guilds', name: 'guilds')]
     public function index(Request $request): Response
     {
         $guildsRequest = $this->cache->get('guilds', function (ItemInterface $item)  {
@@ -54,7 +44,7 @@ class GuildController extends AbstractController
         );
 
 
-        return $this->render($this->settings->get('theme') . '/guild/index.html.twig', [
+        return $this->render('Application/' .$this->settings->get('theme') . '/guild/index.html.twig', [
             'guilds' => $guilds,
         ]);
     }

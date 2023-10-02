@@ -2,32 +2,44 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.2 Update
- * Last modify : 24/08/2021 at 20:21
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller;
 
-use App\Entity\CmsShopHistory;
-use App\Repository\CmsShopRepository;
-use App\Repository\UserRepository;
-use App\Settings\Api;
-use App\Settings\CmsSettings;
 use DateTime;
+use App\Entity\User;
+use App\Settings\Api;
+use App\Entity\CmsShopHistory;
+use App\Repository\UserRepository;
+use App\Repository\CmsShopRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Settings\Settings as CmsSettings;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ShopController extends AbstractController
 {
-    /**
-     * @Route("/shop", name="shop.index",  requirements={"_locale": "en|fr"})
-     */
+    public function __construct(
+        protected CmsSettings $settings, 
+        protected Api $api, 
+        protected CacheInterface $cache, 
+        protected PaginatorInterface $paginator,
+        protected EntityManagerInterface $entityManager,
+        protected TranslatorInterface $translator,
+        ){}
+        
+    #[Route(path: '/shop', name: 'shop.index', requirements: ['_locale' => 'en|fr'])]
     public function index(CmsShopRepository $shopRepo, Api $api, PaginatorInterface $paginator, Request $request, CmsSettings $settings): Response
     {
 
@@ -36,7 +48,7 @@ class ShopController extends AbstractController
         $shop = array();
         foreach ($shopItems as $itemShop) {
 
-            $itemData = $api->getObjectDetail($itemShop->getIdItem());
+            $itemData = $this->api->getObjectDetail($itemShop->getIdItem());
 
 
             $shop[$itemShop->getId()]['itemData'] = $itemData;
@@ -72,18 +84,17 @@ class ShopController extends AbstractController
             6 // Nombre de résultats par page
         );
 
-        return $this->render($settings->get('theme') . '/shop/index.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/shop/index.html.twig', [
             'shop' => $items,
         ]);
     }
 
-    /**
-     * @Route("/shop/detail/{id}", name="shop.detail",  requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/shop/detail/{id}', name: 'shop.detail', requirements: ['_locale' => 'en|fr'])]
     public function detail(CmsShopRepository $shopRepo, Request $request, Api $api, $id, TranslatorInterface $translator, UserRepository $userRepo, CmsSettings $settings): Response
     {
         $shopItem = $shopRepo->find($id);
-        $itemData = $api->getObjectDetail($shopItem->getIdItem());
+        $itemData = $this->api->getObjectDetail($shopItem->getIdItem());
+        $user = $userRepo->find($this->getUser());
 
         if ($shopItem->getPromotion()) {
             $item = ['id' => $id, 'name' => $itemData['Name'], 'description' => $shopItem->getForcedDescription(), 'price' => $shopItem->getPrice() * (1 - ($shopItem->getPromotion() / 100)), 'quantity' => $shopItem->getQuantity(), 'icon' => $itemData['Icon'], 'image' => $shopItem->getImage()];
@@ -91,10 +102,10 @@ class ShopController extends AbstractController
             $item = ['id' => $id, 'name' => $itemData['Name'], 'description' => $shopItem->getForcedDescription(), 'price' => $shopItem->getPrice(), 'quantity' => $shopItem->getQuantity(), 'icon' => $itemData['Icon'], 'image' => $shopItem->getImage()];
         }
 
-        $personnages = $api->getCharacters($this->getUser()->getId());
+        $personnages = $this->api->getCharacters($user->getId());
 
         foreach ($personnages as $key => $personnage) {
-            if (!$api->isInventoryFull($personnage['Id'])) {
+            if (!$this->api->isInventoryFull($personnage['Id'])) {
                 $personnages[$key]['inventoryFull'] = false;
             } else {
                 $personnages[$key]['inventoryFull'] = true;
@@ -127,9 +138,9 @@ class ShopController extends AbstractController
                 }
 
                 // Si le nombre de point est supérieur ou égal au prix de l'objet
-                if ($this->getUser()->getPoints() >= $item['price'] * $quantity) {
+                if ($user->getPoints() >= $item['price'] * $quantity) {
                     //  alors on lance la requête d'achat, l'objet est envoyez dans l'inventaire et la requête doit retourner true
-                    if ($api->giveItem($data, $character)) {
+                    if ($this->api->giveItem($data, $character)) {
                         // Si la requête on retourne true, on récupère l'utilisateur actuel
                         $user = $userRepo->find($this->getUser());
                         // On définit le prix de l'objet actuel
@@ -142,35 +153,33 @@ class ShopController extends AbstractController
                             $user->setPoints($user->getPoints() - $prix_objet_q);
                         }
 
-                        $entityManager = $this->getDoctrine()->getManager();
-                        $entityManager->persist($user);
-                        $entityManager->flush();
+                        $this->entityManager->persist($user);
+                        $this->entityManager->flush();
 
                         $boutiqueHistorique = new CmsShopHistory();
                         $boutiqueHistorique->setDate(new DateTime());
                         $boutiqueHistorique->setShopId($id);
-                        $boutiqueHistorique->setUserId($this->getUser()->getId());
+                        $boutiqueHistorique->setUserId($user->getId());
                         $boutiqueHistorique->setCreditsNow($user->getPoints());
-                        $entityManager = $this->getDoctrine()->getManager();
-                        $entityManager->persist($boutiqueHistorique);
-                        $entityManager->flush();
+                        $this->entityManager->persist($boutiqueHistorique);
+                        $this->entityManager->flush();
 
-                        $this->addFlash('success', $translator->trans('Votre achat à bien été effectuer, vous devriez avoir reçu votre objet en jeu.'));
+                        $this->addFlash('success', $this->translator->trans('Votre achat à bien été effectuer, vous devriez avoir reçu votre objet en jeu.'));
                         return $this->redirectToRoute('shop.detail', ['id' => $id]);
                     } else {
-                        $this->addFlash('error', $translator->trans('Une erreur s\'est produit, veuillez réessayer.'));
+                        $this->addFlash('error', $this->translator->trans('Une erreur s\'est produit, veuillez réessayer.'));
                         return $this->redirectToRoute('shop.detail', ['id' => $id]);
                     }
                 } else {
-                    $this->addFlash('error', $translator->trans('Vous n\'avez pas assez de points.'));
+                    $this->addFlash('error', $this->translator->trans('Vous n\'avez pas assez de points.'));
                     return $this->redirectToRoute('shop.detail', ['id' => $id]);
                 }
             } else {
-                $this->addFlash('error', $translator->trans('Un champ est manquant. Vérifier la quantité et le personnage choisis.'));
+                $this->addFlash('error', $this->translator->trans('Un champ est manquant. Vérifier la quantité et le personnage choisis.'));
                 return $this->redirectToRoute('shop.detail', ['id' => $id]);
             }
         }
-        return $this->render($settings->get('theme') . '/shop/detail.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/shop/detail.html.twig', [
             'item' => $item,
             'personnages' => $personnages
         ]);

@@ -14,8 +14,10 @@ class ApiManager
 
     /**
      * Generate render response
+     * @param array<mixed> $data
+     * @return Response
      */
-    public function generateResponse($data)
+    public function generateResponse(array $data):Response
     {
         $response = new Response();
         $response->setContent(json_encode($data));

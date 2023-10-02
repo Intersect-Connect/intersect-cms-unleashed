@@ -1,0 +1,58 @@
+{% extends 'Application/' ~ settings.get("theme") ~'/base.html.twig' %}
+
+{% block title %}{{"Actualités"|trans}}{% endblock %}
+
+{% block body %}
+
+<h1>
+    {{ 'Actualités'|trans }}
+</h1>
+<ul id="breadcrump" class="mb-0">
+    <li>
+        <a href="{{ path('home') }}">{{ 'Accueil'|trans }}</a>
+    </li>
+    <li>{{ 'Actualités'|trans }}</li>
+</ul>
+
+<ul class="nav justify-content-center bg-white border shadow rounded-0">
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{{path('home.news')}}">{{"Voir tout"|trans}}</a>
+    </li>
+
+    {% for category in categorys %}
+    <li class="nav-item">
+        <a class="nav-link" href="?category={{category.id}}">{{category.name}}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<section class="bg-white p-3">
+    {% for news in news %}
+<a href="{{path('news.read', {'id':news.id, 'slug':news.slug})}}" class="text-white">
+    <div class="row border-bottom mt-3">
+        <div class="col-sm-4 grid-margin">
+            <div class="position-relative">
+                <div class="rotate-img">
+                    <img src="{{asset('assets/general/news/'~ news.imgUrl)|imagine_filter('general')}}" alt="thumb"
+                        class="img-fluid">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8  grid-margin">
+            <h1 class="mb-3 mb-md-5 font-weight-600">
+                {{news.title}}
+            </h1>
+
+            <div class="fs-13 mb-2 text-dark">
+                {{ 'Publié le'|trans }} <strong>{{ news.date|date('d/m/Y') }}</strong> {{ 'par'|trans }} {{news.author}}.
+            </div>
+        </div>
+    </div>
+</a>
+    {% endfor %}
+
+    <div class="bg-white p-2 mt-3">
+        {{ knp_pagination_render(news) }}
+    </div>
+</section>
+{% endblock %}

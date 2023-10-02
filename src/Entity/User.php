@@ -2,7 +2,7 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.2 Update
+ * 2.5 Update
  * Last modify : 24/08/2021 at 20:21
  * Author : XFallSeane
  * Website : https://intersect.thomasfds.fr
@@ -10,82 +10,49 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-/**
- * CmsUsers
- *
- * @ORM\Table(name="cms_users")
- * @ORM\Entity
- * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
- */
-class User implements UserInterface
+
+#[ORM\Table(name: 'cms_users')]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @var int
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(name="webId", type="integer")
-     */
-    private $webid;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer", name: "webId")]
+    private int $webid;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="id", type="text", length=65535, nullable=false)
-     */
-    private $id;
+    #[ORM\Column(type: "text", length: 65535, nullable: false)]
+    private string $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="username", type="string", length=255, nullable=false)
-     */
-    private $username;
+    #[ORM\Column(type: "string", length: 255, nullable: false)]
+    private string $username;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="text", length=65535, nullable=false)
-     */
-    private $email;
+    #[ORM\Column(type: "text", length: 65535, nullable: false)]
+    private string $email;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255, nullable=false)
-     */
-    private $password;
+    #[ORM\Column(type: "string", length: 255, nullable: false)]
+    private string $password;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="points", type="integer", nullable=false)
-     */
-    private $points = '0';
+    #[ORM\Column(type: "integer", nullable: false)]
+    private int $points = 0;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="admin", type="integer", nullable=false)
-     */
-    private $admin = '0';
+    #[ORM\Column(type: "integer", nullable: false)]
+    private int $admin = 0;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="password_token", type="string", length=255, nullable=true)
-     */
-    private $passwordToken;
+    #[ORM\Column(type: "string", length: 255, nullable: true, name: "password_token")]
+    private ?string $passwordToken;
 
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
+    #[ORM\Column(type: "json")]
+    private array $roles = [];
 
 
     /**
@@ -96,6 +63,11 @@ class User implements UserInterface
     public function getWebid()
     {
         return $this->webid;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
     }
 
     /**
@@ -190,7 +162,7 @@ class User implements UserInterface
      *
      * @return  string
      */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -295,7 +267,7 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials():void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;

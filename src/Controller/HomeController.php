@@ -2,46 +2,54 @@
 
 /**
  * Intersect CMS Unleashed
- * 2.2 Update
- * Last modify : 24/08/2021 at 20:21
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
  * Author : XFallSeane
- * Website : https://intersect.thomasfds.fr
+ * Website : https://intersect-connect.tk
  */
 
 namespace App\Controller;
 
-use App\Entity\CmsSettings;
-use App\Repository\CmsNewsCategoryRepository;
-use App\Repository\CmsNewsRepository;
-use App\Repository\CmsPagesRepository;
-use App\Repository\CmsSettingsRepository;
-use App\Repository\CmsShopRepository;
 use App\Settings\Api;
-use App\Settings\CmsSettings as SettingsCmsSettings;
+use App\Entity\CmsSettings;
+use App\Repository\CmsNewsRepository;
+use App\Repository\CmsShopRepository;
+use App\Repository\CmsPagesRepository;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Cache\CacheInterface;
+use App\Repository\CmsNewsCategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Settings\Settings as SettingsCmsSettings;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
 
+    public function __construct(
+        protected SettingsCmsSettings $settings, 
+        protected Api $api, 
+        protected CacheInterface $cache, 
+        protected PaginatorInterface $paginator)
+    {
+    }
+
     public function aside(Api $api, SettingsCmsSettings $settings, CmsNewsRepository $newRepo): Response
     {
-        $serveur_statut = $api->ServeurStatut();
+        $serveur_statut = $this->api->ServeurStatut();
 
         if ($serveur_statut['success']) {
             $serveur_online = true;
 
-            return $this->render($settings->get('theme') . '/includes/aside.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/includes/aside.html.twig', [
                 'serveur_online' => $serveur_online,
                 'players_count' => $serveur_statut['online'],
                 'news' => $newRepo->findBy([], ['id' => 'DESC'], 5)
             ]);
         } else {
             $serveur_online = false;
-            return $this->render($settings->get('theme') . '/includes/aside.html.twig', [
+            return $this->render('Application/' . $this->settings->get('theme') . '/includes/aside.html.twig', [
                 'serveur_online' => $serveur_online,
                 'news' => $newRepo->findBy([], ['id' => 'DESC'], 5)
             ]);
@@ -49,9 +57,7 @@ class HomeController extends AbstractController
     }
 
 
-    /**
-     * @Route("/", name="home",  requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/', name: 'home', requirements: ['_locale' => 'en|fr'])]
     public function index(CmsNewsRepository $newsRepo, CmsShopRepository $shopRepo, Api $api, Request $request, SettingsCmsSettings $settings): Response
     {
 
@@ -67,7 +73,7 @@ class HomeController extends AbstractController
 
         foreach ($shopItems as $itemShop) {
 
-            $itemData = $api->getObjectDetail($itemShop->getIdItem());
+            $itemData = $this->api->getObjectDetail($itemShop->getIdItem());
 
 
             $shop[$itemShop->getId()]['itemData'] = $itemData;
@@ -93,15 +99,13 @@ class HomeController extends AbstractController
             }
         }
 
-        return $this->render($settings->get('theme') . '/home/index.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/home/index.html.twig', [
             'news' => $newsRepo->findBy([], ['id' => 'DESC'], 2),
             'shop' => $shop,
         ]);
     }
 
-    /**
-     *  @Route("/news", name="home.news",  requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/news', name: 'home.news', requirements: ['_locale' => 'en|fr'])]
     public function newsLists(CmsNewsRepository $newsRepo, PaginatorInterface $paginator, Request $request, SettingsCmsSettings $settings, CmsNewsCategoryRepository $categoryRepo): Response
     {
         if ($request->query->get('category')) {
@@ -119,48 +123,39 @@ class HomeController extends AbstractController
         }
 
 
-        return $this->render($settings->get('theme') . '/home/news.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/home/news.html.twig', [
             'news' => $news,
             'categorys' => $categoryRepo->findAll()
         ]);
     }
 
 
-    /**
-     *  @Route("/news/{id}-{slug}", name="news.read",  requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/news/{id}-{slug}', name: 'news.read', requirements: ['_locale' => 'en|fr'])]
     public function newsRead(CmsNewsRepository $newsRepo, $id, SettingsCmsSettings $settings): Response
     {
-        return $this->render($settings->get('theme') . '/home/read_news.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/home/read_news.html.twig', [
             'news' => $newsRepo->find($id),
         ]);
     }
 
-    /**
-     * @Route("/download", name="game.download",  requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/download', name: 'game.download', requirements: ['_locale' => 'en|fr'])]
     public function downloadRead(CmsPagesRepository $pageRepo, SettingsCmsSettings $settings): Response
     {
-        return $this->render($settings->get('theme') . '/game/download.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/game/download.html.twig', [
             'news' => $pageRepo->findOneBy(['uniqueSlug' => 'download']),
         ]);
     }
 
 
-    /**
-     * @Route("/page/{slug}", name="game.pages",  requirements={"_locale": "en|fr"})
-     */
+    #[Route(path: '/page/{slug}', name: 'game.pages', requirements: ['_locale' => 'en|fr'])]
     public function pageRead(CmsPagesRepository $pageRepo, $slug, SettingsCmsSettings $settings): Response
     {
-        return $this->render($settings->get('theme') . '/game/pageRead.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/game/pageRead.html.twig', [
             'news' => $pageRepo->findOneBy(['uniqueSlug' => $slug]),
         ]);
     }
 
-    /**
-     * @Route("/change_locale/{locale}", name="change_locale")
-     */
-
+    #[Route(path: '/change_locale/{locale}', name: 'change_locale')]
     public function changeLocale($locale, Request $request, SettingsCmsSettings $settings)
     {
         $previous = $request->headers->get('referer');

@@ -1,0 +1,69 @@
+{% extends 'Application/' ~ settings.get("theme") ~'/base.html.twig' %}
+
+{% block title %}Register
+{% endblock %}
+
+{% block body %}
+	<h1>
+		<div class="ico_lock"></div>
+		{{ 'Inscription'|trans }}
+	</h1>
+	<ul id="breadcrump">
+		<li>
+			<a href="{{path('home')}}">{{ 'Accueil'|trans }}</a>
+		</li>
+		<li>{{ 'inscription'|trans }}</li>
+	</ul>
+	<div id="middle">
+		{% for flashError in app.flashes('verify_email_error') %}
+			<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+		{% endfor %}
+
+		<h2>
+			{{ 'join_our_community'|trans }}
+		</h2>
+		<p>
+			{{ 'join_our_community_desc'|trans }}
+		</p>
+
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success text-dark">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		{% for message in app.flashes('error') %}
+			<div class="alert alert-danger text-dark">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		{% if registrationForm is defined %}
+			{{ form_start(registrationForm) }}
+			{{ form_row(registrationForm.username, {
+            label: 'Nom de compte'|trans,
+            }) }}
+			{{ form_row(registrationForm.email, {
+            label: 'Adresse e-mail'|trans,
+            }) }}
+			{{ form_row(registrationForm.plainPassword, {
+            label: 'Mot de passe'|trans
+            }) }}
+			{{ form_row(registrationForm.agreeTerms,{
+            label: 'register_agree'|trans}
+            ) }}
+
+			<button style="padding: 15px 90px!important;" class="customBTN btn-block" id="customBTN" name="register_validation" type="sumbit">
+				{{ 'register_register_button'|trans }}
+			</button>
+			{{ form_end(registrationForm) }}
+		{% else %}
+			<div class="alert alert-warning text-dark">
+				{{'register_offline'|trans}}
+			</div>
+		{% endif %}
+
+
+	</div>
+
+{% endblock %}

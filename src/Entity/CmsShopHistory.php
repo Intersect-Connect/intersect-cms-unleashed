@@ -10,49 +10,40 @@
 
 namespace App\Entity;
 
+use App\Repository\CmsShopHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CmsShopHistory
- *
- * @ORM\Table(name="cms_shop_history")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'cms_shop_history')]
+#[ORM\Entity(repositoryClass: CmsShopHistoryRepository::class)]
 class CmsShopHistory
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="date", type="date", nullable=false)
      */
+    #[ORM\Column(name: 'date', type: 'date', nullable: false)]
     private $date;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="shop_id", type="integer", nullable=false)
      */
+    #[ORM\Column(name: 'shop_id', type: 'integer', nullable: false)]
     private $shopId;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="user_id", type="text", length=65535, nullable=false)
      */
+    #[ORM\Column(name: 'user_id', type: 'text', length: 65535, nullable: false)]
     private $userId;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="credits_now", type="integer", nullable=false)
      */
+    #[ORM\Column(name: 'credits_now', type: 'integer', nullable: false)]
     private $creditsNow;
 
 

@@ -10,13 +10,13 @@
 
 namespace App\Twig;
 
-use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
+use Twig\Extension\AbstractExtension;
 
 
 class NewsCategoryColorExtension extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters():array
     {
         return [
             new TwigFilter('categoryColor', [$this, 'timeAgo']),
@@ -24,7 +24,7 @@ class NewsCategoryColorExtension extends AbstractExtension
         ];
     }
 
-    public function timeAgo($color)
+    public function timeAgo(string $color):string 
     {
        list($r, $g, $b) = sscanf($color, "#%02x%02x%02x");
         return $color_name = "" . $r . "," . $g . "," . $b . ",80%";

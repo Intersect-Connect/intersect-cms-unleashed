@@ -1,38 +1,45 @@
 <?php
 
+/**
+ * Intersect CMS Unleashed
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
+ * Author : XFallSeane
+ * Website : https://intersect-connect.tk
+ */
+
 namespace App\Controller\Admin;
 
 use App\Settings\Api;
-use App\Settings\CmsSettings;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CmsSettingsRepository;
+use App\Settings\Settings as CmsSettings;
 use Symfony\Contracts\Cache\ItemInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * @Route("admin/accounts")
- * @IsGranted("ROLE_ADMIN")
- */
+#[IsGranted('ROLE_ADMIN')]
+#[Route(path: 'admin/accounts')]
 class AccountController extends AbstractController
 {
-
     public function __construct(
-        protected Api $api,
-        protected TranslatorInterface $translator,
-        protected CacheInterface $cache
-    ) {
-    }
+        protected CmsSettings $settings, 
+        protected Api $api, 
+        protected CacheInterface $cache, 
+        protected PaginatorInterface $paginator,
+        protected EntityManagerInterface $entityManager,
+        protected TranslatorInterface $translator
+        ){}
 
-    /**
-     * @Route("/", name="admin.account")
-     */
-    public function account(Request $request, PaginatorInterface $paginator): Response
+    #[Route(path: '/{page}', name: 'admin.account')]
+    public function account(Request $request, PaginatorInterface $paginator, int $page = 0): Response
     {
 
         if ($request->isMethod('POST')) {
@@ -84,7 +91,7 @@ class AccountController extends AbstractController
             }
         }
 
-        $users = $this->api->getAllUsers(0);
+        $users = $this->api->getAllUsers($page);
         $total = $users['Total'];
         $total_page = floor($total / 30);
 
@@ -95,7 +102,7 @@ class AccountController extends AbstractController
         });
 
         $users = $paginator->paginate(
-            $allUser, // Requête contenant les données à paginer (ici nos articles)
+            $this->api->multipleGetUsers(), // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             10 // Nombre de résultats par page
         );
@@ -108,9 +115,7 @@ class AccountController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/detail/{user}", name="admin.account.detail")
-     */
+    #[Route(path: '/detail/{user}', name: 'admin.account.detail')]
     public function accountDetail(Request $request, $user): Response
     {
         if ($request->isMethod('POST')) {
@@ -161,6 +166,9 @@ class AccountController extends AbstractController
                 }
             }
         }
+
+        // dd($this->api->getUser($user));
+
 
         return $this->render('Admin/account/detail.html.twig', [
             'user' => $this->api->getUser($user),

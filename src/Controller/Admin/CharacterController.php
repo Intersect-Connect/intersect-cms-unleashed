@@ -1,27 +1,43 @@
 <?php
 
+/**
+ * Intersect CMS Unleashed
+ * 2.4 : PHP 8.x Update
+ * Last modify : 02/10/2023
+ * Author : XFallSeane
+ * Website : https://intersect-connect.tk
+ */
+
 namespace App\Controller\Admin;
 
 use App\Settings\Api;
-use App\Settings\CmsSettings;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CmsSettingsRepository;
+use App\Settings\Settings as CmsSettings;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * @Route("admin/character")
- * @IsGranted("ROLE_ADMIN")
- */
+#[IsGranted('ROLE_ADMIN')]
+#[Route(path: 'admin/character')]
 class CharacterController extends AbstractController
 {
-    /**
-     * @Route("/detail/{character}", name="admin.character.detail")
-     */
-    public function characterDetail(Api $api, CmsSettingsRepository $settings, Request $request, TranslatorInterface $translator, $character, CmsSettings $setting): Response
+    public function __construct(
+        protected CmsSettings $settings, 
+        protected Api $api, 
+        protected CacheInterface $cache, 
+        protected PaginatorInterface $paginator,
+        protected EntityManagerInterface $entityManager,
+        protected TranslatorInterface $translator
+        ){}
+        
+    #[Route(path: '/detail/{character}', name: 'admin.character.detail')]
+    public function characterDetail(Request $request, string $character): Response
     {
         if ($request->isMethod('POST')) {
             $id = $request->request->get('item');
@@ -34,8 +50,8 @@ class CharacterController extends AbstractController
                     'itemid' => $id,
                     'quantity' => $quantity
                 ];
-                if ($api->giveItem($data, $character)) {
-                    $this->addFlash('success', $translator->trans('L\'opération s\'est bien passé.'));
+                if ($this->api->giveItem($data, $character)) {
+                    $this->addFlash('success', $this->translator->trans('L\'opération s\'est bien passé.'));
                     return $this->redirectToRoute('admin.character.detail', ['character' => $character]);
                 }
             }
@@ -46,8 +62,8 @@ class CharacterController extends AbstractController
                     'quantity' => $quantity
                 ];
 
-                if ($api->giveItem($data, $character)) {
-                    $this->addFlash('success', $translator->trans('L\'opération s\'est bien passé.'));
+                if ($this->api->giveItem($data, $character)) {
+                    $this->addFlash('success', $this->translator->trans('L\'opération s\'est bien passé.'));
                     return $this->redirectToRoute('admin.character.detail', ['character' => $character]);
                 }
             }
@@ -58,29 +74,29 @@ class CharacterController extends AbstractController
                     'quantity' => $quantity
                 ];
 
-                if ($api->takeItem($data, $character)) {
-                    $this->addFlash('success', $translator->trans('L\'opération s\'est bien passé.'));
+                if ($this->api->takeItem($data, $character)) {
+                    $this->addFlash('success', $this->translator->trans('L\'opération s\'est bien passé.'));
                     return $this->redirectToRoute('admin.character.detail', ['character' => $character]);
                 }
             }
         }
 
-        $inventory = $api->getInventory($character);
+        $inventory = $this->api->getInventory($character);
         $inventory_list = [];
 
-        $bank = $api->getBank($character);
+        $bank = $this->api->getBank($character);
         $bank_list = [];
         $bag_list = [];
 
         foreach ($inventory as $item) {
             if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
-                $object = $api->getObjectDetail($item['ItemId']);
+                $object = $this->api->getObjectDetail($item['ItemId']);
                 if ($item['BagId'] != null) {
-                    $bag_items = $api->getBag($item['BagId']);
+                    $bag_items = $this->api->getBag($item['BagId']);
 
                     foreach ($bag_items['Slots'] as $item) {
                         if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
-                            $object = $api->getObjectDetail($item['ItemId']);
+                            $object = $this->api->getObjectDetail($item['ItemId']);
 
                             $bag_list[] = [
                                 'id' => $item['ItemId'],
@@ -102,7 +118,7 @@ class CharacterController extends AbstractController
 
         foreach ($bank as $item) {
             if ($item['ItemId'] != "00000000-0000-0000-0000-000000000000") {
-                $object = $api->getObjectDetail($item['ItemId']);
+                $object = $this->api->getObjectDetail($item['ItemId']);
 
                 $bank_list[] = [
                     'id' => $item['ItemId'],
@@ -114,7 +130,7 @@ class CharacterController extends AbstractController
         }
 
         return $this->render('Admin/account/character.html.twig', [
-            'player' => $api->getCharacter($character),
+            'player' => $this->api->getCharacter($character),
             'inventory' => $inventory_list,
             'bank' => $bank_list,
             'bag' => $bag_list

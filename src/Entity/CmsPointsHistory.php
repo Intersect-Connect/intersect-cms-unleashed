@@ -10,49 +10,40 @@
 
 namespace App\Entity;
 
+use App\Repository\CmsPointsHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CmsPointsHistory
- *
- * @ORM\Table(name="cms_points_history")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'cms_points_history')]
+#[ORM\Entity(repositoryClass: CmsPointsHistoryRepository::class)]
 class CmsPointsHistory
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="date", type="date", nullable=false)
      */
+    #[ORM\Column(name: 'date', type: 'date', nullable: false)]
     private $date;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="user_id", type="text", length=65535, nullable=false)
      */
+    #[ORM\Column(name: 'user_id', type: 'text', length: 65535, nullable: false)]
     private $userId;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="code", type="string", length=255, nullable=false)
      */
+    #[ORM\Column(name: 'code', type: 'string', length: 255, nullable: false)]
     private $code;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="points_amount", type="integer", nullable=false)
      */
+    #[ORM\Column(name: 'points_amount', type: 'integer', nullable: false)]
     private $pointsAmount;
 
 
