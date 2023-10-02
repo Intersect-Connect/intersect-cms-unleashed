@@ -17,27 +17,41 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class Settings
 {
-    private $em;
 
 
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-    }
-
-    public function getGamePage()
+    public function __construct(
+        protected EntityManagerInterface $em)
+    {}
+    
+    /**
+     * Get game page
+     *
+     * @return array<CmsPages>
+     */
+    public function getGamePage():array
     {
         $gamePage = $this->em->getRepository(CmsPages::class)->findBy(['category' => "game", 'isVisible' => 1]);
         return $gamePage;
     }
 
-    public function getWikiPage()
+    /**
+     * Get wiki page
+     *
+     * @return array<CmsPages>
+     */
+    public function getWikiPage():array
     {
         $gamePage = $this->em->getRepository(CmsPages::class)->findBy(['category' => "wiki", 'isVisible' => 1]);
         return $gamePage;
     }
 
-    public function get($param)
+    /**
+     * Get settings
+     *
+     * @param string $param
+     * @return string
+     */
+    public function get(string $param):string
     {
         return $this->em->getRepository(EntityCmsSettings::class)->findOneBy(['setting' => $param])->getDefaultValue();
     }

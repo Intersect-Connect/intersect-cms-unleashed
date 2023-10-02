@@ -1,0 +1,48 @@
+# configuration/phpstan.neon
+includes:
+    # require phpstan/extension-installer to avoid including these lines                                            PHPStan 1.x compat
+    #- vendor/ekino/phpstan-banned-code/extension.neon     # https://github.com/ekino/phpstan-banned-code           ✅
+    #- vendor/phpstan/phpstan-symfony/extension.neon       # https://github.com/phpstan/phpstan-symfony             ✅
+    #- vendor/phpstan/phpstan-deprecation-rules/rules.neon # https://github.com/phpstan/phpstan-deprecation-rules   ✅
+    #- vendor/phpstan/phpstan-strict-rules/rules.neon      # https://github.com/phpstan/phpstan-strict-rules        ✅
+    #- vendor/phpstan/phpstan/phpstan-doctrine             # https://github.com/phpstan/phpstan-doctrine            ✅
+
+# These are custom rules, check-out: https://www.strangebuzz.com/en/blog/creating-custom-phpstan-rules-for-your-symfony-project
+rules:
+    #- App\PHPStan\ControllerIsFinalRule
+    #- App\PHPStan\ControllerExtendsSymfonyRule
+    #- App\PHPStan\NoNewinControllerRule
+
+parameters:
+    # https://phpstan.org/config-reference#rule-level
+    level: max # Max is level 9 as of PHPStan 1.0
+
+    # https://phpstan.org/config-reference#analysed-files
+    # Note that I have put my configuraiton file in the "./configuration" directory
+    # if you have yours at the root of your project remove the "../"
+    paths:
+        - /config
+        - /src
+        - /tests
+        - /public
+
+    # https://github.com/phpstan/phpstan-symfony#configuration
+    # Specific configuration for the Symfony plugin
+    symfony:
+        # I use the prod env because I have false positive regarding the tests which
+        # are executed in the test environment.
+        container_xml_path: /var/cache/dev/App_KernelDevDebugContainer.xml
+
+    # https://phpstan.org/config-reference#vague-typehints
+    checkMissingIterableValueType:           true # https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type
+    checkGenericClassInNonGenericObjectType: true # this parameter is activated at level 6
+
+    # Nothing ignored! (almost!) 🎉
+    ignoreErrors:
+        - '#Dead catch - Error is never thrown in the try block.#'
+        - '#Variable method call#'
+
+    # I don't use the Symfony PHPUnit bridge in this project, but if you do, you
+    # probably will have to add the following bootstrap file:
+    #bootstrapFiles:
+        #- %rootDir%/../../../vendor/bin/.phpunit/phpunit/vendor/autoload.php
