@@ -94,7 +94,7 @@
     },
     "scripts": {
         "auto-scripts": {
-            "cache:clear": "symfony console c:c",
+            "cache:clear": "php bin/console c:c",
             "assets:install %PUBLIC_DIR%": "symfony"
         },
         "post-install-cmd": [
