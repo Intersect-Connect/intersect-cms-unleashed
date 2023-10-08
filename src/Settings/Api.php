@@ -206,16 +206,16 @@ class Api
     /**
      * Permet de récupérer un utilisateur
      *
-     * @param array $data
-     * @return array<mixed>
+     * @param string $username
+     * @return string
      */
-    public function getUser(array $data):array
+    public function getUser(string $username):array
     {
-        $user = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/users/' . $data);
+        $user = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/users/' . $username);
 
         if (isset($user['Message']) && $user['Message'] == "Authorization has been denied for this request.") {
             $this->setToken();
-            $user = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/users/' . $data);
+            $user = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/users/' . $username);
         }
 
         return $user;
