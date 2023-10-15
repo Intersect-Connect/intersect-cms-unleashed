@@ -84,6 +84,12 @@ class Api
             return (curl_error($ch));
         }
 
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if ($httpcode == 401 || $httpcode == 403) {
+            $response = '{"Message": "Authorization has been denied for this request."}';
+        }
+
         $responseData = json_decode($response, true);
         curl_close($ch);
 
@@ -124,6 +130,12 @@ class Api
 
         if ($response === false) {
             return (curl_error($ch));
+        }
+
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if ($httpcode == 401 || $httpcode == 403) {
+            $response = '{"Message": "Authorization has been denied for this request."}';
         }
 
         $responseData = json_decode($response, true);
