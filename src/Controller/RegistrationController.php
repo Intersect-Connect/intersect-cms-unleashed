@@ -96,17 +96,19 @@ class RegistrationController extends AbstractController
                     $this->autoLoginUser($user);
 
                     return $this->redirectToRoute('home');
-                }else{
+                } else {
                     $this->addFlash('error', $this->translator->trans('Vérifiez vos informations, code d\'erreur : R001'));
                 }
-            }else{
+            } else {
                 $this->addFlash('error', $this->translator->trans('Vérifiez vos informations, code d\'erreur : R002'));
             }
-        }else{
-            $this->addFlash('error', $this->translator->trans('Vérifiez vos informations, code d\'erreur : R003'));
+        } else {
+            if ($form->isSubmitted() && !$form->isValid()) {
+                $this->addFlash('error', $this->translator->trans('Vérifiez vos informations, code d\'erreur : R003'));
+            }
         }
 
-        return $this->render('Application/' .$this->settings->get('theme') . '/registration/register.html.twig', [
+        return $this->render('Application/' . $this->settings->get('theme') . '/registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
@@ -116,7 +118,7 @@ class RegistrationController extends AbstractController
         $userInfos = $this->api->getUser($username);
         $userEmailExist = $this->userRepo->findOneBy(['email' => $email]);
 
-        return isset($userInfos['Message']) && $userInfos['Message'] == "No user with name '$username'." && !$userEmailExist;
+        return isset($userInfos['Message']) && $userInfos['Message'] == "Not Found" && !$userEmailExist;
     }
 
     private function autoLoginUser(User $user): void

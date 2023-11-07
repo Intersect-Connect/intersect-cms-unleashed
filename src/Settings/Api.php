@@ -93,6 +93,10 @@ class Api
             $response = '{"Message": "Authorization has been denied for this request."}';
         }
 
+        if($httpcode == 404) {
+            $response = '{"Message": "Not Found"}';
+        }
+
         $responseData = json_decode($response, true);
         curl_close($ch);
 
