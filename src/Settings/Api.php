@@ -26,10 +26,9 @@ class Api
 
 
     public function __construct(
-        protected EntityManagerInterface $em, 
+        protected EntityManagerInterface $em,
         protected HttpClientInterface $client
-        )
-    {
+    ) {
         $this->em = $em;
         $this->token = $em->getRepository(CmsSettings::class)->findOneBy(['setting' => 'api_token'])->getDefaultValue();
         $this->username = $em->getRepository(CmsSettings::class)->findOneBy(['setting' => 'api_username'])->getDefaultValue();
@@ -49,15 +48,17 @@ class Api
      * @param string $calltype
      * @return array<mixed>
      */
-    public function APIcall_POST(string $server, array $postData, string $access_token, string $calltype):array
+    public function APIcall_POST(string $server, array $postData, string $access_token, string $calltype): array
     {
         $ch = curl_init($server . $calltype);
+        $sslVerifyPeer = strpos($server, "localhost") !== false ? false : true;
 
         if ($postData != null) {
             curl_setopt_array($ch, array(
                 CURLOPT_POST => true,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_CONNECTTIMEOUT => 0,
+                CURLOPT_SSL_VERIFYPEER => $sslVerifyPeer,
                 CURLOPT_TIMEOUT_MS => 0,
                 CURLOPT_HTTPHEADER => array(
                     'authorization:Bearer ' . $access_token, // "authorization:Bearer", et non pas "authorization: Bearer"
@@ -70,6 +71,7 @@ class Api
                 CURLOPT_POST => true,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_CONNECTTIMEOUT => 0,
+                CURLOPT_SSL_VERIFYPEER => $sslVerifyPeer,
                 CURLOPT_TIMEOUT_MS => 1000,
                 CURLOPT_HTTPHEADER => array(
                     'authorization:Bearer ' . $access_token, // "authorization:Bearer", et non pas "authorization: Bearer"
@@ -81,7 +83,8 @@ class Api
         $response = curl_exec($ch);
 
         if ($response === false) {
-            return (curl_error($ch));
+            $data = ['error' => true, 'message' => curl_error($ch)];
+            return $data;
         }
 
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -104,14 +107,16 @@ class Api
      * @param string $calltype
      * @return array<mixed>
      */
-    public function APIcall_GET(string $server, string $access_token, string $calltype):array
+    public function APIcall_GET(string $server, string $access_token, string $calltype): array
     {
-        // die($server.$calltype);
         $ch = curl_init($server . $calltype);
+        $sslVerifyPeer = strpos($server, "localhost") !== false ? false : true;
+
         curl_setopt_array($ch, array(
             CURLOPT_HTTPGET => true,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CONNECTTIMEOUT => 0,
+            CURLOPT_SSL_VERIFYPEER => $sslVerifyPeer,
             CURLOPT_TIMEOUT_MS => 1000,
             CURLOPT_HTTPHEADER => array(
                 'authorization:Bearer ' . $access_token, // "authorization:Bearer", et non pas "authorization: Bearer"
@@ -121,7 +126,6 @@ class Api
         $response = curl_exec($ch);
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        // die(var_dump($http_status));
 
         if ($http_status === 0) {
             $data = ['error' => true];
@@ -129,13 +133,19 @@ class Api
         }
 
         if ($response === false) {
-            return (curl_error($ch));
+            $data = ['error' => true, 'message' => curl_error($ch)];
+            return $data;
         }
 
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
+
         if ($httpcode == 401 || $httpcode == 403) {
             $response = '{"Message": "Authorization has been denied for this request."}';
+        }
+
+        if($httpcode == 404) {
+            $response = '{"Message": "Not Found"}';
         }
 
         $responseData = json_decode($response, true);
@@ -148,7 +158,7 @@ class Api
      *
      * @return array<mixed>
      */
-    public function getApiData():array
+    public function getApiData(): array
     {
         // API login
         $postData = array(
@@ -165,7 +175,7 @@ class Api
      *
      * @return array<mixed>
      */
-    public function ServeurStatut():array
+    public function ServeurStatut(): array
     {
         $server_infos = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/info/stats');
 
@@ -188,7 +198,7 @@ class Api
      * @param string $username
      * @return boolean
      */
-    public function passwordVerify(array $data, string $username):bool
+    public function passwordVerify(array $data, string $username): bool
     {
         $apiPasswordVerify = $this->APIcall_POST($this->getServer(), $data, $this->getToken(), '/api/v1/users/' . $username . '/password/validate');
 
@@ -210,7 +220,7 @@ class Api
      * @param array $data
      * @return array<mixed>
      */
-    public function registerUser(array $data):array
+    public function registerUser(array $data): array
     {
         return $this->APIcall_POST($this->getServer(), $data, $this->getToken(), '/api/v1/users/register');
     }
@@ -221,7 +231,7 @@ class Api
      * @param string $username
      * @return string
      */
-    public function getUser(string $username):array
+    public function getUser(string $username): array
     {
         $user = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/users/' . $username);
 
@@ -239,7 +249,7 @@ class Api
      * @param integer $page
      * @return array<mixed>
      */
-    public function getAllUsers(int $page = 0):array
+    public function getAllUsers(int $page = 0): array
     {
         $user = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/users?page=' . $page . '&pageSize=30');
         if (isset($user['Message']) && $user['Message'] == "Authorization has been denied for this request.") {
@@ -255,7 +265,7 @@ class Api
      *
      * @return array<mixed>
      */
-    public function multipleGetUsers():array
+    public function multipleGetUsers(): array
     {
         $all_players = $this->getAllUsers(0);
         $total = $all_players['Total'];
@@ -372,7 +382,7 @@ class Api
      * @param string $user_id
      * @return boolean
      */
-    public function changeEmailAccount(array $data, string $user_id):bool
+    public function changeEmailAccount(array $data, string $user_id): bool
     {
         $user = $this->APIcall_POST($this->getServer(), $data, $this->getToken(), '/api/v1/users/' . $user_id . '/email/change');
         if (isset($user['Message']) && $user['Message'] == "Authorization has been denied for this request.") {
@@ -393,7 +403,7 @@ class Api
      * @param string $user_id
      * @return boolean
      */
-    public function changePasswordAccount(array $data, string $user_id):bool
+    public function changePasswordAccount(array $data, string $user_id): bool
     {
         $user = $this->APIcall_POST($this->getServer(), $data, $this->getToken(), '/api/v1/users/' . $user_id . '/manage/password/change');
         if (isset($user['Message']) && $user['Message'] == "Authorization has been denied for this request.") {
@@ -415,7 +425,7 @@ class Api
      * @param array $data
      * @return array<mixed>
      */
-    public function getGameClass(array $data):array
+    public function getGameClass(array $data): array
     {
         $classes = $this->APIcall_POST($this->getServer(), $data, $this->getToken(), '/api/v1/gameobjects/class');
 
@@ -433,7 +443,7 @@ class Api
      * @param string $id
      * @return array<mixed>
      */
-    public function getCharacter(string $id):array
+    public function getCharacter(string $id): array
     {
         $players = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id);
 
@@ -450,7 +460,7 @@ class Api
      * @param string $id
      * @return array<mixed>
      */
-    public function getCharacters(string $id):array
+    public function getCharacters(string $id): array
     {
         $players = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/users/' . $id . '/players');
         if (isset($players['Message']) && $players['Message'] == "Authorization has been denied for this request.") {
@@ -466,7 +476,7 @@ class Api
      * @param integer $page
      * @return array<mixed>
      */
-    public function getAllPlayers(int $page):array
+    public function getAllPlayers(int $page): array
     {
 
         $joueurs = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players?page=' . $page . '&pageSize=30');
@@ -483,7 +493,7 @@ class Api
      *
      * @return array<mixed>
      */
-    public function multipleGetPlayers():array
+    public function multipleGetPlayers(): array
     {
         $all_players = $this->getAllPlayers(0);
         $total = $all_players['Total'];
@@ -599,7 +609,7 @@ class Api
      * @param integer $page
      * @return array<mixed>
      */
-    public function getAllGuilds(int $page = 0):array
+    public function getAllGuilds(int $page = 0): array
     {
         $guildsLists = [];
 
@@ -609,7 +619,7 @@ class Api
             $guilds = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/');
         }
 
-        foreach($guilds["Values"] as $guild){
+        foreach ($guilds["Values"] as $guild) {
             $guildsLists[] = $this->getGuild($guild["Key"]["Id"]);
         }
 
@@ -622,12 +632,12 @@ class Api
      * @param string $id
      * @return array<mixed>
      */
-    public function getGuild(string $id):array
+    public function getGuild(string $id): array
     {
-        $guild = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/'.$id);
+        $guild = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/' . $id);
         if (isset($guild['Message']) && $guild['Message'] == "Authorization has been denied for this request.") {
             $this->setToken();
-            $guild = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/'.$id);
+            $guild = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/' . $id);
         }
 
         return [
@@ -642,12 +652,12 @@ class Api
      * @param string $id
      * @return array<mixed>
      */
-    public function getGuildMember(string $id):array
+    public function getGuildMember(string $id): array
     {
-        $guildMember = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/'.$id.'/members?pageSize=100');
+        $guildMember = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/' . $id . '/members?pageSize=100');
         if (isset($guildMember['Message']) && $guildMember['Message'] == "Authorization has been denied for this request.") {
             $this->setToken();
-            $guildMember = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/'.$id.'/members?pageSize=100');
+            $guildMember = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/guilds/' . $id . '/members?pageSize=100');
         }
 
         return $guildMember["Values"];
@@ -659,7 +669,7 @@ class Api
      * @param string $id
      * @return boolean
      */
-    public function isInventoryFull(string $id):bool
+    public function isInventoryFull(string $id): bool
     {
         $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id . '/items/inventory');
 
@@ -677,7 +687,7 @@ class Api
      * @param string $id
      * @return array<mixed>
      */
-    public function getInventory(string $id):array
+    public function getInventory(string $id): array
     {
         $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id . '/items/inventory');
 
@@ -695,7 +705,7 @@ class Api
      * @param string $id
      * @return array<mixed>
      */
-    public function getBank(string $id):array
+    public function getBank(string $id): array
     {
         $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/' . $id . '/items/bank');
 
@@ -714,7 +724,7 @@ class Api
      * @param string $id
      * @return array
      */
-    public function getBag(string $id):array
+    public function getBag(string $id): array
     {
         $inventory = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/bag/' . $id);
         if (isset($inventory['Message']) && $inventory['Message'] == "Authorization has been denied for this request.") {
@@ -731,7 +741,7 @@ class Api
      * @param integer $page
      * @return array<mixed>
      */
-    public function onlinePlayers(int $page = 0):array
+    public function onlinePlayers(int $page = 0): array
     {
         $data = [
             'page' => $page,
@@ -745,7 +755,7 @@ class Api
         if (isset($online['entries'])) {
             return $online['entries'];
         } else {
-            return null;
+            return [];
         }
     }
 
@@ -756,7 +766,7 @@ class Api
      * @param integer $page
      * @return array<mixed>
      */
-    public function getAllItems(int $page = 0):array
+    public function getAllItems(int $page = 0): array
     {
         $data = [
             'page' => $page,
@@ -777,7 +787,7 @@ class Api
      * @return array<mixed>
      */
 
-    public function getObjectDetail(string $id):array
+    public function getObjectDetail(string $id): array
     {
         $itemData = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/gameobjects/item/' . $id);
         $itemData = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/gameobjects/item/' . $id);
@@ -793,7 +803,7 @@ class Api
      * @return array<mixed>
      */
 
-    public function getRank(int $page = 0):array
+    public function getRank(int $page = 0): array
     {
         $joueurs = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/players/rank?page=' . $page . '&pageSize=25&sortDirection=Descending');
         if (isset($joueurs['Message']) && $joueurs['Message'] == "Authorization has been denied for this request.") {
@@ -810,7 +820,7 @@ class Api
      * @param string $character
      * @return bool
      */
-    public function giveItem(array $data, string $character):bool
+    public function giveItem(array $data, string $character): bool
     {
         $item = $this->APIcall_POST($this->getServer(), $data,  $this->getToken(), '/api/v1/players/' . $character . '/items/give');
         if (isset($item['Message']) && $item['Message'] == "Authorization has been denied for this request.") {
@@ -832,7 +842,7 @@ class Api
      * @return bool
      */
 
-    public function takeItem(array $data, string $character):bool
+    public function takeItem(array $data, string $character): bool
     {
         $item = $this->APIcall_POST($this->getServer(), $data,  $this->getToken(), '/api/v1/players/' . $character . '/items/take');
         if (isset($item['Message']) && $item['Message'] == "Authorization has been denied for this request.") {
@@ -859,7 +869,7 @@ class Api
      * @param string $moderator
      * @return boolean
      */
-    public function banAccount(string $user_id, string $username, int $duration = 5, string $moderator = "Game Admin"):bool
+    public function banAccount(string $user_id, string $username, int $duration = 5, string $moderator = "Game Admin"): bool
     {
         $data = [
             'duration' => $duration,
@@ -886,7 +896,7 @@ class Api
      * @param string $username
      * @return boolean
      */
-    public function unBanAccount(string $user_id, string $username):bool
+    public function unBanAccount(string $user_id, string $username): bool
     {
         $data = [
             'username' => $username
@@ -914,7 +924,7 @@ class Api
      * @param string $moderator
      * @return boolean
      */
-    public function MuteAccount(string $user_id, string $username, int $duration = 5, string $moderator = "Game Admin"):bool
+    public function MuteAccount(string $user_id, string $username, int $duration = 5, string $moderator = "Game Admin"): bool
     {
         $data = [
             'duration' => $duration,
@@ -941,7 +951,7 @@ class Api
      * @param string $username
      * @return boolean
      */
-    public function unMuteAccount(string $user_id, string $username):bool
+    public function unMuteAccount(string $user_id, string $username): bool
     {
         $data = [
             'username' => $username
@@ -968,7 +978,7 @@ class Api
      *
      * @return array<mixed>
      */
-    public function getServerInfo():array
+    public function getServerInfo(): array
     {
         $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/info/stats');
         if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
@@ -983,7 +993,7 @@ class Api
      *
      * @return array<mixed>
      */
-    public function getServerMetrics():array
+    public function getServerMetrics(): array
     {
         $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/info/metrics');
         if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
@@ -1001,7 +1011,7 @@ class Api
      * @param string $id
      * @return array<mixed>
      */
-    public function getUserActivity(string $id):array
+    public function getUserActivity(string $id): array
     {
         $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/user/' . $id . '/activity');
         if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
@@ -1017,7 +1027,7 @@ class Api
      * @param string $id
      * @return array<mixed>
      */
-    public function getPlayerActivity(string $id):array
+    public function getPlayerActivity(string $id): array
     {
         $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/player/' . $id . '/activity');
         if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
@@ -1032,7 +1042,7 @@ class Api
      *
      * @return array<mixed>
      */
-    public function getTradeLogs():array
+    public function getTradeLogs(): array
     {
         $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/trade/');
         if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
@@ -1048,7 +1058,7 @@ class Api
      * @param string $id
      * @return array<mixed>
      */
-    public function getUserIp(string $id):array
+    public function getUserIp(string $id): array
     {
         $server = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/logs/user/' . $id . '/ip');
         if (isset($server['Message']) && $server['Message'] == "Authorization has been denied for this request.") {
