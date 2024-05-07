@@ -60,11 +60,14 @@ class HomeController extends AbstractController
     #[Route(path: '/', name: 'home', requirements: ['_locale' => 'en|fr'])]
     public function index(CmsNewsRepository $newsRepo, CmsShopRepository $shopRepo, Api $api, Request $request, SettingsCmsSettings $settings): Response
     {
-
         $routeParameters = $request->attributes->get('_route_params');
 
         if (!isset($routeParameters['_locale'])) {
             return $this->redirectToRoute('home', ['_locale' => $request->getLocale()]);
+        }
+
+        if($this->settings->get("api_username") === "username_account_api" || $_ENV["ENABLE_INSTALLATION"]){
+            return $this->redirectToRoute("installation.home", ['_locale' => $request->getLocale()]);
         }
 
         $shopItems = $shopRepo->findBy(['visible' => true], ['id' => 'DESC'], 2);
@@ -108,6 +111,10 @@ class HomeController extends AbstractController
     #[Route(path: '/news', name: 'home.news', requirements: ['_locale' => 'en|fr'])]
     public function newsLists(CmsNewsRepository $newsRepo, PaginatorInterface $paginator, Request $request, SettingsCmsSettings $settings, CmsNewsCategoryRepository $categoryRepo): Response
     {
+        if($this->settings->get("api_username") === "username_account_api" || $_ENV["ENABLE_INSTALLATION"]){
+            return $this->redirectToRoute("installation.home", ['_locale' => $request->getLocale()]);
+        }
+
         if ($request->query->get('category')) {
             $news = $paginator->paginate(
                 $newsRepo->findBy(['category' => $request->query->get('category')], ['id' => 'DESC']), // Requête contenant les données à paginer (ici nos articles)
@@ -131,16 +138,24 @@ class HomeController extends AbstractController
 
 
     #[Route(path: '/news/{id}-{slug}', name: 'news.read', requirements: ['_locale' => 'en|fr'])]
-    public function newsRead(CmsNewsRepository $newsRepo, $id, SettingsCmsSettings $settings): Response
+    public function newsRead(Request $request, CmsNewsRepository $newsRepo, $id, SettingsCmsSettings $settings): Response
     {
+        if($this->settings->get("api_username") === "username_account_api" || $_ENV["ENABLE_INSTALLATION"]){
+            return $this->redirectToRoute("installation.home", ['_locale' => $request->getLocale()]);
+        }
+
         return $this->render('Application/' . $this->settings->get('theme') . '/home/read_news.html.twig', [
             'news' => $newsRepo->find($id),
         ]);
     }
 
     #[Route(path: '/download', name: 'game.download', requirements: ['_locale' => 'en|fr'])]
-    public function downloadRead(CmsPagesRepository $pageRepo, SettingsCmsSettings $settings): Response
+    public function downloadRead(Request $request, CmsPagesRepository $pageRepo, SettingsCmsSettings $settings): Response
     {
+        if($this->settings->get("api_username") === "username_account_api" || $_ENV["ENABLE_INSTALLATION"]){
+            return $this->redirectToRoute("installation.home", ['_locale' => $request->getLocale()]);
+        }
+
         return $this->render('Application/' . $this->settings->get('theme') . '/game/download.html.twig', [
             'news' => $pageRepo->findOneBy(['uniqueSlug' => 'download']),
         ]);
@@ -148,8 +163,13 @@ class HomeController extends AbstractController
 
 
     #[Route(path: '/page/{slug}', name: 'game.pages', requirements: ['_locale' => 'en|fr'])]
-    public function pageRead(CmsPagesRepository $pageRepo, $slug, SettingsCmsSettings $settings): Response
+    public function pageRead(Request $request, CmsPagesRepository $pageRepo, $slug, SettingsCmsSettings $settings): Response
     {
+        
+        if($this->settings->get("api_username") === "username_account_api" || $_ENV["ENABLE_INSTALLATION"]){
+            return $this->redirectToRoute("installation.home", ['_locale' => $request->getLocale()]);
+        }
+
         return $this->render('Application/' . $this->settings->get('theme') . '/game/pageRead.html.twig', [
             'news' => $pageRepo->findOneBy(['uniqueSlug' => $slug]),
         ]);

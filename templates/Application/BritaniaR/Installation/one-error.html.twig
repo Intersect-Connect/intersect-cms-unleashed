@@ -1,0 +1,24 @@
+{% extends 'Application/' ~ settings.get("theme") ~'/base_install.html.twig' %}
+
+{% block title %}
+	{{"Configuration de l'api Intersect"|trans}}
+{% endblock %}
+
+{% block body %}
+<h1 class="mb-3">
+	{{ 'Configuration de l\'api Intersect'|trans }}
+</h1>
+
+<section class="bg-white p-3">
+	<div class="mb-3">
+		<div class="alert alert-danger text-dark text-center">
+			{{"Impossible de joindre le serveur api, vérifier vos informations."|trans}}
+		</div>
+	</div>
+	<div class="p-3 text-center">
+		<a href="{{path('installation.one')}}" class="customBTN mb-4">
+			{{"Retour"|trans}}
+		</a>
+	</div>
+</section>
+{% endblock %}

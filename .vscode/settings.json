@@ -1,4 +1,4 @@
 {
     "compile-hero.disable-compile-files-on-did-save-code": true,
-    "php.version": "v7.4"
+    "php.version": "8.3"
 }

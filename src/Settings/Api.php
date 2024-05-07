@@ -132,12 +132,12 @@ class Api
 
 
         if ($http_status === 0) {
-            $data = ['error' => true];
+            $data = ['success' => false,'error' => true];
             return $data;
         }
 
         if ($response === false) {
-            $data = ['error' => true, 'message' => curl_error($ch)];
+            $data = ['success' => false,'error' => true, 'message' => curl_error($ch)];
             return $data;
         }
 

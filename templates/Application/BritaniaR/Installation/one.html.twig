@@ -1,0 +1,63 @@
+{% extends 'Application/' ~ settings.get("theme") ~'/base_install.html.twig' %}
+
+{% block title %}
+	{{"Configuration de l'api Intersect"|trans}}
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="mb-3">
+		{{ 'Configuration de l\'api Intersect'|trans }}
+	</h1>
+
+	<section class="bg-white p-3">
+		<div class="mb-3">
+			<p>
+                {{"Vous devez avoir suivis les instructions de base"|trans}} <a href="https://docs.freemmorpgmaker.com/en-US/api/v1/introduction/setup/">{{"disponible ici"|trans}}</a>
+            </p>
+		</div>
+
+		<form action="{{path("installation.one")}}" method="POST">
+			<div class="mt-3 mb-3">
+				<label for="username">{{"Nom du compte API"|trans}}</label>
+				<input type="text" id="username" name="username" class="form-control w-100" placeholder="{{"Nom du compte API"|trans}}" {{username is defined and username is not null ? "value=" ~ username}}>
+			</div>
+
+			<div class="mt-3 mb-3">
+				<label for="password">{{"Mot de passe du compte API"|trans}}</label>
+				<input type="text" id="password" name="password" class="form-control w-100" placeholder="{{"Mot de passe du compte API"|trans}}">
+			</div>
+
+			<div class="mt-3 mb-3">
+				<label for="ip">{{"IP/Nom de domaine du serveur Intersect"|trans}}</label>
+				<input type="text" id="ip" name="ip" class="form-control w-100" placeholder="{{"IP/Nom de domaine du serveur Intersect"|trans}}" {{ip is defined and ip is not null ? "value=" ~ ip}}>
+			</div>
+
+			<div class="mt-3 mb-3">
+				<label for="port">{{"Port du serveur API Intersect"|trans}}</label>
+				<input type="text" id="port" name="port" class="form-control w-100" placeholder="{{"Port du serveur API Intersect"|trans}}" {{port is defined and port is not null ? "value=" ~ port}}>
+			</div>
+
+			<div class="mt-3 mb-3">
+				<label for="version">{{"Votre version d'Intersect Engine"|trans}}</label>
+				<select class="form-control w-100" id="version" name="version" {{version is defined and version is not null ? "value=" ~ version}}>
+					<option value="Intersect V6">
+						Intersect V6
+					</option>
+					<option value="Intersect V7">
+						Intersect V7
+					</option>
+					<option value="Intersect V8">
+						Intersect V8
+					</option>
+				</select>
+			</div>
+
+			<div class="p-3 text-center">
+				<button type="submit" class="customBTN  w-100 mb-4">
+					{{"Suivant"|trans}}
+				</button>
+			</div>
+		</form>
+	</section>
+{% endblock %}

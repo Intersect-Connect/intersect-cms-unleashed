@@ -1,0 +1,30 @@
+{% extends 'Application/' ~ settings.get("theme") ~'/base_install.html.twig' %}
+
+{% block title %}
+	{{"Accueil"|trans}}
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="mb-3">
+		{{ 'Installation du CMS'|trans }}
+	</h1>
+
+	<section class="bg-white p-3">
+
+		<h1 class="mb-3">
+			{{ 'Bienvenue dans l\'installateur de Intersect CMS'|trans }}
+		</h1>
+		<div class="mb-3">
+			<p>
+                L'installateur va vous aidez à installer et configurer correctement votre site internet.
+            </p>
+		</div>
+
+		<div class="p-3 text-center">
+			<a href="{{path('installation.one')}}" class="customBTN  w-100 mb-4">
+				{{"Démarrer"|trans}}
+			</a>
+		</div>
+	</section>
+{% endblock %}

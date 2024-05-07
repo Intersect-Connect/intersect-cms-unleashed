@@ -55,4 +55,15 @@ class Settings
     {
         return $this->em->getRepository(EntityCmsSettings::class)->findOneBy(['setting' => $param])->getDefaultValue();
     }
+
+    public function setSetting(string $param, string $value):void
+    {
+        $setting = $this->em->getRepository(EntityCmsSettings::class)->findOneBy(["setting" => $param]);
+
+        if($setting){
+            $setting->setDefaultValue($value);
+            $this->em->persist($setting);
+            $this->em->flush();
+        }
+    }
 }
