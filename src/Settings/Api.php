@@ -787,10 +787,6 @@ class Api
      */
     public function getAllItems(int $page = 0): array
     {
-        $data = [
-            'page' => $page,
-            'count' => 20
-        ];
 
         $endpoint = '/api/v1/gameobjects/item/';
 
@@ -799,13 +795,25 @@ class Api
             'count' => 20
         ];
 
+        $url = $endpoint . '?' . http_build_query($queryParams);
 
-        $items = $this->APIcall_GET($this->getServer(), $this->getToken(), $endpoint . '?' . http_build_query($queryParams));
+
+        $items = $this->APIcall_GET($this->getServer(), $this->getToken(), $url);
 
         if (isset($items['Message']) && $items['Message'] == "Authorization has been denied for this request.") {
             $this->setToken();
-            $items = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/gameobjects/item/');
+            $items = $this->APIcall_GET($this->getServer(), $this->getToken(), $url);
         }
+
+        if (!$items) {
+            $items = $this->APIcall_POST($this->getServer(), $queryParams, $this->getToken(), $endpoint);
+
+            if (isset($items['Message']) && $items['Message'] == "Authorization has been denied for this request.") {
+                $this->setToken();
+                $items = $this->APIcall_POST($this->getServer(), $queryParams, $this->getToken(), $endpoint);
+            }
+        }
+
         return $items;
     }
 
