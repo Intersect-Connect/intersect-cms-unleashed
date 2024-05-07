@@ -1,0 +1,28 @@
+{% extends 'Application/BritaniaR/base_install.html.twig' %}
+
+{% block title %}
+	{{"Configuration de l'api Intersect"|trans}}
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="mb-3">
+		{{ 'Configuration de la base de donnée'|trans }}
+	</h1>
+
+	<section class="bg-white p-3">
+		<div class="mb-3">
+			<p>
+                {{"Vérifier que vos informations de base de donnée dans votre env est correct"|trans}}
+            </p>
+		</div>
+
+		<div class="p-3 text-center">
+			<form method="POST">
+				<button type="submit" class="customBTN  w-100 mb-4">
+					{{"Suivant"|trans}}
+				</button>
+			</form>
+		</div>
+	</section>
+{% endblock %}

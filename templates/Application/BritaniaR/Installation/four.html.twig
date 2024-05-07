@@ -1,0 +1,33 @@
+{% extends 'Application/BritaniaR/base_install.html.twig' %}
+
+{% block title %}
+	{{"Finalisation"|trans}}
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="mb-3">
+		{{ 'Finalisation'|trans }}
+	</h1>
+
+	<section class="bg-white p-3">
+		<form action="{{path("installation.four")}}" method="POST">
+			<div class="mb-3">
+				<p>
+					{{"L'installation est terminé, votre site est prêt."|trans}}
+				</p>
+			</div>
+
+			<div class="p-3 text-center">
+				<button type="submit" class="customBTN  w-100 mb-4">
+					{{"Voir le site"|trans}}
+				</button>
+
+				<a href="{{path('installation.two')}}" class="customBTN mb-4">
+					{{"Retour"|trans}}
+				</a>
+			</div>
+		</form>
+	</section>
+
+{% endblock %}

@@ -17,22 +17,25 @@ use App\Repository\CmsShopRepository;
 use App\Repository\CmsPagesRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use App\Repository\CmsNewsCategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Settings\Settings as SettingsCmsSettings;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class HomeController extends AbstractController
 {
 
     public function __construct(
-        protected SettingsCmsSettings $settings, 
-        protected Api $api, 
-        protected CacheInterface $cache, 
-        protected PaginatorInterface $paginator)
-    {
+        protected SettingsCmsSettings $settings,
+        protected Api $api,
+        protected CacheInterface $cache,
+        protected ParameterBagInterface $param,
+        protected PaginatorInterface $paginator
+    ) {
     }
 
     public function aside(Api $api, SettingsCmsSettings $settings, CmsNewsRepository $newRepo): Response
@@ -66,7 +69,7 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('home', ['_locale' => $request->getLocale()]);
         }
 
-        if($this->settings->get("api_username") === "username_account_api" || $_ENV["ENABLE_INSTALLATION"]){
+        if ($this->checkDb()) {
             return $this->redirectToRoute("installation.home", ['_locale' => $request->getLocale()]);
         }
 
@@ -111,7 +114,7 @@ class HomeController extends AbstractController
     #[Route(path: '/news', name: 'home.news', requirements: ['_locale' => 'en|fr'])]
     public function newsLists(CmsNewsRepository $newsRepo, PaginatorInterface $paginator, Request $request, SettingsCmsSettings $settings, CmsNewsCategoryRepository $categoryRepo): Response
     {
-        if($this->settings->get("api_username") === "username_account_api" || $_ENV["ENABLE_INSTALLATION"]){
+        if ($this->checkDb()) {
             return $this->redirectToRoute("installation.home", ['_locale' => $request->getLocale()]);
         }
 
@@ -140,7 +143,7 @@ class HomeController extends AbstractController
     #[Route(path: '/news/{id}-{slug}', name: 'news.read', requirements: ['_locale' => 'en|fr'])]
     public function newsRead(Request $request, CmsNewsRepository $newsRepo, $id, SettingsCmsSettings $settings): Response
     {
-        if($this->settings->get("api_username") === "username_account_api" || $_ENV["ENABLE_INSTALLATION"]){
+        if ($this->checkDb()) {
             return $this->redirectToRoute("installation.home", ['_locale' => $request->getLocale()]);
         }
 
@@ -152,7 +155,7 @@ class HomeController extends AbstractController
     #[Route(path: '/download', name: 'game.download', requirements: ['_locale' => 'en|fr'])]
     public function downloadRead(Request $request, CmsPagesRepository $pageRepo, SettingsCmsSettings $settings): Response
     {
-        if($this->settings->get("api_username") === "username_account_api" || $_ENV["ENABLE_INSTALLATION"]){
+        if ($this->checkDb()) {
             return $this->redirectToRoute("installation.home", ['_locale' => $request->getLocale()]);
         }
 
@@ -165,8 +168,8 @@ class HomeController extends AbstractController
     #[Route(path: '/page/{slug}', name: 'game.pages', requirements: ['_locale' => 'en|fr'])]
     public function pageRead(Request $request, CmsPagesRepository $pageRepo, $slug, SettingsCmsSettings $settings): Response
     {
-        
-        if($this->settings->get("api_username") === "username_account_api" || $_ENV["ENABLE_INSTALLATION"]){
+
+        if ($this->checkDb()) {
             return $this->redirectToRoute("installation.home", ['_locale' => $request->getLocale()]);
         }
 
@@ -187,5 +190,15 @@ class HomeController extends AbstractController
 
         // On revient sur la page précédente
         return $this->redirect($previous);
+    }
+
+
+    private function checkDb(): bool
+    {
+        $filesystem = new Filesystem();
+        $installationEnable = $filesystem->exists($this->param->get("default_project_path") . 'ENABLE_INSTALLATION_TOOLS');
+
+        // Pas besoin d'une condition if/else, vous pouvez affecter directement le résultat à $this->isDbReady
+        return $installationEnable;
     }
 }

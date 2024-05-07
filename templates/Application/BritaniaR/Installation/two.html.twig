@@ -1,4 +1,4 @@
-{% extends 'Application/' ~ settings.get("theme") ~'/base_install.html.twig' %}
+{% extends 'Application/BritaniaR/base_install.html.twig' %}
 
 {% block title %}
 	{{"Configuration de l'api Intersect"|trans}}
@@ -17,7 +17,7 @@
             </p>
 		</div>
 
-		<form action="{{path("installation.one")}}" method="POST">
+		<form action="{{path("installation.two")}}" method="POST">
 			<div class="mt-3 mb-3">
 				<label for="username">{{"Nom du compte API"|trans}}</label>
 				<input type="text" id="username" name="username" class="form-control w-100" placeholder="{{"Nom du compte API"|trans}}" {{username is defined and username is not null ? "value=" ~ username}}>

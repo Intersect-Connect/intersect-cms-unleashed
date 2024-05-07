@@ -1,4 +1,4 @@
-{% extends 'Application/' ~ settings.get("theme") ~'/base_install.html.twig' %}
+{% extends 'Application/BritaniaR/base_install.html.twig' %}
 
 {% block title %}
 	{{"Accueil"|trans}}
@@ -19,6 +19,29 @@
 			<p>
                 L'installateur va vous aidez à installer et configurer correctement votre site internet.
             </p>
+
+			<h2>
+				{{"Requis"|trans}}
+			</h2>
+
+			<ul class="list-group w-50">
+				<li class="list-group-item d-flex justify-content-between align-items-center">
+					PHP 8.0+
+					{% if not phpversion > 8.0 %}
+						<i class="bi bi-x-circle-fill text-danger"></i>
+						{% else %}
+						<i class="bi bi-check-circle-fill text-success"></i>
+					{% endif %}
+				</li>
+				<li class="list-group-item d-flex justify-content-between align-items-center">
+					{{"Base de donnée installé"|trans}} ({{dbReady ? "(Installation à suivre)"|trans : ""}})
+					{% if dbReady %}
+						<i class="bi bi-x-circle-fill text-danger"></i>
+						{% else %}
+						<i class="bi bi-check-circle-fill text-success"></i>
+					{% endif %}
+				</li>
+			</ul>
 		</div>
 
 		<div class="p-3 text-center">

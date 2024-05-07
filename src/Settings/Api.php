@@ -10,10 +10,14 @@
 
 namespace App\Settings;
 
-use App\Entity\CmsSettings;
 use DateTime;
+use App\Entity\CmsSettings;
+use Symfony\Component\Filesystem\Path;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class Api
 {
@@ -27,16 +31,22 @@ class Api
 
     public function __construct(
         protected EntityManagerInterface $em,
-        protected HttpClientInterface $client
+        protected HttpClientInterface $client,
+        protected ParameterBagInterface  $param
+
     ) {
-        $this->em = $em;
-        $this->token = $em->getRepository(CmsSettings::class)->findOneBy(['setting' => 'api_token'])->getDefaultValue();
-        $this->username = $em->getRepository(CmsSettings::class)->findOneBy(['setting' => 'api_username'])->getDefaultValue();
-        $this->password = $em->getRepository(CmsSettings::class)->findOneBy(['setting' => 'api_password'])->getDefaultValue();
-        $this->server = $em->getRepository(CmsSettings::class)->findOneBy(['setting' => 'api_server'])->getDefaultValue();
-        $this->client = $client;
-        $this->dedipass_public = $em->getRepository(CmsSettings::class)->findOneBy(['setting' => 'credit_dedipass_public_key'])->getDefaultValue();
-        $this->dedipass_private = $em->getRepository(CmsSettings::class)->findOneBy(['setting' => 'credit_dedipass_private_key'])->getDefaultValue();
+        $filesystem = new Filesystem();
+        $dbIsReady = $filesystem->exists($param->get("default_project_path") . 'DB_NOT_READY');
+        if (!$dbIsReady) {
+            $this->em = $em;
+            $this->token = $em->getRepository(CmsSettings::class)->findOneBy(['setting' => 'api_token'])->getDefaultValue();
+            $this->username = $em->getRepository(CmsSettings::class)->findOneBy(['setting' => 'api_username'])->getDefaultValue();
+            $this->password = $em->getRepository(CmsSettings::class)->findOneBy(['setting' => 'api_password'])->getDefaultValue();
+            $this->server = $em->getRepository(CmsSettings::class)->findOneBy(['setting' => 'api_server'])->getDefaultValue();
+            $this->client = $client;
+            $this->dedipass_public = $em->getRepository(CmsSettings::class)->findOneBy(['setting' => 'credit_dedipass_public_key'])->getDefaultValue();
+            $this->dedipass_private = $em->getRepository(CmsSettings::class)->findOneBy(['setting' => 'credit_dedipass_private_key'])->getDefaultValue();
+        }
     }
 
     /**
@@ -93,7 +103,7 @@ class Api
             $response = '{"Message": "Authorization has been denied for this request."}';
         }
 
-        if($httpcode == 404) {
+        if ($httpcode == 404) {
             $response = '{"Message": "Not Found"}';
         }
 
@@ -132,12 +142,12 @@ class Api
 
 
         if ($http_status === 0) {
-            $data = ['success' => false,'error' => true];
+            $data = ['success' => false, 'error' => true];
             return $data;
         }
 
         if ($response === false) {
-            $data = ['success' => false,'error' => true, 'message' => curl_error($ch)];
+            $data = ['success' => false, 'error' => true, 'message' => curl_error($ch)];
             return $data;
         }
 
@@ -148,7 +158,7 @@ class Api
             $response = '{"Message": "Authorization has been denied for this request."}';
         }
 
-        if($httpcode == 404) {
+        if ($httpcode == 404) {
             $response = '{"Message": "Not Found"}';
         }
 
