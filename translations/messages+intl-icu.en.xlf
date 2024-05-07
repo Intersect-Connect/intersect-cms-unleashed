@@ -1007,6 +1007,114 @@
         <source>Vérifiez vos informations, code d'erreur : R003</source>
         <target>Check your information, error code: R003</target>
       </trans-unit>
+      <trans-unit id="UzxOEVe" resname="Une erreur est survenue lors du rechargement de votre compte">
+        <source>Une erreur est survenue lors du rechargement de votre compte</source>
+        <target>Une erreur est survenue lors du rechargement de votre compte</target>
+      </trans-unit>
+      <trans-unit id="IJ_1hWm" resname="Finalisation">
+        <source>Finalisation</source>
+        <target>Finalisation</target>
+      </trans-unit>
+      <trans-unit id="cNwUTgJ" resname="L'installation est terminé, votre site est prêt.">
+        <source>L'installation est terminé, votre site est prêt.</source>
+        <target>L'installation est terminé, votre site est prêt.</target>
+      </trans-unit>
+      <trans-unit id="dJIXwqn" resname="Voir le site">
+        <source>Voir le site</source>
+        <target>Voir le site</target>
+      </trans-unit>
+      <trans-unit id="7yOllAJ" resname="Retour">
+        <source>Retour</source>
+        <target>Retour</target>
+      </trans-unit>
+      <trans-unit id="GTykc06" resname="Installation du CMS">
+        <source>Installation du CMS</source>
+        <target>Installation du CMS</target>
+      </trans-unit>
+      <trans-unit id="CVCtDWw" resname="Bienvenue dans l'installateur de Intersect CMS">
+        <source>Bienvenue dans l'installateur de Intersect CMS</source>
+        <target>Bienvenue dans l'installateur de Intersect CMS</target>
+      </trans-unit>
+      <trans-unit id="MlRadaE" resname="Requis">
+        <source>Requis</source>
+        <target>Requis</target>
+      </trans-unit>
+      <trans-unit id="yJXMFuC" resname="Base de donnée installé">
+        <source>Base de donnée installé</source>
+        <target>Base de donnée installé</target>
+      </trans-unit>
+      <trans-unit id="innBqk9" resname="(Installation à suivre)">
+        <source>(Installation à suivre)</source>
+        <target>(Installation à suivre)</target>
+      </trans-unit>
+      <trans-unit id="AlPypnB" resname="Démarrer">
+        <source>Démarrer</source>
+        <target>Démarrer</target>
+      </trans-unit>
+      <trans-unit id="60mZjl3" resname="Configuration de l'api Intersect">
+        <source>Configuration de l'api Intersect</source>
+        <target>Configuration de l'api Intersect</target>
+      </trans-unit>
+      <trans-unit id="MDkb4.D" resname="Configuration de la base de donnée">
+        <source>Configuration de la base de donnée</source>
+        <target>Configuration de la base de donnée</target>
+      </trans-unit>
+      <trans-unit id="wKe1rLS" resname="Vérifier que vos informations de base de donnée dans votre env est correct">
+        <source>Vérifier que vos informations de base de donnée dans votre env est correct</source>
+        <target>Vérifier que vos informations de base de donnée dans votre env est correct</target>
+      </trans-unit>
+      <trans-unit id="3y3zvHE" resname="Suivant">
+        <source>Suivant</source>
+        <target>Suivant</target>
+      </trans-unit>
+      <trans-unit id="0YviuVS" resname="Configuration du site">
+        <source>Configuration du site</source>
+        <target>Configuration du site</target>
+      </trans-unit>
+      <trans-unit id="NgJFzFm" resname="Cette étape est facultative et les données pourront être modifier dans les paramètres de l'Administration.">
+        <source>Cette étape est facultative et les données pourront être modifier dans les paramètres de l'Administration.</source>
+        <target>Cette étape est facultative et les données pourront être modifier dans les paramètres de l'Administration.</target>
+      </trans-unit>
+      <trans-unit id="o1dF4Xw" resname="Le titre de votre jeu (titre du site)">
+        <source>Le titre de votre jeu (titre du site)</source>
+        <target>Le titre de votre jeu (titre du site)</target>
+      </trans-unit>
+      <trans-unit id="fUMhkS9" resname="Description du jeu (255 caractères)">
+        <source>Description du jeu (255 caractères)</source>
+        <target>Description du jeu (255 caractères)</target>
+      </trans-unit>
+      <trans-unit id="Cfd5BjZ" resname="Impossible de joindre le serveur api, vérifier vos informations.">
+        <source>Impossible de joindre le serveur api, vérifier vos informations.</source>
+        <target>Impossible de joindre le serveur api, vérifier vos informations.</target>
+      </trans-unit>
+      <trans-unit id="hOaKs7Z" resname="Vous devez avoir suivis les instructions de base">
+        <source>Vous devez avoir suivis les instructions de base</source>
+        <target>Vous devez avoir suivis les instructions de base</target>
+      </trans-unit>
+      <trans-unit id="qN2kGX7" resname="disponible ici">
+        <source>disponible ici</source>
+        <target>disponible ici</target>
+      </trans-unit>
+      <trans-unit id="t5qbTkp" resname="Nom du compte API">
+        <source>Nom du compte API</source>
+        <target>Nom du compte API</target>
+      </trans-unit>
+      <trans-unit id="sPDPmHE" resname="Mot de passe du compte API">
+        <source>Mot de passe du compte API</source>
+        <target>Mot de passe du compte API</target>
+      </trans-unit>
+      <trans-unit id="x3gxtVK" resname="IP/Nom de domaine du serveur Intersect">
+        <source>IP/Nom de domaine du serveur Intersect</source>
+        <target>IP/Nom de domaine du serveur Intersect</target>
+      </trans-unit>
+      <trans-unit id="MHDOw5y" resname="Port du serveur API Intersect">
+        <source>Port du serveur API Intersect</source>
+        <target>Port du serveur API Intersect</target>
+      </trans-unit>
+      <trans-unit id="bgRMQO1" resname="Votre version d'Intersect Engine">
+        <source>Votre version d'Intersect Engine</source>
+        <target>Votre version d'Intersect Engine</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
