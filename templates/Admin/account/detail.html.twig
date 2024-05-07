@@ -4,6 +4,21 @@
 
 {% block body %}
 
+{% if user.IsBanned is defined %}
+	{% set isBanned = user.IsBanned %}
+{% endif %}
+{% if user.IpBan is defined %}
+	{% set isBanned = user.IpBan %}
+{% endif %}
+
+{% if user.IsMuted is defined %}
+	{% set isMuted = user.IsMuted %}
+{% endif %}
+{% if user.IpMute is defined %}
+	{% set isMuted = user.IpMute %}
+{% endif %}
+
+
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -61,10 +76,10 @@
 
                         <li class="list-group-item">
                             {{"Status"|trans}} :
-                            {% if user.IsBanned %}
+                            {% if isBanned %}
                             <span class="badge bg-danger">{{"Banni"|trans}}</span>
                             {% else %}
-                            {% if user.IsMuted %}
+                            {% if isMuted %}
                             <span class="badge bg-danger">{{"En sourdine"|trans}}</span>
                             {% else %}
                             <span class="badge bg-success">{{"Normal"|trans}}</span>
@@ -76,13 +91,13 @@
                     <form method="POST">
                         <input type="hidden" name="user_id" value="{{user.Id}}">
                         <input type="hidden" name="username" value="{{user.Name}}">
-                        {% if user.IsBanned %}
+                        {% if isBanned %}
                         <button name="unban" type="submit" class="btn btn-info btn-sm btn-block">unBan</button>
                         {% else %}
                         <button name="ban" type="submit" class="btn btn-danger btn-sm btn-block">Ban</button>
                         {% endif %}
 
-                        {% if user.IsMuted %}
+                        {% if isMuted %}
                         <button name="unmute" type="submit" class="btn btn-info btn-sm btn-block">unMute</button>
                         {% else %}
                         <button name="mute" type="submit" class="btn btn-danger btn-sm btn-block">Mute</button>

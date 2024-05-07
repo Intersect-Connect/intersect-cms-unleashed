@@ -178,6 +178,24 @@ class HomeController extends AbstractController
         ]);
     }
 
+    #[Route(path: '/checkServer', name: 'check.server', requirements: ['_locale' => 'en|fr'])]
+    public function checkServer(Request $request): Response
+    {
+        $serveur_statut = $this->api->ServeurStatut();
+        $serveur_online = null;
+
+        if ($serveur_statut['success']) {
+            $serveur_online = true;
+        } else {
+            $serveur_online = false;
+        }
+
+        return $this->render('Application/' . $this->settings->get('theme') . '/includes/status.html.twig', [
+            'serveur_online' => $serveur_online,
+            'players_count' => isset($serveur_statut['online']) ? $serveur_statut['online'] : null,
+        ]);
+    }
+
     #[Route(path: '/change_locale/{locale}', name: 'change_locale')]
     public function changeLocale($locale, Request $request, SettingsCmsSettings $settings)
     {

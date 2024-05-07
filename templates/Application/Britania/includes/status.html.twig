@@ -1,0 +1,19 @@
+{% if serveur_online %}
+	<a href="{{path('game.players.liste.online')}}" class="butt serverOnline">
+		<span class="illu"></span>
+		{{'Etat du serveur'|trans}}
+		<small>
+			{{'En ligne'|trans}}
+			({{players_count}}
+			{{'joueurs'|trans}})
+		</small>
+	</a>
+{% else %}
+	<a href="{{path('game.players.liste.online')}}" class="butt serverOffline">
+		<span class="illu"></span>
+		{{'Etat du serveur'|trans}}
+		<small>
+			{{'Hors ligne'|trans}}
+		</small>
+	</a>
+{% endif %}

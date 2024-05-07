@@ -47,20 +47,33 @@
                 </thead>
                 <tbody>
                     {% for item in items %}
+                    {% if item.IsBanned is defined %}
+                        {% set isBanned = item.IsBanned %}
+                    {% endif %}
+                     {% if item.IpBan is defined %}
+                        {% set isBanned = item.IpBan %}
+                    {% endif %}
+
+                    {% if item.IsMuted is defined %}
+                        {% set isMuted = item.IsMuted %}
+                    {% endif %}
+                     {% if item.IpMute is defined %}
+                        {% set isMuted = item.IpMute %}
+                    {% endif %}
                     <tr>
                         <td class="item_id">
                             {{ item.Id }}
                         </td>
                         <td class="c">{{ item.Name }}</td>
                         <td class="c">
-                            {% if item.IsBanned %}
-                            <span class="badge bg-danger text-white">{{"Banni"|trans}}</span>
+                            {% if isBanned %}
+                                <span class="badge bg-danger text-white">{{"Banni"|trans}}</span>
                             {% else %}
-                            {% if item.IsMuted %}
-                            <span class="badge bg-danger text-white">{{"En sourdine"|trans}}</span>
-                            {% else %}
-                            <span class="badge bg-success text-white">{{"Normal"|trans}}</span>
-                            {% endif %}
+                                {% if isMuted %}
+                                    <span class="badge bg-danger text-white">{{"En sourdine"|trans}}</span>
+                                {% else %}
+                                    <span class="badge bg-success text-white">{{"Normal"|trans}}</span>
+                                {% endif %}
                             {% endif %}
                         </td>
                         <td>
@@ -68,13 +81,13 @@
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <input type="hidden" name="user_id" value="{{item.Id}}">
                                     <input type="hidden" name="username" value="{{item.Name}}">
-                                    {% if item.IsBanned %}
+                                    {% if isBanned %}
                                     <button name="unban" type="submit" class="btn btn-info btn-sm">unBan</button>
                                     {% else %}
                                     <button name="ban" type="submit" class="btn btn-danger btn-sm">Ban</button>
                                     {% endif %}
 
-                                    {% if item.IsMuted %}
+                                    {% if isMuted %}
                                     <button name="unmute" type="submit" class="btn btn-info btn-sm">unMute</button>
                                     {% else %}
                                     <button name="mute" type="submit" class="btn btn-danger btn-sm">Mute</button>

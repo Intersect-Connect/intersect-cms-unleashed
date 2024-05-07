@@ -107,11 +107,10 @@ class Api
             $response = '{"Message": "Not Found"}';
         }
 
-        if($this->isJson($response)){
+        if ($this->isJson($response)) {
             $responseData = json_decode($response, true);
-        }else{
+        } else {
             $responseData = ["Message" => $response];
-
         }
 
         curl_close($ch);
@@ -793,10 +792,19 @@ class Api
             'count' => 20
         ];
 
-        $items = $this->APIcall_POST($this->getServer(), $data,  $this->getToken(), '/api/v1/gameobjects/item/');
+        $endpoint = '/api/v1/gameobjects/item/';
+
+        $queryParams = [
+            'page' => $page,
+            'count' => 20
+        ];
+
+
+        $items = $this->APIcall_GET($this->getServer(), $this->getToken(), $endpoint . '?' . http_build_query($queryParams));
+
         if (isset($items['Message']) && $items['Message'] == "Authorization has been denied for this request.") {
             $this->setToken();
-            $items = $this->APIcall_POST($this->getServer(), $data,  $this->getToken(), '/api/v1/gameobjects/item/');
+            $items = $this->APIcall_GET($this->getServer(), $this->getToken(), '/api/v1/gameobjects/item/');
         }
         return $items;
     }
@@ -1167,7 +1175,8 @@ class Api
         return $this;
     }
 
-    private function isJson($string) {
+    private function isJson($string)
+    {
         json_decode($string);
         return (json_last_error() == JSON_ERROR_NONE);
     }
