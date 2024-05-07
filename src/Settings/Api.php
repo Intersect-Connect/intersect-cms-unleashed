@@ -107,7 +107,13 @@ class Api
             $response = '{"Message": "Not Found"}';
         }
 
-        $responseData = json_decode($response, true);
+        if($this->isJson($response)){
+            $responseData = json_decode($response, true);
+        }else{
+            $responseData = ["Message" => $response];
+
+        }
+
         curl_close($ch);
 
         return $responseData;
@@ -1159,6 +1165,11 @@ class Api
         $this->token = $newToken->getDefaultValue();
 
         return $this;
+    }
+
+    private function isJson($string) {
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
     }
 
 
