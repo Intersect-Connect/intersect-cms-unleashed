@@ -1,0 +1,115 @@
+{% extends 'Application/' ~ settings.get("theme") ~'/base.html.twig' %}
+
+{% block title %}{{"Liste des items"|trans}}{% endblock %}
+
+{% block body %}
+<!-- Adicionar links para Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Adicionar link para Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+<!-- Adicionar link para FancyBox -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">{{'Liste des items'|trans}}</h6>
+  </div>
+  <div class="card-body">
+
+    <div class="row">
+      {% for item in items %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title"
+                style="{% if item.Value.Rarity == 0 %}color: grey; text-shadow: 1px 1px 2px black{% elseif item.Value.Rarity == 1 %}color: lightgreen; text-shadow: 1px 1px 2px black{% elseif item.Value.Rarity == 2 %}color: lightblue; text-shadow: 1px 1px 2px black{% elseif item.Value.Rarity == 3 %}color: purple; text-shadow: 1px 1px 2px black{% elseif item.Value.Rarity == 4 %}color: orange; text-shadow: 1px 1px 2px black{% elseif item.Value.Rarity == 5 %}color: red; text-shadow: 1px 1px 2px black{% endif %}">
+              {{ item.Value.Name }}
+            </h5>
+            <img src="/assets/general/gamedata/items/{{ item.Value.Icon }}" alt="{{ item.Value.Name }}" class="img-fluid mb-2">
+            <p class="card-text">{{ item.Value.Description }}</p>
+            <p class="card-text">{{"Price"|trans}}: {{ item.Value.Price }}<img src="/assets/general/gamedata/items/celts2.png" alt="Gold Coins" class="img-fluid mb-2"></p>
+            <a href="#item-details-{{ loop.index }}" data-fancybox class="btn btn-primary">
+              <i class="fas fa-search"></i>
+            </a>
+            <div style="display: none;" id="item-details-{{ loop.index }}">
+            <h5 class="card-title"
+                style="{% if item.Value.Rarity == 0 %}color: grey; text-shadow: 1px 1px 2px black{% elseif item.Value.Rarity == 1 %}color: lightgreen; text-shadow: 1px 1px 2px black{% elseif item.Value.Rarity == 2 %}color: lightblue; text-shadow: 1px 1px 2px black{% elseif item.Value.Rarity == 3 %}color: purple; text-shadow: 1px 1px 2px black{% elseif item.Value.Rarity == 4 %}color: orange; text-shadow: 1px 1px 2px black{% elseif item.Value.Rarity == 5 %}color: red; text-shadow: 1px 1px 2px black{% endif %}">
+              {{ item.Value.Name }}
+            </h5>
+              <p>{{'CanDrop'|trans}}: {{ item.Value.CanDrop == 1 ? '<i class="fas fa-check text-success"></i>'|raw : '<i class="fas fa-times text-danger"></i>'|raw }}</p>
+              <p>{{'DropChanceOnDeath'|trans}}: {{ item.Value.DropChanceOnDeath }}</p>
+              <p>{{'CanTrade'|trans}}: {{ item.Value.CanTrade == 1 ? '<i class="fas fa-check text-success"></i>'|raw : '<i class="fas fa-times text-danger"></i>'|raw }}</p>
+              <p>{{'CanSell'|trans}}: {{ item.Value.CanSell == 1 ? '<i class="fas fa-check text-success"></i>'|raw : '<i class="fas fa-times text-danger"></i>'|raw }}</p>
+              <p>{{'CanBank'|trans}}: {{ item.Value.CanBank == 1 ? '<i class="fas fa-check text-success"></i>'|raw : '<i class="fas fa-times text-danger"></i>'|raw }}</p>
+              <p>{{'CanGuildBank'|trans}}: {{ item.Value.CanGuildBank == 1 ? '<i class="fas fa-check text-success"></i>'|raw : '<i class="fas fa-times text-danger"></i>'|raw }}</p>
+              <p>{{'CanBag'|trans}}: {{ item.Value.CanBag == 1 ? '<i class="fas fa-check text-success"></i>'|raw : '<i class="fas fa-times text-danger"></i>'|raw }}</p>
+              <p>{{'CritChance'|trans}}: {{ item.Value.CritChance }}%</p>
+              <p>{{'CritMultiplier'|trans}}: {{ item.Value.CritMultiplier }}x</p>
+              <p>{{'Cooldown'|trans}}: {{ item.Value.Cooldown }}ms</p>
+              <p>{{'CooldownGroup'|trans}}: {{ item.Value.CooldownGroup }}</p>
+              <p>{{'IgnoreGlobalCooldown'|trans}}: {{ item.Value.IgnoreGlobalCooldown == 1 ? '<i class="fas fa-check text-success"></i>'|raw : '<i class="fas fa-times text-danger"></i>'|raw }}</p>
+              <p>{{'IgnoreCooldownReduction'|trans}}: {{ item.Value.IgnoreCooldownReduction == 1 ? '<i class="fas fa-check text-success"></i>'|raw : '<i class="fas fa-times text-danger"></i>'|raw }}</p>
+              <p>{{'Damage'|trans}}: {{ item.Value.Damage }}</p>
+              <p>{{'DamageType'|trans}}: {{ item.Value.DamageType }}</p>
+              <p>{{'AttackSpeedModifier'|trans}}: {{ item.Value.AttackSpeedModifier }}</p>
+              <p>{{'AttackSpeedValue'|trans}}: {{ item.Value.AttackSpeedValue }}</p>
+              <p>{{'WeaponSpriteOverride'|trans}}: {{ item.Value.WeaponSpriteOverride }}</p>
+              <p>{{'Consumable'|trans}}: {{ item.Value.Consumable == 1 ? '<i class="fas fa-check text-success"></i>'|raw : '<i class="fas fa-times text-danger"></i>'|raw }}</p>
+              <p>{{'EquipmentSlot'|trans}}: {{ item.Value.EquipmentSlot }}</p>
+              <p>{{'TwoHanded'|trans}}: {{ item.Value.TwoHanded == 1 ? '<i class="fas fa-check text-success"></i>'|raw : '<i class="fas fa-times text-danger"></i>'|raw }}</p>
+              <p>{{'SlotCount'|trans}}: {{ item.Value.SlotCount }}</p>
+              <p>{{'QuickCast'|trans}}: {{ item.Value.QuickCast == 1 ? '<i class="fas fa-check text-success"></i>'|raw : '<i class="fas fa-times text-danger"></i>'|raw }}</p>
+              <p>{{'SingleUse'|trans}}: {{ item.Value.SingleUse == 1 ? '<i class="fas fa-check text-success"></i>'|raw : '<i class="fas fa-times text-danger"></i>'|raw }}</p>
+              <p>{{'ItemType'|trans}}: {{ item.Value.ItemType }}</p>
+              <p>{{'Scaling'|trans}}: {{ item.Value.Scaling }}%</p>
+              <p>{{'ScalingStat'|trans}}: 
+                {% if item.Value.ScalingStat == 0 %}
+                  {{'Physical Attack'|trans}}
+                {% elseif item.Value.ScalingStat == 1 %}
+                  {{'Magic Attack'|trans}}
+                {% elseif item.Value.ScalingStat == 2 %}
+                  {{'Physical Defense'|trans}}
+                {% elseif item.Value.ScalingStat == 3 %}
+                  {{'Magic Defense'|trans}}
+                {% elseif item.Value.ScalingStat == 4 %}
+                  {{'Speed'|trans}}
+                {% else %}
+                  {{ item.Value.ScalingStat }}
+                {% endif %}
+              </p>
+              <p>{{'Speed'|trans}}: {{ item.Value.Speed }}</p>
+              <p>{{'Stackable'|trans}}: {{ item.Value.Stackable == 1 ? '<i class="fas fa-check text-success"></i>'|raw : '<i class="fas fa-times text-danger"></i>'|raw }}</p>
+              <p>{{'MaxInventoryStack'|trans}}: {{ item.Value.MaxInventoryStack }}</p>
+              <p>{{'MaxBankStack'|trans}}: {{ item.Value.MaxBankStack }}</p>
+              <p>{{'Tool'|trans}}: {{ item.Value.Tool }}</p>
+              <p>{{'BlockChance'|trans}}: {{ item.Value.BlockChance }}%</p>
+              <p>{{'BlockAmount'|trans}}: {{ item.Value.BlockAmount }}</p>
+              <p>{{'BlockAbsorption'|trans}}: {{ item.Value.BlockAbsorption }}</p>
+              <p>{{'DespawnTime'|trans}}: {{ item.Value.DespawnTime }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="alert alert-info">
+        Aucune information disponible.
+      </div>
+      {% endfor %}
+    </div>
+
+    <nav aria-label="Pagination de la liste des joueurs">
+      <ul class="pagination p-3 overflow-auto">
+        {% for i in 0..total_page %}
+        <li class="page-item {% if page_actuel == i %}active{% endif %}">
+          <a class="page-link" data-page="{{ i }}" href="{{ path('game.items', {'page': i}) }}">{{ i + 1 }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+{% endblock %}
