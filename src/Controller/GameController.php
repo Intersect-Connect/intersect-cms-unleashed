@@ -95,6 +95,20 @@ class GameController extends AbstractController
             ]);
         }
     }
+    #[Route(path: '/game/items/{page}', name: 'game.items')]
+    public function items(int $page = 0): Response
+    {
+        $items = $this->api->getAllItems($page);
+        $total = $items['total'];
+        $total_page = floor($total / 20);
+
+
+        return $this->render('Application/' . $this->settings->get('theme') . '/game/items.html.twig', [
+            'total_page' => $total_page,
+            'items' => $items['entries'],
+            'page_actuel' => $page
+        ]);
+    }
 
     #[Route(path: '/rank/level', name: 'game.rank.level', requirements: ['_locale' => 'en|fr'])]
     public function rankNiveau(): Response
