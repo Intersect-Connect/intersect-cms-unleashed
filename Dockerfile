@@ -66,7 +66,9 @@ ENV APP_ENV=prod
 ENV APP_DEBUG=0
 
 # Install dependencies (no dev)
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+# Use --no-scripts to avoid running cache:clear during build (database not available yet)
+# Cache operations are handled in the entrypoint script at runtime
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress --no-scripts
 
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html/var /var/www/html/public \
