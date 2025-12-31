@@ -70,8 +70,9 @@ ENV APP_DEBUG=0
 # Cache operations are handled in the entrypoint script at runtime
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress --no-scripts
 
-# Set proper permissions
-RUN chown -R www-data:www-data /var/www/html/var /var/www/html/public \
+# Create var directory structure and set proper permissions
+RUN mkdir -p /var/www/html/var/cache /var/www/html/var/log \
+    && chown -R www-data:www-data /var/www/html/var /var/www/html/public \
     && chmod -R 775 /var/www/html/var
 
 # Create entrypoint script
