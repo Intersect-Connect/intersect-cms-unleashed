@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      target: production
+    container_name: intersect-cms-app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      APP_ENV: prod
+      APP_SECRET: ${APP_SECRET:-change_this_to_a_random_secret}
+      DATABASE_URL: mysql://${DB_USER:-intersect}:${DB_PASSWORD:-intersect}@db:3306/${DB_NAME:-intersect_cms}?serverVersion=8.0
+      MAILER_DSN: ${MAILER_DSN:-smtp://localhost}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - app_var:/var/www/html/var
+      - app_public:/var/www/html/public/uploads
+    networks:
+      - intersect-network
+
+  db:
+    image: mysql:8.0
+    container_name: intersect-cms-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-intersect_cms}
+      MYSQL_USER: ${DB_USER:-intersect}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-intersect}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-rootpassword}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - intersect-network
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: intersect-cms-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${DB_USER:-intersect}
+      PMA_PASSWORD: ${DB_PASSWORD:-intersect}
+      UPLOAD_LIMIT: 64M
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    networks:
+      - intersect-network
+
+volumes:
+  db_data:
+    driver: local
+  app_var:
+    driver: local
+  app_public:
+    driver: local
+
+networks:
+  intersect-network:
+    driver: bridge
