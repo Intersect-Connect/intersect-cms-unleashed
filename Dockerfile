@@ -61,6 +61,10 @@ FROM base AS production
 # Copy application files
 COPY --chown=www-data:www-data . /var/www/html
 
+# Set production environment
+ENV APP_ENV=prod
+ENV APP_DEBUG=0
+
 # Install dependencies (no dev)
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
