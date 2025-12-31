@@ -1,0 +1,57 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+README-DOCKER.md
+*.md
+
+# IDE files
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Development files
+.env.local
+.env.*.local
+docker-compose.yml
+docker-compose.override.yml
+
+# Dependencies
+/vendor/
+/node_modules/
+
+# Cache and logs
+/var/cache/*
+/var/log/*
+/var/sessions/*
+!/var/cache/.gitkeep
+!/var/log/.gitkeep
+!/var/sessions/.gitkeep
+
+# Test files
+/tests/
+phpunit.xml.dist
+.phpunit.result.cache
+
+# PHPStan
+phpstan.neon
+/var/phpstan/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Build artifacts
+*.tar
+*.tar.gz
+*.zip
